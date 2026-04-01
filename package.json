@@ -1,5 +1,5 @@
 {
-  "name": "rajuleye-monorepo",
+  "name": "rajuleye",
   "private": true,
   "workspaces": [
     "apps/*",
