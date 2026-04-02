@@ -8,95 +8,7 @@ import { incrementQuantity, decrementQuantity, removeFromCart } from '../../stor
 import { CartItem } from '../../components/ui/CartItem';
 import { COLORS, SIZES, SHADOWS, useAppTheme } from '../../constants/Theme';
 import { useRouter } from 'expo-router';
-
-export default function CartScreen() {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { colors: theme } = useAppTheme();
-
-  const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subTotal > 0 ? 15 : 0;
-  const total = subTotal + shipping;
-
-  return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
-      {/* Dynamic Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.headerTitle, { color: theme.text }]}>Selection</Text>
-          <View style={[styles.itemBadge, { backgroundColor: theme.accent }]}>
-            <Text style={[styles.itemBadgeText, { color: theme.subtext }]}>{cartItems.length} ITEMS</Text>
-          </View>
-        </View>
-        <TouchableOpacity style={[styles.clearBtn, { backgroundColor: theme.accent }]}>
-          <Text style={styles.clearText}>Clear All</Text>
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        data={cartItems}
-        keyExtractor={(item) => item.id}
-        style={{ flex: 1 }}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <View style={[styles.emptyIconCircle, { backgroundColor: theme.accent }]}>
-              <Ionicons name="basket-outline" size={48} color={theme.text} />
-            </View>
-            <Text style={[styles.emptyTitle, { color: theme.text }]}>Empty Selection</Text>
-            <Text style={[styles.emptySub, { color: theme.subtext }]}>Your curated basket is waiting.</Text>
-            <TouchableOpacity style={[styles.shopNowBtn, { backgroundColor: theme.text }]} onPress={() => router.replace('/')}>
-              <Text style={[styles.shopNowText, { color: theme.background }]}>Continue Exploring</Text>
-            </TouchableOpacity>
-          </View>
-        }
-        renderItem={({ item }) => (
-          <CartItem
-            id={item.id}
-            name={item.name}
-            price={item.price}
-            quantity={item.quantity}
-            image={item.image}
-            onIncrement={() => dispatch(incrementQuantity(item.id))}
-            onDecrement={() => dispatch(decrementQuantity(item.id))}
-            onRemove={() => dispatch(removeFromCart(item.id))}
-          />
-        )}
-      />
-
-      {cartItems.length > 0 && (
-        <View style={styles.floatingSummary}>
-          <View style={[styles.summaryBento, { backgroundColor: theme.accent }]}>
-            <View style={styles.summaryCol}>
-              <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Sub-total</Text>
-              <Text style={[styles.summaryPrice, { color: theme.text }]}>${subTotal.toFixed(2)}</Text>
-            </View>
-            <View style={styles.summaryCol}>
-              <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Shipping</Text>
-              <Text style={[styles.summaryPrice, { color: theme.text }]}>${shipping.toFixed(2)}</Text>
-            </View>
-          </View>
-
-          <TouchableOpacity
-            style={[styles.checkoutPill, { backgroundColor: theme.text }]}
-            activeOpacity={0.9}
-            onPress={() => router.push('/checkout')}
-          >
-            <View style={styles.checkoutMain}>
-              <Text style={[styles.checkoutLabel, { color: theme.background, opacity: 0.6 }]}>Total</Text>
-              <Text style={[styles.checkoutTotal, { color: theme.background }]}>${total.toFixed(2)}</Text>
-            </View>
-            <View style={[styles.checkoutBtnBox, { backgroundColor: theme.background }]}>
-              <Ionicons name="arrow-forward" size={24} color={theme.text} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-    </SafeAreaView>
-  );
-}
+import { LinearGradient } from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
@@ -230,3 +142,101 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default function CartScreen() {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { colors: theme } = useAppTheme();
+
+  const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shipping = subTotal > 0 ? 15 : 0;
+  const total = subTotal + shipping;
+
+  return (
+    <View style={{ flex: 1 }}>
+        <LinearGradient
+            colors={[theme.primarySoft, theme.background, theme.background, theme.primarySoft]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={StyleSheet.absoluteFillObject}
+        />
+        <SafeAreaView style={[styles.container, { backgroundColor: 'transparent' }]} edges={['top']}>
+          {/* Dynamic Header */}
+          <View style={styles.header}>
+        <View>
+          <Text style={[styles.headerTitle, { color: theme.text }]}>Selection</Text>
+          <View style={[styles.itemBadge, { backgroundColor: theme.accent }]}>
+            <Text style={[styles.itemBadgeText, { color: theme.subtext }]}>{cartItems.length} ITEMS</Text>
+          </View>
+        </View>
+        <TouchableOpacity style={[styles.clearBtn, { backgroundColor: theme.accent }]}>
+          <Text style={styles.clearText}>Clear All</Text>
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item) => item.id}
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <View style={[styles.emptyIconCircle, { backgroundColor: theme.accent }]}>
+              <Ionicons name="basket-outline" size={48} color={theme.text} />
+            </View>
+            <Text style={[styles.emptyTitle, { color: theme.text }]}>Empty Selection</Text>
+            <Text style={[styles.emptySub, { color: theme.subtext }]}>Your curated basket is waiting.</Text>
+            <TouchableOpacity style={[styles.shopNowBtn, { backgroundColor: theme.text }]} onPress={() => router.replace('/')}>
+              <Text style={[styles.shopNowText, { color: theme.background }]}>Continue Exploring</Text>
+            </TouchableOpacity>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <CartItem
+            id={item.id}
+            name={item.name}
+            price={item.price}
+            quantity={item.quantity}
+            image={item.image}
+            onIncrement={() => dispatch(incrementQuantity(item.id))}
+            onDecrement={() => dispatch(decrementQuantity(item.id))}
+            onRemove={() => dispatch(removeFromCart(item.id))}
+          />
+        )}
+      />
+
+      {cartItems.length > 0 && (
+        <View style={styles.floatingSummary}>
+          <View style={[styles.summaryBento, { backgroundColor: theme.accent }]}>
+            <View style={styles.summaryCol}>
+              <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Sub-total</Text>
+              <Text style={[styles.summaryPrice, { color: theme.text }]}>₹{subTotal.toFixed(2)}</Text>
+            </View>
+            <View style={styles.summaryCol}>
+              <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Shipping</Text>
+              <Text style={[styles.summaryPrice, { color: theme.text }]}>₹{shipping.toFixed(2)}</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={[styles.checkoutPill, { backgroundColor: theme.text }]}
+            activeOpacity={0.9}
+            onPress={() => router.push('/checkout')}
+          >
+            <View style={styles.checkoutMain}>
+              <Text style={[styles.checkoutLabel, { color: theme.background, opacity: 0.6 }]}>Total</Text>
+              <Text style={[styles.checkoutTotal, { color: theme.background }]}>₹{total.toFixed(2)}</Text>
+            </View>
+            <View style={[styles.checkoutBtnBox, { backgroundColor: theme.background }]}>
+              <Ionicons name="arrow-forward" size={24} color={theme.text} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+    </SafeAreaView>
+    </View>
+  );
+}
+

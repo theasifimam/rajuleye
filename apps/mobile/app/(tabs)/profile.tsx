@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Switch, Modal, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, Modal, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { SHADOWS, SIZES, useAppTheme } from '../../constants/Theme';
+import { SHADOWS, useAppTheme } from '../../constants/Theme';
 import { useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { setThemePreference, ThemePreference } from '../../store/slices/themeSlice';
@@ -17,10 +17,10 @@ export default function ProfileScreen() {
   const route = useRouter();
   const dispatch = useDispatch();
   const { isDark: isDarkMode, themePreference, colors: theme } = useAppTheme();
-  
+
   const [isLogoutModalVisible, setIsLogoutModalVisible] = React.useState(false);
   const [isSettingsModalVisible, setIsSettingsModalVisible] = React.useState(false);
-  
+
   const [userInfo, setUserInfo] = React.useState({
     name: 'Alexa Morgan',
     email: 'alexa.m@design.io',
@@ -29,7 +29,7 @@ export default function ProfileScreen() {
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200'
   });
 
-  const [tempInfo, setTempInfo] = React.useState({...userInfo});
+  const [tempInfo, setTempInfo] = React.useState({ ...userInfo });
 
   const handleThemeChange = (pref: ThemePreference) => {
     dispatch(setThemePreference(pref));
@@ -41,7 +41,7 @@ export default function ProfileScreen() {
   };
 
   const handleSaveSettings = () => {
-    setUserInfo({...tempInfo});
+    setUserInfo({ ...tempInfo });
     setIsSettingsModalVisible(false);
   };
 
@@ -69,159 +69,159 @@ export default function ProfileScreen() {
         style={StyleSheet.absoluteFillObject}
       />
       <SafeAreaView style={[styles.container, { backgroundColor: 'transparent' }]} edges={['top']}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {/* Header Navigation */}
-        <View style={styles.headerNav}>
-          <TouchableOpacity 
-            style={[styles.roundBtn, { backgroundColor: theme.accent }]}
-            onPress={() => {
-              setTempInfo({...userInfo});
-              setIsSettingsModalVisible(true);
-            }}
-          >
-            <Ionicons name="settings-outline" size={22} color={theme.text} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Profile Identity Card */}
-        <View style={styles.identityContainer}>
-          <View style={styles.avatarWrapper}>
-            <Image
-              source={{ uri: userInfo.avatar }}
-              style={[styles.avatar, { borderColor: theme.accent }]}
-            />
-            <View style={[styles.onlineBadge, { borderColor: theme.background }]} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          {/* Header Navigation */}
+          <View style={styles.headerNav}>
+            <TouchableOpacity
+              style={[styles.roundBtn, { backgroundColor: theme.accent }]}
+              onPress={() => {
+                setTempInfo({ ...userInfo });
+                setIsSettingsModalVisible(true);
+              }}
+            >
+              <Ionicons name="pencil" size={22} color={theme.text} />
+            </TouchableOpacity>
           </View>
-          <Text style={[styles.name, { color: theme.text }]}>{userInfo.name}</Text>
-          <Text style={[styles.membershipPill, { backgroundColor: theme.primary, color: theme.background }]}>Gold Member</Text>
-        </View>
 
-        {/* High-Contrast Stats Row */}
-        <View style={[styles.statsRow, { backgroundColor: theme.accent }]}>
-          {primaryStats.map((stat, i) => (
-            <View key={stat.label} style={[styles.statItem, i !== 0 && { borderLeftColor: isDarkMode ? '#444' : '#E0E0E0', borderLeftWidth: 1 }]}>
-              <Text style={[styles.statValue, { color: theme.text }]}>{stat.value}</Text>
-              <Text style={[styles.statLabel, { color: theme.subtext }]}>{stat.label}</Text>
+          {/* Profile Identity Card */}
+          <View style={styles.identityContainer}>
+            <View style={styles.avatarWrapper}>
+              <Image
+                source={{ uri: userInfo.avatar }}
+                style={[styles.avatar, { borderColor: theme.accent }]}
+              />
+              <View style={[styles.onlineBadge, { borderColor: theme.background }]} />
             </View>
-          ))}
-        </View>
+            <Text style={[styles.name, { color: theme.text }]}>{userInfo.name}</Text>
+            <Text style={[styles.membershipPill, { backgroundColor: theme.primary, color: theme.background }]}>Gold Member</Text>
+          </View>
 
-        {/* Preferences Section */}
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Preferences</Text>
-        <View style={[styles.supportCard, { backgroundColor: theme.card, borderColor: theme.border, flexDirection: 'column', alignItems: 'flex-start' }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
-            <View style={[styles.iconCircle, { backgroundColor: theme.accent, marginBottom: 0 }]}>
-              <Ionicons name={isDarkMode ? "moon" : "sunny"} size={22} color={theme.text} />
+          {/* High-Contrast Stats Row */}
+          <View style={[styles.statsRow, { backgroundColor: theme.accent }]}>
+            {primaryStats.map((stat, i) => (
+              <View key={stat.label} style={[styles.statItem, i !== 0 && { borderLeftColor: isDarkMode ? '#444' : '#E0E0E0', borderLeftWidth: 1 }]}>
+                <Text style={[styles.statValue, { color: theme.text }]}>{stat.value}</Text>
+                <Text style={[styles.statLabel, { color: theme.subtext }]}>{stat.label}</Text>
+              </View>
+            ))}
+          </View>
+
+          {/* Preferences Section */}
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>Preferences</Text>
+          <View style={[styles.supportCard, { backgroundColor: theme.card, borderColor: theme.border, flexDirection: 'column', alignItems: 'flex-start' }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+              <View style={[styles.iconCircle, { backgroundColor: theme.accent, marginBottom: 0 }]}>
+                <Ionicons name={isDarkMode ? "moon" : "sunny"} size={22} color={theme.text} />
+              </View>
+              <View style={styles.supportInfo}>
+                <Text style={[styles.supportTitle, { color: theme.text }]}>App Theme</Text>
+                <Text style={[styles.supportSub, { color: theme.subtext }]}>Choose your preference</Text>
+              </View>
             </View>
-            <View style={styles.supportInfo}>
-              <Text style={[styles.supportTitle, { color: theme.text }]}>App Theme</Text>
-              <Text style={[styles.supportSub, { color: theme.subtext }]}>Choose your preference</Text>
+
+            <View style={[styles.themeSelectorBox, { backgroundColor: theme.accent }]}>
+              {(['system', 'light', 'dark'] as const).map((mode) => (
+                <TouchableOpacity
+                  key={mode}
+                  onPress={() => handleThemeChange(mode)}
+                  style={[
+                    styles.themeOptionBtn,
+                    themePreference === mode && { backgroundColor: theme.primary }
+                  ]}
+                >
+                  <Text style={[
+                    styles.themeOptionText,
+                    { color: themePreference === mode ? theme.background : theme.subtext }
+                  ]}>
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
-          
-          <View style={[styles.themeSelectorBox, { backgroundColor: theme.accent }]}>
-            {(['system', 'light', 'dark'] as const).map((mode) => (
+
+          {/* Section Headline */}
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>Dashboard</Text>
+
+          {/* Creative Bento Grid */}
+          <View style={styles.bentoGrid}>
+            {gridOptions.map((opt) => (
               <TouchableOpacity
-                key={mode}
-                onPress={() => handleThemeChange(mode)}
-                style={[
-                  styles.themeOptionBtn,
-                  themePreference === mode && { backgroundColor: theme.primary }
-                ]}
+                key={opt.id}
+                style={[styles.bentoCard, { backgroundColor: theme.card, borderColor: theme.border }]}
+                activeOpacity={0.9}
+                onPress={() => {
+                  if (opt.title === 'Orders') {
+                    route.push('/orders');
+                  } else if (opt.title === 'Addresses') {
+                    route.push('/addresses');
+                  } else if (opt.title === 'Payments') {
+                    route.push('/payments');
+                  }
+                }}
               >
-                <Text style={[
-                  styles.themeOptionText,
-                  { color: themePreference === mode ? theme.background : theme.subtext }
-                ]}>
-                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                </Text>
+                <View style={[styles.iconCircle, { backgroundColor: theme.accent }]}>
+                  <Ionicons name={opt.icon as any} size={24} color={theme.text} />
+                </View>
+                <Text style={[styles.bentoTitle, { color: theme.text }]}>{opt.title}</Text>
+                <Ionicons name="arrow-forward-circle" size={20} color={isDarkMode ? '#444' : '#E0E0E0'} style={styles.cardArrow} />
               </TouchableOpacity>
             ))}
           </View>
-        </View>
 
-        {/* Section Headline */}
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Dashboard</Text>
-
-        {/* Creative Bento Grid */}
-        <View style={styles.bentoGrid}>
-          {gridOptions.map((opt) => (
-            <TouchableOpacity
-              key={opt.id}
-              style={[styles.bentoCard, { backgroundColor: theme.card, borderColor: theme.border }]}
-              activeOpacity={0.9}
-              onPress={() => {
-                if (opt.title === 'Orders') {
-                  route.push('/orders');
-                } else if (opt.title === 'Addresses') {
-                  route.push('/addresses');
-                } else if (opt.title === 'Payments') {
-                  route.push('/payments');
-                }
-              }}
-            >
-              <View style={[styles.iconCircle, { backgroundColor: theme.accent }]}>
-                <Ionicons name={opt.icon as any} size={24} color={theme.text} />
-              </View>
-              <Text style={[styles.bentoTitle, { color: theme.text }]}>{opt.title}</Text>
-              <Ionicons name="arrow-forward-circle" size={20} color={isDarkMode ? '#444' : '#E0E0E0'} style={styles.cardArrow} />
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Prominent Wide Action */}
-        <TouchableOpacity 
-          style={[styles.supportCard, { backgroundColor: theme.card, borderColor: theme.border }]}
-          activeOpacity={0.8}
-          onPress={() => route.push('/support')}
-        >
-          <Ionicons name="headset-outline" size={24} color={theme.text} />
-          <View style={styles.supportInfo}>
-            <Text style={[styles.supportTitle, { color: theme.text }]}>Customer Support</Text>
-            <Text style={[styles.supportSub, { color: theme.subtext }]}>Help center & live chat</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color={theme.subtext} />
-        </TouchableOpacity>
-
-        {/* Logout Capsule */}
-        <TouchableOpacity onPress={() => setIsLogoutModalVisible(true)} style={[styles.logoutBtn, { backgroundColor: theme.accent }]}>
-          <Text style={styles.logoutText}>Log Out Account</Text>
-        </TouchableOpacity>
-
-        <View style={styles.versionContainer}>
-          <Text style={[styles.versionText, { color: theme.text }]}>V 1.2.0 • PRO</Text>
-        </View>
-
-        <ConfirmModal 
-          visible={isLogoutModalVisible}
-          onClose={() => setIsLogoutModalVisible(false)}
-          onConfirm={handleLogout}
-          title="Log Out?"
-          message="Are you sure you want to log out? You will need to sign back in to access your dashboard."
-          confirmLabel="Log Out"
-          isDestructive
-          icon="log-out-outline"
-        />
-      </ScrollView>
-
-      {/* Settings / Edit Profile Modal */}
-      <Modal visible={isSettingsModalVisible} animationType="slide" transparent>
-        <View style={styles.modalOverlay}>
-          <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-            style={[styles.modalContent, { backgroundColor: theme.card }]}
+          {/* Prominent Wide Action */}
+          <TouchableOpacity
+            style={[styles.supportCard, { backgroundColor: theme.card, borderColor: theme.border }]}
+            activeOpacity={0.8}
+            onPress={() => route.push('/support')}
           >
-            <View style={styles.modalHeader}>
+            <Ionicons name="headset-outline" size={24} color={theme.text} />
+            <View style={styles.supportInfo}>
+              <Text style={[styles.supportTitle, { color: theme.text }]}>Customer Support</Text>
+              <Text style={[styles.supportSub, { color: theme.subtext }]}>Help center & live chat</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={theme.subtext} />
+          </TouchableOpacity>
+
+          {/* Logout Capsule */}
+          <TouchableOpacity onPress={() => setIsLogoutModalVisible(true)} style={[styles.logoutBtn, { backgroundColor: theme.accent }]}>
+            <Text style={styles.logoutText}>Log Out Account</Text>
+          </TouchableOpacity>
+
+          <View style={styles.versionContainer}>
+            <Text style={[styles.versionText, { color: theme.text }]}>V 1.2.0 • PRO</Text>
+          </View>
+
+          <ConfirmModal
+            visible={isLogoutModalVisible}
+            onClose={() => setIsLogoutModalVisible(false)}
+            onConfirm={handleLogout}
+            title="Log Out?"
+            message="Are you sure you want to log out? You will need to sign back in to access your dashboard."
+            confirmLabel="Log Out"
+            isDestructive
+            icon="log-out-outline"
+          />
+        </ScrollView>
+
+        {/* Settings / Edit Profile Modal */}
+        <Modal visible={isSettingsModalVisible} animationType="slide" transparent>
+          <View style={styles.modalOverlay}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={[styles.modalContent, { backgroundColor: theme.card }]}
+            >
+              <View style={styles.modalHeader}>
                 <Text style={[styles.modalTitle, { color: theme.text }]}>Edit Profile</Text>
                 <TouchableOpacity onPress={() => setIsSettingsModalVisible(false)}>
-                    <Ionicons name="close" size={24} color={theme.text} />
+                  <Ionicons name="close" size={24} color={theme.text} />
                 </TouchableOpacity>
-            </View>
+              </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+              <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
                 {/* Profile Pic Edit */}
                 <View style={styles.editAvatarSection}>
                   <View style={styles.avatarWrapper}>
@@ -235,39 +235,39 @@ export default function ProfileScreen() {
 
                 {/* Form Fields */}
                 <View style={styles.inputGroup}>
-                   <Text style={[styles.inputLabel, { color: theme.subtext }]}>FULL NAME</Text>
-                   <TextInput 
-                     style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
-                     value={tempInfo.name}
-                     onChangeText={(t) => setTempInfo({...tempInfo, name: t})}
-                     placeholder="Enter your name"
-                     placeholderTextColor={theme.subtext}
-                   />
+                  <Text style={[styles.inputLabel, { color: theme.subtext }]}>FULL NAME</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
+                    value={tempInfo.name}
+                    onChangeText={(t) => setTempInfo({ ...tempInfo, name: t })}
+                    placeholder="Enter your name"
+                    placeholderTextColor={theme.subtext}
+                  />
                 </View>
 
                 <View style={styles.inputGroup}>
-                   <Text style={[styles.inputLabel, { color: theme.subtext }]}>MOBILE NUMBER</Text>
-                   <TextInput 
-                     style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
-                     value={tempInfo.mobile}
-                     onChangeText={(t) => setTempInfo({...tempInfo, mobile: t})}
-                     placeholder="+1 (000) 000-0000"
-                     placeholderTextColor={theme.subtext}
-                     keyboardType="phone-pad"
-                   />
+                  <Text style={[styles.inputLabel, { color: theme.subtext }]}>MOBILE NUMBER</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
+                    value={tempInfo.mobile}
+                    onChangeText={(t) => setTempInfo({ ...tempInfo, mobile: t })}
+                    placeholder="+1 (000) 000-0000"
+                    placeholderTextColor={theme.subtext}
+                    keyboardType="phone-pad"
+                  />
                 </View>
 
                 <View style={styles.inputGroup}>
-                   <Text style={[styles.inputLabel, { color: theme.subtext }]}>EMAIL ADDRESS</Text>
-                   <TextInput 
-                     style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
-                     value={tempInfo.email}
-                     onChangeText={(t) => setTempInfo({...tempInfo, email: t})}
-                     placeholder="yourname@example.com"
-                     placeholderTextColor={theme.subtext}
-                     keyboardType="email-address"
-                     autoCapitalize="none"
-                   />
+                  <Text style={[styles.inputLabel, { color: theme.subtext }]}>EMAIL ADDRESS</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: theme.accent, color: theme.text }]}
+                    value={tempInfo.email}
+                    onChangeText={(t) => setTempInfo({ ...tempInfo, email: t })}
+                    placeholder="yourname@example.com"
+                    placeholderTextColor={theme.subtext}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
                 </View>
 
                 {/* Gender Select */}
@@ -275,16 +275,16 @@ export default function ProfileScreen() {
                   <Text style={[styles.inputLabel, { color: theme.subtext }]}>GENDER</Text>
                   <View style={[styles.genderContainer, { backgroundColor: theme.accent }]}>
                     {(['Male', 'Female', 'Other'] as const).map(g => (
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         key={g}
-                        onPress={() => setTempInfo({...tempInfo, gender: g})}
+                        onPress={() => setTempInfo({ ...tempInfo, gender: g })}
                         style={[
-                          styles.genderOption, 
+                          styles.genderOption,
                           tempInfo.gender === g && { backgroundColor: theme.primary }
                         ]}
                       >
                         <Text style={[
-                          styles.genderText, 
+                          styles.genderText,
                           { color: tempInfo.gender === g ? theme.background : theme.subtext }
                         ]}>{g}</Text>
                       </TouchableOpacity>
@@ -293,13 +293,13 @@ export default function ProfileScreen() {
                 </View>
 
                 <TouchableOpacity style={[styles.saveBtn, { backgroundColor: theme.primary }]} onPress={handleSaveSettings}>
-                    <Text style={[styles.saveBtnText, { color: theme.background }]}>Update My Profile</Text>
+                  <Text style={[styles.saveBtnText, { color: theme.background }]}>Update My Profile</Text>
                 </TouchableOpacity>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </View>
-      </Modal>
-    </SafeAreaView>
+              </ScrollView>
+            </KeyboardAvoidingView>
+          </View>
+        </Modal>
+      </SafeAreaView>
     </View>
   );
 }

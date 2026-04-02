@@ -2,9 +2,8 @@ import { Stack } from 'expo-router';
 import { Provider } from 'react-redux';
 import { store } from '../store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '../constants/Theme';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Toast from '../components/ui/Toast';
 
 const queryClient = new QueryClient();
@@ -23,12 +22,8 @@ function LayoutContent() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="search" options={{ headerShown: false }} />
         <Stack.Screen name="notifications" options={{ headerShown: false, title: 'Notifications' }} />
-        <Stack.Screen name="checkout" options={{ headerShown: false, title: 'Checkout' }} />
-        <Stack.Screen name="orders" options={{ headerShown: false, title: 'My Orders' }} />
-        <Stack.Screen name="addresses" options={{ headerShown: false, title: 'My Addresses' }} />
-        <Stack.Screen name="payments" options={{ headerShown: false, title: 'Payments' }} />
+        <Stack.Screen name="product" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ title: 'Oops!' }} />
       </Stack>
       <Toast />
@@ -45,5 +40,3 @@ export default function RootLayout() {
     </Provider>
   );
 }
-
-// npm install @reduxjs/toolkit react-redux @tanstack/react-query axios react-hook-form yup @hookform/resolvers

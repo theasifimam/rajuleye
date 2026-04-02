@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions, Animated, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SectionList, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAppTheme, SHADOWS, SIZES } from '../constants/Theme';
+import { useAppTheme, SIZES } from '../constants/Theme';
 
 const { width } = Dimensions.get('window');
 
@@ -16,46 +16,61 @@ interface Notification {
   title: string;
   message: string;
   time: string;
+  date: string;
   isRead: boolean;
   icon: string;
 }
 
 const MOCK_NOTIFICATIONS: Notification[] = [
-  { 
-    id: '1', 
-    type: 'order', 
-    title: 'Order Shipped!', 
-    message: 'Your Classic Aviators are on the way. Expected delivery Oct 15.', 
-    time: '2h ago', 
+  {
+    id: '1',
+    type: 'order',
+    title: 'Order Shipped!',
+    message: 'Your Classic Aviators are on the way. Expected delivery Oct 15.',
+    time: '2h ago',
+    date: 'Today',
     isRead: false,
-    icon: 'airplane-outline'
+    icon: 'airplane-sharp'
   },
-  { 
-    id: '2', 
-    type: 'offer', 
-    title: 'Flash Sale Alert ⚡', 
-    message: 'Get 30% off on all Blue Light frames for the next 4 hours!', 
-    time: '5h ago', 
+  {
+    id: '2',
+    type: 'offer',
+    title: 'Flash Sale Alert ⚡',
+    message: 'Get 30% off on all Blue Light frames for the next 4 hours!',
+    time: '5h ago',
+    date: 'Today',
     isRead: false,
-    icon: 'flash-outline' 
+    icon: 'flash-sharp'
   },
-  { 
-    id: '3', 
-    type: 'order', 
-    title: 'Payment Successful', 
-    message: 'Your payment for order ORD-7721 was received successfully.', 
-    time: 'Yesterday', 
+  {
+    id: '3',
+    type: 'order',
+    title: 'Payment Successful',
+    message: 'Your payment for order ORD-7721 was received successfully.',
+    time: 'Yesterday, 4:30 PM',
+    date: 'Yesterday',
     isRead: true,
-    icon: 'card-outline'
+    icon: 'card-sharp'
   },
-  { 
-    id: '4', 
-    type: 'info', 
-    title: 'Address Updated', 
-    message: 'Your primary shipping address has been successfully updated.', 
-    time: '2 days ago', 
+  {
+    id: '4',
+    type: 'info',
+    title: 'Address Updated',
+    message: 'Your primary shipping address has been successfully updated.',
+    time: 'Oct 01, 10:20 AM',
+    date: 'Earlier',
     isRead: true,
-    icon: 'location-outline'
+    icon: 'location-sharp'
+  },
+  {
+    id: '5',
+    type: 'offer',
+    title: 'New Collection Live! 🕶️',
+    message: 'Discover the Vintage 2024 Collection. Limited editions available now.',
+    time: 'Sep 28, 09:00 AM',
+    date: 'Earlier',
+    isRead: true,
+    icon: 'sparkles-sharp'
   },
 ];
 
@@ -65,34 +80,99 @@ export default function NotificationsScreen() {
   const [activeTab, setActiveTab] = useState('All');
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
-  const filteredNotifications = activeTab === 'All' 
-    ? notifications 
-    : notifications.filter(n => n.type === activeTab.toLowerCase().slice(0, -1)); // Maps 'Orders' -> 'order'
+  const filteredNotifications = activeTab === 'All'
+    ? notifications
+    : notifications.filter(n => n.type === activeTab.toLowerCase().slice(0, -1));
+
+  const getSections = () => {
+    const grouped = filteredNotifications.reduce((acc: any, notif) => {
+      const section = acc.find((s: any) => s.title === notif.date);
+      if (section) section.data.push(notif);
+      else acc.push({ title: notif.date, data: [notif] });
+      return acc;
+    }, []);
+
+    const order = { 'Today': 0, 'Yesterday': 1, 'Earlier': 2 };
+    return grouped.sort((a: any, b: any) => (order[a.title as keyof typeof order] ?? 3) - (order[b.title as keyof typeof order] ?? 3));
+  };
 
   const markAllAsRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
   };
 
+  const handlePress = (id: string) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+  };
+
   const renderNotification = ({ item }: { item: Notification }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[
-        styles.notifCard, 
-        { backgroundColor: theme.card, borderColor: theme.border },
-        !item.isRead && { borderLeftWidth: 4, borderLeftColor: theme.primary }
+        styles.notifItem,
+        { borderBottomColor: theme.border },
+        !item.isRead && { backgroundColor: theme.primarySoft + '40' }
       ]}
-      activeOpacity={0.8}
+      activeOpacity={0.6}
+      onPress={() => handlePress(item.id)}
     >
-      <View style={[styles.iconBox, { backgroundColor: item.isRead ? theme.accent : theme.primarySoft }]}>
-        <Ionicons name={item.icon as any} size={22} color={item.isRead ? theme.subtext : theme.primary} />
+      <View style={[styles.iconCircle, { backgroundColor: item.isRead ? theme.accent : theme.primaryMedium }]}>
+        <Ionicons name={item.icon as any} size={20} color={item.isRead ? theme.subtext : theme.primary} />
       </View>
-      <View style={styles.notifInfo}>
-        <View style={styles.notifHeader}>
-          <Text style={[styles.notifTitle, { color: theme.text }]} numberOfLines={1}>{item.title}</Text>
-          <Text style={[styles.notifTime, { color: theme.subtext }]}>{item.time}</Text>
+
+      <View style={styles.notifBody}>
+        <View style={styles.notifTextRow}>
+          <Text style={[styles.notifTitleText, { color: theme.text, fontWeight: item.isRead ? '500' : '700' }]}>{item.title}</Text>
+          <Text style={[styles.notifTimeText, { color: theme.subtext }]}>{item.time}</Text>
         </View>
-        <Text style={[styles.notifMessage, { color: theme.subtext }]} numberOfLines={2}>{item.message}</Text>
+        <Text style={[styles.notifMsgText, { color: theme.subtext, opacity: item.isRead ? 0.8 : 1 }]} numberOfLines={2}>{item.message}</Text>
+        {!item.isRead && <View style={[styles.activeDot, { backgroundColor: theme.primary }]} />}
       </View>
     </TouchableOpacity>
+  );
+
+  const renderSectionHeader = ({ section: { title } }: { section: { title: string } }) => (
+    <View style={[styles.sectionHeader, { backgroundColor: isDark ? theme.background : '#F9F9F9' }]}>
+      <Text style={[styles.sectionTitleText, { color: theme.subtext }]}>{title}</Text>
+    </View>
+  );
+
+  const renderHeader = () => (
+    <View style={styles.headerComponent}>
+      {/* Navigation Row */}
+      <View style={styles.navRow}>
+        <TouchableOpacity
+          style={[styles.backBtn, { backgroundColor: theme.card, borderWidth: 1, borderColor: theme.border }]}
+          onPress={() => router.back()}
+        >
+          <Ionicons name="chevron-back" size={24} color={theme.text} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={markAllAsRead}>
+          <Text style={[styles.actionText, { color: theme.primary }]}>Read All</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Hero Typography */}
+      <Text style={[styles.heroText, { color: theme.text }]}>Stay Updated,</Text>
+      <Text style={[styles.heroSubText, { color: theme.text }]}>Never miss a deal.</Text>
+
+      {/* Category Puls (Like Categories Scroll on Home) */}
+      <View style={styles.tabContainer}>
+        {NOTIFICATION_TABS.map((tab) => (
+          <TouchableOpacity
+            key={tab}
+            onPress={() => setActiveTab(tab)}
+            style={[
+              styles.tabBtn,
+              { backgroundColor: activeTab === tab ? theme.primary : theme.card }
+            ]}
+          >
+            <Text style={[
+              styles.tabText,
+              { color: activeTab === tab ? theme.background : theme.subtext }
+            ]}>{tab}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 
   return (
@@ -103,55 +183,21 @@ export default function NotificationsScreen() {
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFillObject}
       />
-      
-      <SafeAreaView style={[styles.container, { backgroundColor: 'transparent' }]} edges={['top']}>
-        {/* Header */}
-        <View style={styles.header}>
-            <TouchableOpacity 
-              style={[styles.backBtn, { backgroundColor: theme.card }]} 
-              onPress={() => router.back()}
-            >
-              <Ionicons name="chevron-back" size={24} color={theme.text} />
-            </TouchableOpacity>
-            <Text style={[styles.headerTitle, { color: theme.text }]}>Notifications</Text>
-            <TouchableOpacity onPress={markAllAsRead}>
-                <Text style={[styles.actionText, { color: theme.primary }]}>Read All</Text>
-            </TouchableOpacity>
-        </View>
-
-        {/* Tab Selector */}
-        <View style={styles.tabContainer}>
-            {NOTIFICATION_TABS.map((tab) => (
-                <TouchableOpacity 
-                    key={tab} 
-                    onPress={() => setActiveTab(tab)}
-                    style={[
-                        styles.tabBtn, 
-                        activeTab === tab && { backgroundColor: theme.primary }
-                    ]}
-                >
-                    <Text style={[
-                        styles.tabText, 
-                        { color: activeTab === tab ? theme.background : theme.subtext }
-                    ]}>{tab}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-
-        {/* List Content */}
-        <FlatList
-          data={filteredNotifications}
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <SectionList
+          sections={getSections()}
           keyExtractor={(item) => item.id}
           renderItem={renderNotification}
+          renderSectionHeader={renderSectionHeader}
+          ListHeaderComponent={renderHeader}
           contentContainerStyle={styles.listContent}
+          stickySectionHeadersEnabled={true}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-                <View style={[styles.emptyCircle, { backgroundColor: theme.accent }]}>
-                    <Ionicons name="notifications-off-outline" size={60} color={theme.subtext} />
-                </View>
-                <Text style={[styles.emptyTitle, { color: theme.text }]}>All Caught Up!</Text>
-                <Text style={[styles.emptySub, { color: theme.subtext }]}>No new alerts at the moment. We'll keep you posted.</Text>
+            <View style={styles.emptyView}>
+              <Ionicons name="notifications-outline" size={64} color={theme.border} />
+              <Text style={[styles.emptyTitle, { color: theme.text }]}>No Notifications</Text>
+              <Text style={[styles.emptySub, { color: theme.subtext }]}>We'll let you know when something important happens.</Text>
             </View>
           }
         />
@@ -164,13 +210,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
+  headerComponent: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    marginBottom: 10,
+  },
+  navRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 10,
-    marginBottom: 24,
+    marginBottom: 30,
   },
   backBtn: {
     width: 48,
@@ -179,93 +228,109 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   actionText: {
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
+  },
+  heroText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    letterSpacing: -0.5,
+  },
+  heroSubText: {
+    fontSize: 24,
+    fontStyle: 'italic',
+    fontWeight: '300',
+    marginBottom: 32,
   },
   tabContainer: {
     flexDirection: 'row',
-    marginHorizontal: 24,
     gap: 8,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   tabBtn: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabText: {
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: '600',
   },
   listContent: {
-    paddingHorizontal: 24,
     paddingBottom: 40,
   },
-  notifCard: {
-    flexDirection: 'row',
-    padding: 16,
-    borderRadius: 24,
-    marginBottom: 16,
-    borderWidth: 1,
-    alignItems: 'center',
+  sectionHeader: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
   },
-  iconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 16,
+  sectionTitleText: {
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  notifItem: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    alignItems: 'flex-start',
+  },
+  iconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
   },
-  notifInfo: {
+  notifBody: {
     flex: 1,
+    position: 'relative',
   },
-  notifHeader: {
+  notifTextRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 4,
   },
-  notifTitle: {
+  notifTitleText: {
     fontSize: 15,
-    fontWeight: 'bold',
     flex: 1,
     marginRight: 8,
   },
-  notifTime: {
+  notifTimeText: {
     fontSize: 11,
-    fontWeight: '500',
   },
-  notifMessage: {
+  notifMsgText: {
     fontSize: 13,
     lineHeight: 18,
   },
-  emptyContainer: {
-    paddingTop: 100,
+  activeDot: {
+    position: 'absolute',
+    top: 2,
+    right: 0,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  emptyView: {
+    paddingTop: 80,
     alignItems: 'center',
     paddingHorizontal: 40,
   },
-  emptyCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
   emptyTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 12,
+    fontSize: 20,
+    fontWeight: '700',
+    marginTop: 20,
+    marginBottom: 8,
   },
   emptySub: {
     fontSize: 14,
     textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: 20,
   }
 });

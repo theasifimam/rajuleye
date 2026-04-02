@@ -55,7 +55,7 @@ export default function OrderDetailScreen() {
                     </View>
                     <Text style={[styles.dateText, { color: theme.subtext }]}>Oct 12, 2023</Text>
                 </View>
-                <Text style={[styles.amountText, { color: theme.text }]}>$125.50</Text>
+                <Text style={[styles.amountText, { color: theme.text }]}>₹125.50</Text>
                 <View style={[styles.statusBanner, { backgroundColor: theme.accent }]}>
                     <Ionicons name="airplane" size={16} color={theme.primaryDark} />
                     <Text style={[styles.statusBannerText, { color: theme.primaryDark }]}>IN TRANSIT - ARRIVING BY OCT 15</Text>
@@ -109,7 +109,7 @@ export default function OrderDetailScreen() {
                         <Text style={[styles.itemName, { color: theme.text }]}>Classic Aviator</Text>
                         <Text style={[styles.itemSub, { color: theme.subtext }]}>Gold Frame • Polarized</Text>
                         <View style={styles.priceQtyRow}>
-                            <Text style={[styles.itemPrice, { color: theme.text }]}>$125.50</Text>
+                            <Text style={[styles.itemPrice, { color: theme.text }]}>₹125.50</Text>
                             <Text style={[styles.itemQty, { color: theme.subtext }]}>QTY: 1</Text>
                         </View>
                     </View>

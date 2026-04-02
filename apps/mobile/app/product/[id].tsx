@@ -15,10 +15,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import { MOCK_PRODUCTS } from '../../data/products';
 import { SHADOWS, useAppTheme, SIZES } from '../../constants/Theme';
 import { addToCart } from '../../store/slices/cartSlice';
+import { toggleWishlist } from '../../store/slices/wishlistSlice';
+import { showToast } from '../../store/slices/toastSlice';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,8 +30,19 @@ export default function ProductDetailsScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { colors: theme } = useAppTheme();
-
+  
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const product = MOCK_PRODUCTS.find(p => p.id === id);
+  const isFavorite = wishlistItems.some((item) => item.id === product?.id);
+
+  const handleToggleWishlist = () => {
+    if (!product) return;
+    dispatch(toggleWishlist(product));
+    dispatch(showToast({ 
+      message: isFavorite ? "Removed from collection" : "Added to collection", 
+      type: isFavorite ? 'info' : 'success' 
+    }));
+  };
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   
@@ -133,11 +147,14 @@ export default function ProductDetailsScreen() {
             <TouchableOpacity style={[styles.roundBtn, { backgroundColor: theme.card }]} onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={24} color={theme.text} />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.roundBtn, { backgroundColor: theme.card }]}>
+            <TouchableOpacity 
+              style={[styles.roundBtn, { backgroundColor: theme.card }]} 
+              onPress={handleToggleWishlist}
+            >
               <Ionicons
-                name={product.isFavorite ? "heart" : "heart-outline"}
+                name={isFavorite ? "heart" : "heart-outline"}
                 size={24}
-                color={product.isFavorite ? theme.destructive : theme.text}
+                color={isFavorite ? theme.destructive : theme.text}
               />
             </TouchableOpacity>
           </SafeAreaView>
@@ -186,7 +203,7 @@ export default function ProductDetailsScreen() {
               <Text style={[styles.productName, { color: theme.text }]}>{product.name}</Text>
               
               <View style={styles.priceRatingRow}>
-                <Text style={[styles.priceTag, { color: theme.text }]}>${product.price}</Text>
+                <Text style={[styles.priceTag, { color: theme.text }]}>₹{product.price}</Text>
                 <View style={styles.ratingOverview}>
                   <Ionicons name="star" size={16} color={theme.rating} />
                   <Text style={[styles.ratingVal, { color: theme.text }]}>{product.rating}</Text>
@@ -303,7 +320,7 @@ export default function ProductDetailsScreen() {
                <Ionicons name="bag-add" size={20} color={theme.primary} />
             </View>
             <Text style={[styles.cartBtnText, { color: theme.background }]}>Add to Basket</Text>
-            <Text style={[styles.cartBtnPrice, { color: theme.background }]}>${product.price * quantity}</Text>
+            <Text style={[styles.cartBtnPrice, { color: theme.background }]}>₹{product.price * quantity}</Text>
           </TouchableOpacity>
         </View>
       </View>

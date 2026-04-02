@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions }
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useAppTheme, SHADOWS, SIZES } from '../constants/Theme';
+import { useAppTheme } from '../constants/Theme';
 import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
@@ -45,20 +45,20 @@ export default function OrdersScreen() {
   const { colors: theme, isDark } = useAppTheme();
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const filteredOrders = activeCategory === 'All' 
-    ? MOCK_ORDERS 
+  const filteredOrders = activeCategory === 'All'
+    ? MOCK_ORDERS
     : MOCK_ORDERS.filter(o => o.status === activeCategory);
 
   const renderHeader = () => (
     <View style={styles.headerComponent}>
       <View style={styles.navRow}>
-        <TouchableOpacity 
-          style={[styles.backBtn, { backgroundColor: theme.card }]} 
+        <TouchableOpacity
+          style={[styles.backBtn, { backgroundColor: theme.card }]}
           onPress={() => router.back()}
         >
           <Ionicons name="chevron-back" size={24} color={theme.text} />
         </TouchableOpacity>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.bellButton, { backgroundColor: theme.accent }]}
           onPress={() => router.push("/notifications")}
         >
@@ -101,14 +101,14 @@ export default function OrdersScreen() {
   );
 
   const renderOrderItem = ({ item }: { item: typeof MOCK_ORDERS[0] }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.orderCard}
       activeOpacity={0.9}
       onPress={() => router.push(`/order/${item.id}`)}
     >
       <View style={[styles.orderImageContainer, { backgroundColor: theme.accent }]}>
         <Image source={{ uri: item.items[0].image }} style={styles.orderImage} resizeMode="cover" />
-        
+
         {/* Status Label (instead of heart) */}
         <View style={[styles.statusBadge, { backgroundColor: theme.card }]}>
           <Text style={[styles.statusText, { color: theme.text }]}>{item.status}</Text>
@@ -116,16 +116,16 @@ export default function OrdersScreen() {
 
         {/* Price Pill */}
         <View style={[styles.pricePill, { backgroundColor: theme.text }]}>
-          <Text style={[styles.priceText, { color: theme.background }]}>${item.total.toFixed(2)}</Text>
+          <Text style={[styles.priceText, { color: theme.background }]}>₹{item.total.toFixed(2)}</Text>
         </View>
       </View>
-      
+
       <View style={styles.orderInfo}>
         <View style={styles.orderIdRow}>
           <Text style={[styles.orderId, { color: theme.text }]} numberOfLines={1}>{item.id}</Text>
           <View style={styles.itemCountBubble}>
-             <Ionicons name="cube-outline" size={12} color={theme.rating} />
-             <Text style={[styles.itemCount, { color: theme.subtext }]}>{item.items.length} Items</Text>
+            <Ionicons name="cube-outline" size={12} color={theme.rating} />
+            <Text style={[styles.itemCount, { color: theme.subtext }]}>{item.items.length} Items</Text>
           </View>
         </View>
         <Text style={[styles.orderDate, { color: theme.subtext }]}>{item.date} • Standard Shipping</Text>
@@ -142,23 +142,23 @@ export default function OrdersScreen() {
         style={StyleSheet.absoluteFillObject}
       />
       <SafeAreaView style={[styles.container, { backgroundColor: 'transparent' }]} edges={['top']}>
-      <FlatList
-        data={filteredOrders}
-        keyExtractor={(item) => item.id}
-        renderItem={renderOrderItem}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-        ListHeaderComponent={renderHeader}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Ionicons name="cart-outline" size={64} style={{ marginBottom: 16, opacity: 0.2 }} color={theme.text} />
-            <Text style={[styles.emptyText, { color: theme.subtext }]}>No orders found here.</Text>
-          </View>
-        }
-      />
-    </SafeAreaView>
+        <FlatList
+          data={filteredOrders}
+          keyExtractor={(item) => item.id}
+          renderItem={renderOrderItem}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+          ListHeaderComponent={renderHeader}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Ionicons name="cart-outline" size={64} style={{ marginBottom: 16, opacity: 0.2 }} color={theme.text} />
+              <Text style={[styles.emptyText, { color: theme.subtext }]}>No orders found here.</Text>
+            </View>
+          }
+        />
+      </SafeAreaView>
     </View>
   );
 }

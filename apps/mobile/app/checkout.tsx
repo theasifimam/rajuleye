@@ -166,7 +166,7 @@ export default function CheckoutScreen() {
                   <Text style={[styles.miniItemName, { color: theme.text }]} numberOfLines={1}>{item.name}</Text>
                   <Text style={[styles.miniItemQty, { color: theme.subtext }]}>Qty: {item.quantity}</Text>
                 </View>
-                <Text style={[styles.miniItemPrice, { color: theme.text }]}>${(item.price * item.quantity).toFixed(2)}</Text>
+                <Text style={[styles.miniItemPrice, { color: theme.text }]}>₹{(item.price * item.quantity).toFixed(2)}</Text>
               </View>
             ))}
           </View>
@@ -180,11 +180,11 @@ export default function CheckoutScreen() {
         <View style={[styles.summaryBento, { backgroundColor: theme.accent }]}>
           <View style={styles.summaryCol}>
             <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Sub-total</Text>
-            <Text style={[styles.summaryPrice, { color: theme.text }]}>${subTotal.toFixed(2)}</Text>
+            <Text style={[styles.summaryPrice, { color: theme.text }]}>₹{subTotal.toFixed(2)}</Text>
           </View>
           <View style={styles.summaryCol}>
             <Text style={[styles.summaryLabel, { color: theme.subtext }]}>Shipping</Text>
-            <Text style={[styles.summaryPrice, { color: theme.text }]}>${shipping.toFixed(2)}</Text>
+            <Text style={[styles.summaryPrice, { color: theme.text }]}>₹{shipping.toFixed(2)}</Text>
           </View>
         </View>
 
@@ -195,7 +195,7 @@ export default function CheckoutScreen() {
         >
           <View style={styles.checkoutMain}>
             <Text style={[styles.checkoutLabel, { color: theme.background, opacity: 0.6 }]}>Total to Pay</Text>
-            <Text style={[styles.checkoutTotal, { color: theme.background }]}>${total.toFixed(2)}</Text>
+            <Text style={[styles.checkoutTotal, { color: theme.background }]}>₹{total.toFixed(2)}</Text>
           </View>
           <View style={[styles.checkoutBtnBox, { backgroundColor: theme.background }]}>
             <Ionicons name="checkmark-done" size={24} color={theme.text} />

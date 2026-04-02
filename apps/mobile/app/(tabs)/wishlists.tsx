@@ -8,15 +8,24 @@ import { MOCK_PRODUCTS } from '../../data/products';
 import { SIZES, SHADOWS, useAppTheme, COLORS } from '../../constants/Theme';
 import { useRouter } from 'expo-router';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { toggleWishlist } from '../../store/slices/wishlistSlice';
+import { showToast } from '../../store/slices/toastSlice';
+
 const { width } = Dimensions.get('window');
 
 export default function WishlistScreen() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const { colors: theme } = useAppTheme();
+  const wishlistProducts = useSelector((state: RootState) => state.wishlist.items);
 
-  // Filter for liked products
-  const wishlistProducts = MOCK_PRODUCTS.filter(p => p.isFavorite);
+  const handleRemoveFromWishlist = (item: any) => {
+    dispatch(toggleWishlist(item));
+    dispatch(showToast({ message: "Removed from collection", type: 'info' }));
+  };
 
   const renderHeader = () => (
     <View style={styles.headerComponent}>
@@ -91,7 +100,7 @@ export default function WishlistScreen() {
           <ProductCard
             product={item}
             style={styles.cardWrapper}
-            onLike={() => { }}
+            onLike={() => handleRemoveFromWishlist(item)}
             onPress={() => {
               router.push(`/product/${item.id}`);
             }}

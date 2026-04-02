@@ -6,11 +6,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { ProductCard } from '../../components/ui/ProductCard';
 import { MOCK_PRODUCTS, CATEGORIES } from '../../data/products';
 import { COLORS, SIZES, SHADOWS, useAppTheme } from '../../constants/Theme';
-import { useDispatch } from 'react-redux';
 import { addToCart } from '../../store/slices/cartSlice';
+import { toggleWishlist } from '../../store/slices/wishlistSlice';
+import { showToast } from '../../store/slices/toastSlice';
 import { useRouter } from 'expo-router';
+import { RootState } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
 
 const { width } = Dimensions.get('window');
+
 
 const PROMO_BANNERS = [
   {
@@ -23,7 +27,7 @@ const PROMO_BANNERS = [
   {
     id: '2',
     title: 'Winter Sale',
-    subtitle: 'Premium frames starting at $49.',
+    subtitle: 'Premium frames starting at ₹49.',
     image: 'https://images.unsplash.com/photo-1511499767390-90342f5b89a7?auto=format&fit=crop&q=80&w=600',
     color: '#E8F6FF'
   },
@@ -40,10 +44,11 @@ export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0]);
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef<FlatList>(null);
-  
+
   const dispatch = useDispatch();
   const router = useRouter();
   const { colors: theme } = useAppTheme();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
 
   // Auto-slide logic
   useEffect(() => {
@@ -58,6 +63,15 @@ export default function HomeScreen() {
 
     return () => clearInterval(timer);
   }, [activeSlide]);
+
+  const handleToggleWishlist = (item: any) => {
+    const isFavorite = wishlistItems.some(i => i.id === item.id);
+    dispatch(toggleWishlist(item));
+    dispatch(showToast({
+      message: isFavorite ? "Removed from wishlist" : "Added to wishlist",
+      type: isFavorite ? 'info' : 'success'
+    }));
+  };
 
   const renderHeader = () => (
     <View style={styles.headerComponent}>
@@ -78,7 +92,7 @@ export default function HomeScreen() {
             <Text style={[styles.nameText, { color: theme.primaryDark }]}>Alexa</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.bellButton, { backgroundColor: theme.accent }]}
           onPress={() => router.push("/notifications")}
         >
@@ -91,8 +105,8 @@ export default function HomeScreen() {
       <Text style={[styles.heroSubText, { color: theme.text }]}>Handpicked for you.</Text>
 
       {/* Search & Filter Bar */}
-      <TouchableOpacity 
-        style={styles.searchFilterRow} 
+      <TouchableOpacity
+        style={styles.searchFilterRow}
         activeOpacity={0.9}
         onPress={() => router.push('/search')}
       >
@@ -105,7 +119,7 @@ export default function HomeScreen() {
             editable={false} // Make it a button that navigates
           />
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.filterButton, { backgroundColor: theme.primary }]}
           onPress={() => router.push('/search')}
         >
@@ -129,11 +143,11 @@ export default function HomeScreen() {
           renderItem={({ item }) => (
             <View style={[styles.slide, { backgroundColor: item.color }]}>
               <View style={styles.slideInfo}>
-                 <Text style={[styles.slideTitle, { color: COLORS.text }]}>{item.title}</Text>
-                 <Text style={[styles.slideSub, { color: COLORS.subtext }]}>{item.subtitle}</Text>
-                 <TouchableOpacity style={[styles.shopNowBtn, { backgroundColor: COLORS.primary }]}>
-                    <Text style={[styles.shopNowText, { color: COLORS.background }]}>Shop Now</Text>
-                 </TouchableOpacity>
+                <Text style={[styles.slideTitle, { color: COLORS.text }]}>{item.title}</Text>
+                <Text style={[styles.slideSub, { color: COLORS.subtext }]}>{item.subtitle}</Text>
+                <TouchableOpacity style={[styles.shopNowBtn, { backgroundColor: COLORS.primary }]}>
+                  <Text style={[styles.shopNowText, { color: COLORS.background }]}>Shop Now</Text>
+                </TouchableOpacity>
               </View>
               <Image source={{ uri: item.image }} style={styles.slideImage} resizeMode="contain" />
             </View>
@@ -142,13 +156,13 @@ export default function HomeScreen() {
         {/* Pagination Dots */}
         <View style={styles.pagination}>
           {PROMO_BANNERS.map((_, i) => (
-            <View 
-              key={i} 
+            <View
+              key={i}
               style={[
-                styles.dot, 
+                styles.dot,
                 { backgroundColor: activeSlide === i ? COLORS.primary : 'rgba(0,0,0,0.1)' },
                 activeSlide === i && { width: 24 }
-              ]} 
+              ]}
             />
           ))}
         </View>
@@ -195,26 +209,26 @@ export default function HomeScreen() {
         style={StyleSheet.absoluteFillObject}
       />
       <SafeAreaView style={[styles.container, { backgroundColor: 'transparent' }]} edges={['top']}>
-      <FlatList
-        data={activeCategory === 'All' ? MOCK_PRODUCTS : MOCK_PRODUCTS.filter(p => p.category === activeCategory)}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.productRow}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={renderHeader}
-        renderItem={({ item }) => (
-          <ProductCard
-            product={item}
-            style={styles.cardWrapper}
-            onLike={() => { }}
-            onPress={() => {
-              router.push(`/product/${item.id}`);
-            }}
-          />
-        )}
-      />
-    </SafeAreaView>
+        <FlatList
+          data={activeCategory === 'All' ? MOCK_PRODUCTS : MOCK_PRODUCTS.filter(p => p.category === activeCategory)}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          columnWrapperStyle={styles.productRow}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={renderHeader}
+          renderItem={({ item }) => (
+            <ProductCard
+              product={item}
+              style={styles.cardWrapper}
+              onLike={() => handleToggleWishlist(item)}
+              onPress={() => {
+                router.push(`/product/${item.id}`);
+              }}
+            />
+          )}
+        />
+      </SafeAreaView>
     </View>
   );
 }

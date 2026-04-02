@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  TouchableOpacity, 
-  KeyboardAvoidingView, 
-  Platform, 
-  ScrollView, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   ImageBackground,
   Dimensions
 } from 'react-native';
@@ -22,14 +22,14 @@ export default function RegisterScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
         showsVerticalScrollIndicator={false}
         bounces={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
         {/* Immersive Header Image */}
-        <ImageBackground 
-          source={{ uri: 'https://images.unsplash.com/photo-1473968512647-3e44a224fe8f?auto=format&fit=crop&q=80&w=1000' }} 
+        <ImageBackground
+          source={{ uri: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&q=80&w=1000' }}
           style={styles.heroImage}
         >
           <View style={styles.heroOverlay} />
@@ -48,7 +48,7 @@ export default function RegisterScreen() {
             <Text style={styles.inputLabel}>Full Name</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="person-outline" size={20} color="#8D8D8D" style={styles.inputIcon} />
-              <TextInput 
+              <TextInput
                 placeholder="John Doe"
                 placeholderTextColor="#CCCCCC"
                 style={styles.input}
@@ -60,7 +60,7 @@ export default function RegisterScreen() {
             <Text style={styles.inputLabel}>Email Address</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="mail-outline" size={20} color="#8D8D8D" style={styles.inputIcon} />
-              <TextInput 
+              <TextInput
                 placeholder="example@vision.com"
                 placeholderTextColor="#CCCCCC"
                 style={styles.input}
@@ -73,7 +73,7 @@ export default function RegisterScreen() {
             <Text style={styles.inputLabel}>Password</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="lock-closed-outline" size={20} color="#8D8D8D" style={styles.inputIcon} />
-              <TextInput 
+              <TextInput
                 placeholder="••••••••"
                 placeholderTextColor="#CCCCCC"
                 style={styles.input}
@@ -82,8 +82,8 @@ export default function RegisterScreen() {
             </View>
           </View>
 
-          <TouchableOpacity 
-            style={[styles.mainBtn, { backgroundColor: theme.primary }]} 
+          <TouchableOpacity
+            style={[styles.mainBtn, { backgroundColor: theme.primary }]}
             activeOpacity={0.9}
             onPress={() => router.replace('/(tabs)')}
           >
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F7F8FA',
     height: 56,
-    borderRadius: 18,
+    borderRadius: 24,
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: '#F0F0F0',
@@ -201,13 +201,12 @@ const styles = StyleSheet.create({
   mainBtn: {
     flexDirection: 'row',
     height: 60,
-    borderRadius: 20,
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 12,
     marginTop: 12,
     marginBottom: 32,
-    ...SHADOWS.soft,
   },
   mainBtnText: {
     color: '#FFFFFF',

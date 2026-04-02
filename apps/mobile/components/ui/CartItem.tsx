@@ -26,15 +26,15 @@ export const CartItem = ({
   const { colors: theme } = useAppTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background, borderBottomColor: theme.card }]}>
+    <View style={[styles.container, { borderBottomColor: theme.card }]}>
       <View style={[styles.imageWrapper, { backgroundColor: theme.accent }]}>
-        <Image 
-          source={{ uri: image }} 
-          style={styles.image} 
-          resizeMode="cover" 
+        <Image
+          source={{ uri: image }}
+          style={styles.image}
+          resizeMode="cover"
         />
       </View>
-      
+
       <View style={styles.content}>
         <View style={styles.infoRow}>
           <View style={styles.textContainer}>
@@ -47,8 +47,8 @@ export const CartItem = ({
         </View>
 
         <View style={styles.actionRow}>
-          <Text style={[styles.price, { color: theme.text }]}>${price}</Text>
-          
+          <Text style={[styles.price, { color: theme.text }]}>₹{price}</Text>
+
           <View style={[styles.stepperPill, { backgroundColor: theme.accent }]}>
             <TouchableOpacity onPress={onDecrement} style={[styles.stepBtn, { backgroundColor: theme.background }]}>
               <Ionicons name="remove" size={18} color={theme.text} />
@@ -67,10 +67,7 @@ export const CartItem = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
     paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F5F5F5',
     alignItems: 'center',
   },
   imageWrapper: {

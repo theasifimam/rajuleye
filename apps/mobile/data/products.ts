@@ -16,7 +16,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '1',
     name: 'Classic Aviator Sunglasses',
-    price: 145,
+    price: 845,
     rating: 4.8,
     reviews: 120,
     category: 'Men',
@@ -31,7 +31,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '2',
     name: 'Tortoiseshell Blue Light',
-    price: 89,
+    price: 489,
     rating: 4.6,
     reviews: 85,
     category: 'Women',
@@ -46,7 +46,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '3',
     name: 'Matte Black Wayfarers',
-    price: 110,
+    price: 710,
     rating: 4.9,
     reviews: 320,
     category: 'All',
@@ -61,7 +61,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '4',
     name: 'Vintage Round Frames',
-    price: 165,
+    price: 1265,
     rating: 4.7,
     reviews: 210,
     category: 'Designer',
@@ -76,7 +76,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '5',
     name: 'Clear Frame Readers',
-    price: 55,
+    price: 855,
     rating: 4.4,
     reviews: 64,
     category: 'Men',
@@ -91,7 +91,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '6',
     name: 'Kids Neon Blockers',
-    price: 45,
+    price: 745,
     rating: 4.5,
     reviews: 18,
     category: 'Kids',

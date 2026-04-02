@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "Rajul Eye Mobile",
+    "slug": "rajuleye-mobile",
     "version": "1.0.0",
-    "scheme": "spectacleapp",
+    "scheme": "rajuleyeapp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.asifimam.mobile"
+      "package": "com.rajuleye.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,10 +1,10 @@
 import { Tabs } from 'expo-router';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SHADOWS, useAppTheme } from '../../constants/Theme';
+import { useAppTheme } from '../../constants/Theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const TAB_BAR_WIDTH = 220;
+const TAB_BAR_WIDTH = 260; 
 
 export default function TabLayout() {
   const { colors: theme } = useAppTheme();
@@ -19,32 +19,17 @@ export default function TabLayout() {
           position: 'absolute',
           left: (SCREEN_WIDTH - TAB_BAR_WIDTH) / 2,
           right: (SCREEN_WIDTH - TAB_BAR_WIDTH) / 2,
+          bottom: 20, // Lifted slightly for a modern floating feel
           backgroundColor: theme.card,
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
-          height: 82,
-          borderTopWidth: 0,
-          elevation: 15,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: 0.15,
-          shadowRadius: 20,
-          paddingTop: 0,
+          borderRadius: 24,
+          height: 64,
+          borderWidth: 1,
+          borderColor: theme.border,
+          elevation: 0, // Android shadow removal
           paddingBottom: 0,
-          overflow: 'visible',
         },
+        tabBarIconStyle: { marginTop: 0 },
         tabBarShowLabel: false,
-        tabBarLabelStyle: { display: 'none' },
-        tabBarItemStyle: {
-          height: 72,
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 0,
-          margin: 0,
-        },
-        tabBarIconStyle: {
-          marginTop: 20,
-        },
       }}
     >
       <Tabs.Screen
@@ -53,47 +38,46 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <View style={[
               styles.iconWrapper,
-              focused && { backgroundColor: theme.primary, ...SHADOWS.soft }
+              focused && { backgroundColor: theme.primary }
             ]}>
               <Ionicons
-                name={focused ? "home" : "home-outline"}
-                size={24}
-                color={focused ? theme.background : theme.subtext}
+                name={focused ? "grid" : "grid-outline"}
+                size={20}
+                color={focused ? "#FFF" : theme.subtext}
               />
             </View>
           ),
         }}
       />
       <Tabs.Screen
-        name="wishlists"
+        name="inventory"
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={[
               styles.iconWrapper,
-              focused && { backgroundColor: theme.primary, ...SHADOWS.soft }
+              focused && { backgroundColor: theme.primary }
             ]}>
               <Ionicons
-                name={focused ? "heart" : "heart-outline"}
-                size={24}
-                color={focused ? theme.background : theme.subtext}
+                name={focused ? "cube" : "cube-outline"}
+                size={20}
+                color={focused ? "#FFF" : theme.subtext}
               />
             </View>
           ),
         }}
       />
       <Tabs.Screen
-        name="cart"
+        name="orders"
         options={{
-          // tabBarStyle: { display: 'none' },
           tabBarIcon: ({ focused }) => (
             <View style={[
               styles.iconWrapper,
-              focused && { backgroundColor: theme.primary, ...SHADOWS.soft }
+              focused && { backgroundColor: theme.primary }
             ]}>
               <Ionicons
-                name={focused ? "cart" : "cart-outline"}
-                size={24}
-                color={focused ? theme.background : theme.subtext}
+                name={focused ? "receipt" : "receipt-outline"}
+                size={20}
+                color={focused ? "#FFF" : theme.subtext}
               />
             </View>
           ),
@@ -102,16 +86,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          // tabBarStyle: { display: 'none' },
           tabBarIcon: ({ focused }) => (
             <View style={[
               styles.iconWrapper,
-              focused && { backgroundColor: theme.primary, ...SHADOWS.soft }
+              focused && { backgroundColor: theme.primary }
             ]}>
               <Ionicons
-                name={focused ? "person" : "person-outline"}
-                size={24}
-                color={focused ? theme.background : theme.subtext}
+                name={focused ? "settings" : "settings-outline"}
+                size={20}
+                color={focused ? "#FFF" : theme.subtext}
               />
             </View>
           ),
@@ -123,15 +106,10 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   iconWrapper: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 40,
+    height: 40,
+    borderRadius: 12, // More squared-off minimal look
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  activeIconWrapper: {
-    ...SHADOWS.soft,
   },
 });

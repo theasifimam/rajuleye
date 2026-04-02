@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Product } from '../../data/products';
 import { useAppTheme, SIZES, SHADOWS, COLORS } from '../../constants/Theme';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +15,8 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onPress, onLike, style }: ProductCardProps) => {
   const { colors: theme } = useAppTheme();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+  const isFavorite = wishlistItems.some((item) => item.id === product.id);
 
   return (
     <TouchableOpacity
@@ -26,16 +30,22 @@ export const ProductCard = ({ product, onPress, onLike, style }: ProductCardProp
           style={styles.image}
           resizeMode="cover"
         />
-        <TouchableOpacity style={[styles.favoriteButton, { backgroundColor: theme.card }]} onPress={onLike}>
+        <TouchableOpacity 
+          style={[styles.favoriteButton, { backgroundColor: theme.card }]} 
+          onPress={(e) => {
+            e.stopPropagation();
+            onLike();
+          }}
+        >
           <Ionicons
-            name={product.isFavorite ? "heart" : "heart-outline"}
+            name={isFavorite ? "heart" : "heart-outline"}
             size={18}
-            color={product.isFavorite ? theme.destructive : theme.text}
+            color={isFavorite ? theme.destructive : theme.text}
           />
         </TouchableOpacity>
 
         <View style={[styles.pricePill, { backgroundColor: theme.primary }]}>
-          <Text style={[styles.priceText, { color: theme.background }]}>${product.price}</Text>
+          <Text style={[styles.priceText, { color: theme.background }]}>₹{product.price}</Text>
         </View>
       </View>
 
