@@ -64,7 +64,7 @@ const seedCategories = async () => {
         }
 
         const categoriesToCreate = [
-            { name: "Men's Eyeglasses", slug: "mens-eyeglasses", image: 'https://images.unsplash.com/photo-1542295669297-4d352b042bce?w=800&q=80' },
+            { name: "Men's Eyeglasses", slug: "mens-eyeglasses", image: 'https://images.unsplash.com/photo-1559166588-4a3e0c7a2094?w=800&q=80' },
             { name: "Women's Eyeglasses", slug: "womens-eyeglasses", image: 'https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=800&q=80' },
             { name: "Unisex Eyeglasses", slug: "unisex-eyeglasses", image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80' },
             { name: "Kids Eyeglasses", slug: "kids-eyeglasses", image: 'https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?w=800&q=80' }
