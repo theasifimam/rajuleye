@@ -31,9 +31,7 @@ app.use(
     origin: [
       process.env.CLIENT_URL || 'http://localhost:3000',
       'http://localhost:3001',
-      'http://localhost:3000',
-      'http://192.168.1.11:3000',
-      'http://192.168.1.11:3001'
+      'http://localhost:3000'
     ],
     credentials: true,
   })

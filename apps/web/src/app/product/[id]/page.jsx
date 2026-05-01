@@ -3,7 +3,7 @@ import { ProductDetailClient } from "./ProductDetailClient";
 export default async function ProductPage({ params }) {
     const { id } = await params;
     try {
-        const baseUrl = "http://192.168.1.11:5000";
+        const baseUrl = "http://localhost:5000";
         const res = await fetch(`${baseUrl}/api/v1/products/${id}`, { next: { revalidate: 0 } });
         if (!res.ok)
             throw new Error('Not found');

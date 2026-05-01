@@ -42,7 +42,7 @@ export function CategoryGrid() {
           Refined Selection
         </p>
         <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-          Architectural Optics
+          Curated Vision
         </h2>
       </div>
 
@@ -63,7 +63,7 @@ export function CategoryGrid() {
               className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-10">
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-10">
               <div className="space-y-1">
                 <span className="text-[8px] md:text-[10px] font-bold text-white/60 tracking-widest uppercase">
                   Precision Crafted

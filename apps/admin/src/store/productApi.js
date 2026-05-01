@@ -59,7 +59,7 @@ export const productApi = createApi({
         }),
         bulkImportProducts: builder.mutation({
             query: (body) => {
-                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.11:5000';
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
                 return {
                     url: `${apiBase}/api/v1/products/bulk-import`,
                     method: 'POST',
@@ -70,7 +70,7 @@ export const productApi = createApi({
         }),
         bulkUploadImages: builder.mutation({
             query: ({ body, autoMatch }) => {
-                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.11:5000';
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
                 return {
                     url: `${apiBase}/api/v1/products/bulk-images${autoMatch ? '?autoMatch=true' : ''}`,
                     method: 'POST',
@@ -79,9 +79,10 @@ export const productApi = createApi({
             },
             invalidatesTags: [{ type: 'Product', id: 'LIST' }],
         }),
+
         addProductImages: builder.mutation({
             query: ({ id, body }) => {
-                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.11:5000';
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
                 return {
                     url: `${apiBase}/api/v1/products/${id}/images`,
                     method: 'POST',

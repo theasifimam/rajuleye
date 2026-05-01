@@ -11,8 +11,10 @@ export function AssetsTab({ control, productId }) {
   const { getValues, setValue } = useFormContext();
   const images = useWatch({ control, name: "images" }) || [];
   const [selectedFiles, setSelectedFiles] = useState([]);
+
   const [addProductImages, { isLoading: isUploading }] =
     useAddProductImagesMutation();
+
   const handleFileChange = (e) => {
     if (e.target.files) {
       setSelectedFiles((prev) => [...prev, ...Array.from(e.target.files)]);
@@ -130,7 +132,7 @@ export function AssetsTab({ control, productId }) {
       </div>
 
       {selectedFiles.length > 0 && (
-        <div className="p-6 rounded-[2rem] bg-primary/[0.03] border border-primary/10 flex items-center justify-between">
+        <div className="p-6 rounded-[2rem] bg-primary/3 border border-primary/10 flex items-center justify-between">
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">
               {selectedFiles.length} New Assets Queued

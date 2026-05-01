@@ -4,10 +4,14 @@ build/
 .next/
 out/
 .expo/
+!deploy/**/.next/
+!deploy/**/.next/**
 *.tsbuildinfo
 
 # Dependencies
 node_modules/
+!deploy/**/node_modules/
+!deploy/**/node_modules/**
 
 # Environment variables
 .env
@@ -35,3 +39,5 @@ android/
 ios/
 *.apk
 *.ipa
+
+

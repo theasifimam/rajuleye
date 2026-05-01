@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
@@ -17,7 +18,9 @@ export default function RootLayout({ children, }) {
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased flex flex-col overflow-x-hidden`}>
         <StoreProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <Navbar />
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
             <main className="flex-1 pb-28 lg:pb-0 pt-28 lg:pt-32 overflow-x-hidden">
               {children}
               <Footer />

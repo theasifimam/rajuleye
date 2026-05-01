@@ -7,7 +7,7 @@ export function SpecsTab({ control }) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <FormField control={control} name="type" render={({ field }) => (<FormItem className="space-y-3">
                             <FormLabel tooltip="The primary category that defines the utility of this piece." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Archetype</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <Select onValueChange={field.onChange} value={field.value || undefined}>
                                 <FormControl>
                                     <SelectTrigger className="h-11 w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
                                         <SelectValue placeholder="Select type"/>
@@ -26,7 +26,7 @@ export function SpecsTab({ control }) {
 
                 <FormField control={control} name="gender" render={({ field }) => (<FormItem className="space-y-3">
                             <FormLabel tooltip="The intended audience for this specific design." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Target Persona</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <Select onValueChange={field.onChange} value={field.value || undefined}>
                                 <FormControl>
                                     <SelectTrigger className="h-11 w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
                                         <SelectValue placeholder="Select gender"/>
@@ -44,7 +44,7 @@ export function SpecsTab({ control }) {
 
                 <FormField control={control} name="frameShape" render={({ field }) => (<FormItem className="space-y-3">
                             <FormLabel tooltip="The silhouette and architectural shape of the frame." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Frame Geometry</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <Select onValueChange={field.onChange} value={field.value || undefined}>
                                 <FormControl>
                                     <SelectTrigger className="h-11 w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
                                         <SelectValue placeholder="Shape"/>
@@ -59,7 +59,7 @@ export function SpecsTab({ control }) {
 
                 <FormField control={control} name="frameMaterial" render={({ field }) => (<FormItem className="space-y-3">
                             <FormLabel tooltip="The core substance used in the frame's construction." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Material DNA</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <Select onValueChange={field.onChange} value={field.value || undefined}>
                                 <FormControl>
                                     <SelectTrigger className="h-11 w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
                                         <SelectValue placeholder="Material"/>
@@ -74,7 +74,7 @@ export function SpecsTab({ control }) {
 
                 <FormField control={control} name="lensType" render={({ field }) => (<FormItem className="space-y-3">
                             <FormLabel tooltip="The technical specification of the installed lenses." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Optic Precision</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value || ""}>
+                            <Select onValueChange={field.onChange} value={field.value || undefined}>
                                 <FormControl>
                                     <SelectTrigger className="h-11 w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
                                         <SelectValue placeholder="Lens Type"/>

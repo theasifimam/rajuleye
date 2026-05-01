@@ -26,10 +26,12 @@ const PRODUCT_FORM_DRAFT_KEY = "product_form_draft_v1";
 export function ProductDialog({ isOpen, onOpenChange, product }) {
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+
   const { data: categoriesData } = useGetCategoriesQuery({ all: true });
   const categories = categoriesData?.data || [];
   const loading = isCreating || isUpdating;
   const [lastLoadedProductId, setLastLoadedProductId] = useState(null);
+
   const form = useForm({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: {
@@ -61,17 +63,20 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       isActive: true,
     },
   });
+
   useEffect(() => {
     if (!isOpen) {
       setLastLoadedProductId(null);
       return;
     }
+
     if (product && lastLoadedProductId !== product._id) {
       // Deep clone to avoid Proxy-related issues and ensure clean state
       const baseProduct = JSON.parse(JSON.stringify(product));
       // Strictly extract the category string ID
       let categoryId = "";
       const rawCategory = product.category;
+
       if (rawCategory) {
         if (typeof rawCategory === "string") {
           categoryId = rawCategory;
@@ -90,8 +95,10 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
           }
         }
       }
+
       // Ensure result is a trimmed string
       if (categoryId) categoryId = String(categoryId).trim();
+
       form.reset({
         ...baseProduct,
         category: categoryId,
@@ -146,6 +153,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       }
     }
   }, [product, form, isOpen, lastLoadedProductId]);
+
   // Persist draft changes for new products
   useEffect(() => {
     if (!product && isOpen) {
@@ -155,6 +163,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       return () => subscription.unsubscribe();
     }
   }, [form, product, isOpen]);
+
   const onSubmit = async (values) => {
     try {
       if (product?._id) {
@@ -171,12 +180,16 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       console.error("Submission error:", error);
     }
   };
+
   const handleClose = () => {
     onOpenChange(false);
   };
+
   if (!isOpen) return null;
+
+  console.log(form.getValues());
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
@@ -197,7 +210,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
             </Button>
           </div>
 
-          <div className="p-6 md:p-10 pb-5 flex items-center gap-5 border-b border-primary/5 bg-primary/[0.02]">
+          <div className="p-6 md:p-10 pb-5 flex items-center gap-5 border-b border-primary/5 bg-primary/2">
             <div className="h-14 w-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
               <Package className="h-7 w-7" />
             </div>
@@ -280,7 +293,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
               </ScrollArea>
 
               {/* Footer */}
-              <div className="p-6 md:p-8 border-t border-primary/5 bg-primary/[0.01] flex items-center justify-between">
+              <div className="p-6 md:p-8 border-t border-primary/5 bg-primary/1 flex items-center justify-between">
                 <Button
                   type="button"
                   variant="ghost"

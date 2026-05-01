@@ -12,9 +12,20 @@ import { ProductVisuals } from "./components/ProductVisuals";
 import { ProductInfo } from "./components/ProductInfo";
 import { ProductTabs } from "./components/ProductTabs";
 import { MobileActionBar } from "./components/MobileActionBar";
+
+const LENS_PACKAGES = [
+  { id: 'frame-only', name: 'Frame Only', description: 'Just the frame', price: 0, discount: 0 },
+  { id: 'single-vision', name: 'Single Vision', description: 'Distance or near vision', price: 15, discount: 10 },
+  { id: 'bifocal', name: 'Bifocal', description: 'Two viewing areas', price: 25, discount: 15 },
+  { id: 'progressive', name: 'Progressive', description: 'Seamless multi-focal', price: 45, discount: 20 },
+  { id: 'blue-light', name: 'Blue Light Block', description: 'Screen protection', price: 12, discount: 5 },
+];
+
 export function ProductDetailClient({ product, relatedProducts }) {
+    const [selectedLens, setSelectedLens] = useState(LENS_PACKAGES[0]);
     const [toggleWishlistMutation] = useToggleWishlistMutation();
     const [showConfirm, setShowConfirm] = useState(false);
+    
     // Rating & Auth State
     const user = useAppSelector(selectCurrentUser);
     const isLoggedIn = useAppSelector(selectIsAuthenticated);
@@ -25,17 +36,36 @@ export function ProductDetailClient({ product, relatedProducts }) {
     const purchasedOrder = isLoggedIn && orders.length > 0 ? orders.find(order => order.items.some(item => item.product === product.id)) : null;
     const hasBoughtProduct = !!purchasedOrder;
     const orderId = purchasedOrder?._id;
-    const discountPercent = product.discountPrice
-        ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
+
+    // Modified Product Calculation
+    const basePrice = product.price || 0;
+    const baseDiscountPrice = product.discountPrice || basePrice;
+
+    const lensPrice = selectedLens.price;
+    const lensDiscountPrice = lensPrice > 0 ? lensPrice - (lensPrice * (selectedLens.discount / 100)) : 0;
+
+    const totalPrice = basePrice + lensPrice;
+    const finalDiscountPrice = (product.discountPrice || selectedLens.discount > 0) ? (baseDiscountPrice + lensDiscountPrice) : undefined;
+
+    const modifiedProduct = {
+        ...product,
+        price: totalPrice,
+        discountPrice: finalDiscountPrice,
+        selectedLens: selectedLens.name
+    };
+
+    const discountPercent = modifiedProduct.discountPrice
+        ? Math.round(((modifiedProduct.price - modifiedProduct.discountPrice) / modifiedProduct.price) * 100)
         : 0;
+
     return (<div className="flex flex-col min-h-screen lg:pt-32 bg-background pb-32 mt-[-142px] lg:mt-[-128px] md:pb-0">
             <div className="flex flex-col md:container md:mx-auto md:px-8 md:max-w-[1400px]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 items-start">
-                    <ProductVisuals product={product} discountPercent={discountPercent}/>
+                    <ProductVisuals product={modifiedProduct} discountPercent={discountPercent}/>
 
                     <div className="flex flex-col">
-                        <ProductInfo product={product}/>
-                        <ProductTabs product={product} reviews={databaseReviews} isLoggedIn={isLoggedIn} hasBoughtProduct={hasBoughtProduct} orderId={orderId} user={user}/>
+                        <ProductInfo product={modifiedProduct} lensPackages={LENS_PACKAGES} selectedLens={selectedLens} onLensSelect={setSelectedLens} />
+                        <ProductTabs product={modifiedProduct} reviews={databaseReviews} isLoggedIn={isLoggedIn} hasBoughtProduct={hasBoughtProduct} orderId={orderId} user={user}/>
                     </div>
                 </div>
 
@@ -50,7 +80,7 @@ export function ProductDetailClient({ product, relatedProducts }) {
                     </section>)}
             </div>
 
-            <MobileActionBar product={product}/>
+            <MobileActionBar product={modifiedProduct}/>
 
             <style jsx global>{`
                 @media (max-width: 767px) {
@@ -62,13 +92,13 @@ export function ProductDetailClient({ product, relatedProducts }) {
 
             <ConfirmModal isOpen={showConfirm} onClose={() => setShowConfirm(false)} onConfirm={async () => {
             try {
-                await toggleWishlistMutation(product).unwrap();
+                await toggleWishlistMutation(modifiedProduct).unwrap();
                 toast.success("Removed from Wishlist");
                 setShowConfirm(false);
             }
             catch (error) {
                 toast.error("Failed to remove from wishlist");
             }
-        }} title="Remove from Wishlist" description={`Are you sure you want to remove ${product.name} from your wishlist?`} confirmText="Remove" variant="destructive"/>
+        }} title="Remove from Wishlist" description={`Are you sure you want to remove ${modifiedProduct.name} from your wishlist?`} confirmText="Remove" variant="destructive"/>
         </div>);
 }

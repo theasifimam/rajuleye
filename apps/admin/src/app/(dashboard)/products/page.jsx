@@ -59,14 +59,17 @@ export default function ProductsPage() {
   });
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+
   const products = React.useMemo(
     () => productsData?.data?.products || [],
     [productsData],
   );
+
   const pagination = React.useMemo(
     () => productsData?.data?.pagination,
     [productsData],
   );
+
   const stats = React.useMemo(
     () => [
       {
@@ -90,18 +93,22 @@ export default function ProductsPage() {
     ],
     [],
   );
+
   // Dialog States
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isBulkImportDialogOpen, setIsBulkImportDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+
   const openAddProductDialog = () => {
     setEditingProduct(null);
     setIsProductDialogOpen(true);
   };
+
   const openEditProductDialog = (product) => {
     setEditingProduct(product);
     setIsProductDialogOpen(true);
   };
+
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
@@ -113,6 +120,7 @@ export default function ProductsPage() {
       }
     }
   };
+
   if (isLoading) {
     return (
       <div className="flex h-[400px] items-center justify-center">
@@ -120,6 +128,7 @@ export default function ProductsPage() {
       </div>
     );
   }
+
   if (isError) {
     return (
       <div className="flex h-[400px] flex-col items-center justify-center gap-4 text-destructive">
@@ -134,6 +143,7 @@ export default function ProductsPage() {
       </div>
     );
   }
+
   return (
     <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 outline-none">
       <PageHeader
@@ -262,7 +272,7 @@ export default function ProductsPage() {
               {products.map((product) => (
                 <tr
                   key={product._id}
-                  className="group hover:bg-primary/[0.03] transition-all duration-500"
+                  className="group hover:bg-primary/3 transition-all duration-500"
                 >
                   <td className="p-4 md:p-6">
                     <div className="relative h-20 w-20 mx-auto">
@@ -385,7 +395,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Pagination */}
-        <div className="p-4 md:p-6 border-t border-primary/5 bg-primary/[0.01] flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="p-4 md:p-6 border-t border-primary/5 bg-primary/1 flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground text-center sm:text-left">
             Catalog sync: {products.length} verified units from{" "}
             {pagination?.total || 0} total

@@ -1,0 +1,21 @@
+{
+  "/favicon.ico/route": "/favicon.ico",
+  "/_not-found/page": "/_not-found",
+  "/(dashboard)/banners/page": "/banners",
+  "/(dashboard)/analytics/page": "/analytics",
+  "/(dashboard)/orders/page": "/orders",
+  "/(dashboard)/page": "/",
+  "/(dashboard)/settings/admin-id/page": "/settings/admin-id",
+  "/(auth)/forgot-password/page": "/forgot-password",
+  "/(auth)/login/page": "/login",
+  "/(dashboard)/settings/localization/page": "/settings/localization",
+  "/(dashboard)/settings/payments/page": "/settings/payments",
+  "/(dashboard)/customers/page": "/customers",
+  "/(dashboard)/settings/alerts/page": "/settings/alerts",
+  "/(dashboard)/settings/page": "/settings",
+  "/(dashboard)/settings/profile/page": "/settings/profile",
+  "/(dashboard)/support/page": "/support",
+  "/(dashboard)/settings/security/page": "/settings/security",
+  "/(dashboard)/products/page": "/products",
+  "/(dashboard)/products/categories/page": "/products/categories"
+}
