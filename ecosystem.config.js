@@ -11,8 +11,7 @@ module.exports = {
     },
     {
       name: 'rajuleye-web',
-      // Adjust the path to server.js if it is nested like deploy/web/apps/web/server.js
-      script: './deploy/web/server.js',
+      script: './deploy/web/apps/web/server.js',
       env: {
         NODE_ENV: 'production',
         PORT: 3000
@@ -20,8 +19,7 @@ module.exports = {
     },
     {
       name: 'rajuleye-admin',
-      // Adjust the path to server.js if it is nested like deploy/admin/apps/admin/server.js
-      script: './deploy/admin/server.js',
+      script: './deploy/admin/apps/admin/server.js',
       env: {
         NODE_ENV: 'production',
         PORT: 3001
