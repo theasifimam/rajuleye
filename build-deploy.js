@@ -2,13 +2,21 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Load environment variables for the build process
+try {
+  const dotenvPath = path.join(__dirname, 'server', 'node_modules', 'dotenv');
+  require(dotenvPath).config({ path: path.join(__dirname, '.env') });
+} catch (err) {
+  console.warn('dotenv not found in server/node_modules, build may lack environment variables');
+}
+
 function buildAndPrepare(appName) {
   console.log(`\n--- Building ${appName} ---`);
   const appDir = path.join(__dirname, 'apps', appName);
   
   // Run next build
   try {
-    execSync('npm run build', { cwd: appDir, stdio: 'inherit' });
+    execSync('npm run build', { cwd: appDir, stdio: 'inherit', env: process.env });
   } catch (error) {
     console.error(`Build failed for ${appName}`);
     process.exit(1);
