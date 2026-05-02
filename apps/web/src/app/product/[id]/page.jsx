@@ -3,8 +3,8 @@ import { ProductDetailClient } from "./ProductDetailClient";
 export default async function ProductPage({ params }) {
     const { id } = await params;
     try {
-        const baseUrl = "http://localhost:5000";
-        const res = await fetch(`${baseUrl}/api/v1/products/${id}`, { next: { revalidate: 0 } });
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const res = await fetch(`${apiBase}/api/v1/products/${id}`, { next: { revalidate: 0 } });
         if (!res.ok)
             throw new Error('Not found');
         const json = await res.json();
@@ -20,7 +20,7 @@ export default async function ProductPage({ params }) {
             discountPrice: p.discount ? p.price - (p.price * p.discount / 100) : undefined,
             category: typeof p.category === 'object' && p.category ? p.category.name : p.category,
         };
-        const relRes = await fetch(`${baseUrl}/api/v1/products`, { next: { revalidate: 0 } });
+        const relRes = await fetch(`${apiBase}/api/v1/products`, { next: { revalidate: 0 } });
         const relJson = await relRes.json();
         const relatedProducts = relJson.data.products.map((rp) => ({
             ...rp,
