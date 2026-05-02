@@ -35,7 +35,7 @@ const fileFilter = (_req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20mb
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50mb
 });
 
 const excelFilter = (_req, file, cb) => {

@@ -42,7 +42,13 @@ export function AssetsTab({ control, productId }) {
       selectedFiles.forEach((file) => {
         formData.append("images", file);
       });
-      await addProductImages({ id: productId, body: formData }).unwrap();
+      const result = await addProductImages({ id: productId, body: formData }).unwrap();
+      
+      // Update form state with the new images from server to prevent overwriting on main save
+      if (result && result.data) {
+        setValue("images", result.data, { shouldValidate: true, shouldDirty: true });
+      }
+
       toast.success("Assets synced to vault");
       setSelectedFiles([]);
     } catch (error) {
