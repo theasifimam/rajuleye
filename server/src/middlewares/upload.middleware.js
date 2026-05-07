@@ -57,4 +57,5 @@ const excelUpload = multer({
 
 export const uploadSingle = (fieldName) => upload.single(fieldName);
 export const uploadMultiple = (fieldName, maxCount = 5) => upload.array(fieldName, maxCount);
+export const uploadFields = (fields) => upload.fields(fields);
 export const uploadExcel = (fieldName) => excelUpload.single(fieldName);

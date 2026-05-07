@@ -11,9 +11,9 @@ export function ProductSlider({ products, title }) {
             align: "start",
             loop: false,
         }} className="w-full relative group">
-                <CarouselContent className="-ml-2 md:-ml-4">
-                    {products.map((product) => (<CarouselItem key={product.id} className="pl-2 md:pl-4 basis-1/2 lg:basis-1/4">
-                            <div className="p-1 h-full">
+                <CarouselContent className="-ml-1.5 md:-ml-4">
+                    {products.map((product) => (<CarouselItem key={product.id} className="pl-1.5 md:pl-4 basis-1/2 lg:basis-1/4">
+                            <div className="p-0.5 sm:p-1 h-full">
                                 <ProductCard product={product}/>
                             </div>
                         </CarouselItem>))}

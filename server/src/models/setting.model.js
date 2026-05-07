@@ -15,9 +15,37 @@ const settingSchema = new mongoose.Schema(
       default: 'Best eye glasses collection',
     },
     previewImage: {
-      type: String, 
+      type: String,
       default: '',
     },
+    logo: {
+      type: String,
+      default: '',
+    },
+    contactEmail: {
+      type: String,
+      default: '',
+    },
+    contactPhone: {
+      type: String,
+      default: '',
+    },
+    address: {
+      type: String,
+      default: '',
+    },
+    instagramUrl: {
+      type: String,
+      default: '',
+    },
+    facebookUrl: {
+      type: String,
+      default: '',
+    },
+    whatsappNumber: {
+      type: String,
+      default: '',
+    }
   },
   { timestamps: true }
 );

@@ -44,11 +44,11 @@ export default async function RootLayout({ children, }) {
         <StoreProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Suspense fallback={null}>
-              <Navbar />
+              <Navbar settings={settings} />
             </Suspense>
             <main className="flex-1 pb-28 lg:pb-0 pt-28 lg:pt-32 overflow-x-hidden">
               {children}
-              <Footer />
+              <Footer settings={settings} />
             </main>
             <BottomNav />
             <AuthDialog />

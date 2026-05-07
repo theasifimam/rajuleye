@@ -15,7 +15,14 @@ export const getSetting = asyncHandler(async (req, res) => {
 export const updateSetting = asyncHandler(async (req, res) => {
     const data = { ...req.body };
     
-    if (req.file) {
+    if (req.files) {
+        if (req.files['previewImage'] && req.files['previewImage'][0]) {
+            data.previewImage = `/uploads/${req.files['previewImage'][0].filename}`;
+        }
+        if (req.files['logo'] && req.files['logo'][0]) {
+            data.logo = `/uploads/${req.files['logo'][0].filename}`;
+        }
+    } else if (req.file) {
         data.previewImage = `/uploads/${req.file.filename}`;
     }
 
