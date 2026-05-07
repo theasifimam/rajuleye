@@ -42,10 +42,10 @@ export function ProductInfo({ product, lensPackages, selectedLens, onLensSelect 
                 </p>
                 <div className="flex items-center gap-4">
                     <span className="text-2xl xs:text-3xl md:text-6xl font-bold tracking-tighter">
-                        ${(product.discountPrice || product.price).toFixed(2)}
+                        ₹{(product.discountPrice || product.price).toFixed(2)}
                     </span>
                     {product.discountPrice && (<span className="text-lg xs:text-xl text-muted-foreground/40 line-through font-medium tracking-tight">
-                            ${product.price.toFixed(2)}
+                            ₹{product.price.toFixed(2)}
                         </span>)}
                 </div>
             </div>
@@ -74,9 +74,9 @@ export function ProductInfo({ product, lensPackages, selectedLens, onLensSelect 
                                     <span className="font-black text-sm text-primary">Included</span>
                                 ) : (
                                     <div className="flex items-center gap-2">
-                                        <span className="font-black text-sm text-primary">+${(lens.price - (lens.price * (lens.discount/100))).toFixed(2)}</span>
+                                        <span className="font-black text-sm text-primary">+₹{(lens.price - (lens.price * (lens.discount/100))).toFixed(2)}</span>
                                         {lens.discount > 0 && (
-                                            <span className="text-[10px] text-muted-foreground line-through">${lens.price.toFixed(2)}</span>
+                                            <span className="text-[10px] text-muted-foreground line-through">₹{lens.price.toFixed(2)}</span>
                                         )}
                                     </div>
                                 )}

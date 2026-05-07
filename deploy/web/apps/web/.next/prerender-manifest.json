@@ -38,7 +38,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/_not-found",
       "dataRoute": "/_not-found.rsc",
       "allowHeader": [
@@ -62,7 +63,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/about",
       "dataRoute": "/about.rsc",
       "allowHeader": [
@@ -86,7 +88,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/cart",
       "dataRoute": "/cart.rsc",
       "allowHeader": [
@@ -110,7 +113,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/checkout",
       "dataRoute": "/checkout.rsc",
       "allowHeader": [
@@ -163,7 +167,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/help",
       "dataRoute": "/help.rsc",
       "allowHeader": [
@@ -187,7 +192,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/",
       "dataRoute": "/index.rsc",
       "allowHeader": [
@@ -211,7 +217,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/profile/orders",
       "dataRoute": "/profile/orders.rsc",
       "allowHeader": [
@@ -235,7 +242,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/profile",
       "dataRoute": "/profile.rsc",
       "allowHeader": [
@@ -259,7 +267,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/search",
       "dataRoute": "/search.rsc",
       "allowHeader": [
@@ -283,7 +292,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/terms",
       "dataRoute": "/terms.rsc",
       "allowHeader": [
@@ -307,7 +317,8 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": false,
+      "initialRevalidateSeconds": 60,
+      "initialExpireSeconds": 31536000,
       "srcRoute": "/wishlist",
       "dataRoute": "/wishlist.rsc",
       "allowHeader": [

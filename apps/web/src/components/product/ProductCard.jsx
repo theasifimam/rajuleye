@@ -9,18 +9,26 @@ import { Badge } from "@/components/ui/badge";
 import { useGetWishlistQuery, useToggleWishlistMutation } from "@/store/wishlistApi";
 import { useAddToCartMutation } from "@/store/cartApi";
 import { useAppSelector } from "@/store/store";
-import { selectIsAuthenticated } from "@/store/authSlice";
+import { selectIsAuthenticated, selectCurrentUser } from "@/store/authSlice";
+import { useGetProfileQuery } from "@/store/authApi";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ConfirmModal } from "@/components/ui/confirm-modal";
+import { LensPowerDialog } from "@/app/product/[id]/components/LensPowerDialog";
 export function ProductCard({ product }) {
     const isAuthenticated = useAppSelector(selectIsAuthenticated);
     const { data: wishlistData } = useGetWishlistQuery(undefined, { skip: !isAuthenticated });
     const [toggleWishlistMutation] = useToggleWishlistMutation();
     const [addToCartMutation] = useAddToCartMutation();
+    const authUser = useAppSelector(selectCurrentUser);
+    const { data: profileData } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+    const user = profileData?.data || authUser;
+
     const [mounted, setMounted] = React.useState(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
+    const [isPowerDialogOpen, setIsPowerDialogOpen] = React.useState(false);
+    const [pendingCallback, setPendingCallback] = React.useState(null);
     const router = useRouter();
     React.useEffect(() => {
         setMounted(true);
@@ -31,7 +39,7 @@ export function ProductCard({ product }) {
     const discountPercent = product.discountPrice
         ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
         : 0;
-    const handleAddToCart = async (e) => {
+    const handleAddToCart = async (e, callback = null) => {
         e.preventDefault();
         e.stopPropagation();
         if (!isAuthenticated) {
@@ -40,16 +48,36 @@ export function ProductCard({ product }) {
             });
             return false;
         }
+
+        if (["eyeglasses", "contact-lenses", "reading-glasses"].includes(product.type)) {
+            setPendingCallback(() => callback);
+            setIsPowerDialogOpen(true);
+            return false;
+        }
+
+        return proceedToCart(callback);
+    };
+
+    const proceedToCart = async (callback = null, selectedPower = null) => {
         try {
-            await addToCartMutation({ product, qty: 1 }).unwrap();
-            toast.success(`${product.name} added to cart!`, {
-                description: "Item successfully added to your shopping bag.",
-                icon: (<div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-muted shadow-sm border border-border/50">
-                        <Image src={product.image && typeof product.image === 'string' && product.image.trim() !== ''
-                        ? (product.image.startsWith('http') || product.image.startsWith('/') || product.image.startsWith('data:') ? product.image : `/${product.image}`)
-                        : `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect fill='%23f1f5f9' width='100' height='100'/%3E%3C/svg%3E`} alt={product.name} fill className="object-cover"/>
-                    </div>),
-            });
+            const payload = { product, qty: 1 };
+            if (selectedPower) {
+                payload.selectedPower = selectedPower;
+            }
+            await addToCartMutation(payload).unwrap();
+            
+            if (callback) {
+                callback();
+            } else {
+                toast.success(`${product.name} added to cart!`, {
+                    description: "Item successfully added to your shopping bag.",
+                    icon: (<div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-muted shadow-sm border border-border/50">
+                            <Image src={product.image && typeof product.image === 'string' && product.image.trim() !== ''
+                            ? (product.image.startsWith('http') || product.image.startsWith('/') || product.image.startsWith('data:') ? product.image : `/${product.image}`)
+                            : `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect fill='%23f1f5f9' width='100' height='100'/%3E%3C/svg%3E`} alt={product.name} fill className="object-cover"/>
+                        </div>),
+                });
+            }
             return true;
         }
         catch (error) {
@@ -166,22 +194,30 @@ export function ProductCard({ product }) {
             <div className="hidden sm:block px-4 pb-4 sm:px-5 sm:pb-5">
 
                 <div className="flex items-center gap-2">
-                    <Button onClick={async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const success = await handleAddToCart(e);
-            if (success) {
+                    <Button onClick={(e) => {
+            handleAddToCart(e, () => {
                 toast.success("Proceeding to checkout...");
                 router.push('/checkout');
-            }
+            });
         }} disabled={!product.inStock} className="flex-[1.5] h-11 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all duration-300 hover:scale-[1.02] active:scale-95 bg-primary text-primary-foreground">
                         Buy
                     </Button>
-                    <Button onClick={handleAddToCart} disabled={!product.inStock} variant="outline" size="icon" className="flex-1 h-11 rounded-2xl border-2 border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
+                    <Button onClick={(e) => handleAddToCart(e)} disabled={!product.inStock} variant="outline" size="icon" className="flex-1 h-11 rounded-2xl border-2 border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
                         <ShoppingCart className="h-4 w-4 text-primary"/>
                     </Button>
                 </div>
             </div>
             <ConfirmModal isOpen={showConfirm} onClose={() => setShowConfirm(false)} onConfirm={confirmRemove} title="Remove from Wishlist" description={`Are you sure you want to remove ${product.name} from your wishlist?`} confirmText="Remove" variant="destructive"/>
+            
+            <LensPowerDialog
+                isOpen={isPowerDialogOpen}
+                onClose={() => setIsPowerDialogOpen(false)}
+                user={user}
+                productName={product.name}
+                onConfirm={(power) => {
+                    setIsPowerDialogOpen(false);
+                    proceedToCart(pendingCallback, power);
+                }}
+            />
         </Card>);
 }

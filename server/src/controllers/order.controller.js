@@ -4,6 +4,8 @@ import Product from '../models/product.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
 
 // POST /api/v1/orders
 export const createOrder = asyncHandler(async (req, res) => {
@@ -51,11 +53,87 @@ export const createOrder = asyncHandler(async (req, res) => {
     notes,
   });
 
-  // Clear cart
+  if (paymentMethod === 'online') {
+    const razorpay = new Razorpay({
+      key_id: process.env.LIVE_KEY_ID,
+      key_secret: process.env.LIVE_KEY_SECRET,
+    });
+
+    const options = {
+      amount: Math.round(order.finalAmount * 100), // amount in smallest currency unit (paise)
+      currency: "INR",
+      receipt: `receipt_order_${order._id}`,
+    };
+
+    try {
+      const razorpayOrder = await razorpay.orders.create(options);
+      order.razorpayOrderId = razorpayOrder.id;
+      await order.save();
+
+      // Clear cart ONLY after successful Razorpay order generation
+      cart.items = [];
+      await cart.save();
+
+      res.status(201).json(new ApiResponse('Order placed successfully, proceed to payment', {
+        order,
+        razorpayOrder: {
+          id: razorpayOrder.id,
+          amount: razorpayOrder.amount,
+          currency: razorpayOrder.currency,
+        },
+        key: process.env.LIVE_KEY_ID
+      }));
+      return;
+    } catch (error) {
+      // If Razorpay fails, delete the pending order and restore stock, then throw error
+      await Order.findByIdAndDelete(order._id);
+      for (const item of orderItems) {
+        await Product.findByIdAndUpdate(item.product, { $inc: { stock: item.qty } });
+      }
+      throw new ApiError(500, 'Failed to initialize payment gateway. Please try again.');
+    }
+  }
+
+  // For COD, clear cart and return success
   cart.items = [];
   await cart.save();
 
-  res.status(201).json(new ApiResponse('Order placed successfully', order));
+  res.status(201).json(new ApiResponse('Order placed successfully', { order }));
+});
+
+// POST /api/v1/orders/verify-payment
+export const verifyPayment = asyncHandler(async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+  const order = await Order.findOne({ razorpayOrderId: razorpay_order_id });
+  if (!order) throw new ApiError(404, 'Order not found');
+
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+  const secret = (process.env.LIVE_KEY_SECRET || '').replace(/["']/g, '').trim();
+
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(body.toString())
+    .digest('hex');
+
+  const isAuthentic = expectedSignature === razorpay_signature;
+
+  if (!isAuthentic) {
+    order.paymentStatus = 'failed';
+    await order.save();
+    throw new ApiError(400, 'Invalid Payment Signature');
+  }
+
+  order.razorpayPaymentId = razorpay_payment_id;
+  order.razorpaySignature = razorpay_signature;
+  order.paymentStatus = 'paid';
+  order.orderStatus = 'confirmed';
+  order.paidAt = new Date();
+  
+  await order.save();
+
+  res.status(200).json(new ApiResponse('Payment verified successfully', order));
 });
 
 // GET /api/v1/orders/my
@@ -106,6 +184,11 @@ export const cancelOrder = asyncHandler(async (req, res) => {
     await Product.findByIdAndUpdate(item.product, { $inc: { stock: item.qty } });
   }
 
+  if (order.paymentStatus === 'paid') {
+    // Ideally call Razorpay refund API here
+    order.paymentStatus = 'refunded';
+  }
+  
   order.orderStatus = 'cancelled';
   await order.save();
   res.status(200).json(new ApiResponse('Order cancelled', order));

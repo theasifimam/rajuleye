@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rajuleye');
+        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/rajuleye', {
+            family: 4, // Force IPv4
+        });
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
         if (error instanceof Error) {

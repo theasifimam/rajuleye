@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -16,9 +15,10 @@ import orderRoutes from './routes/order.routes.js';
 import bannerRoutes from './routes/banner.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
 import subscriberRoutes from './routes/subscriber.routes.js';
+import settingRoutes from './routes/setting.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 
-dotenv.config();
+// Environment variables are loaded in the main entry point (index.js)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,6 +65,7 @@ app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/banners', bannerRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/subscribers', subscriberRoutes);
+app.use('/api/v1/settings', settingRoutes);
 
 // 404 handler
 app.use((_req, res) => {

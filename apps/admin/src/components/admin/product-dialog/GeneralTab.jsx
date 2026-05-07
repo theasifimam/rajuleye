@@ -9,13 +9,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export function GeneralTab({ control, categories }) {
   return (
@@ -24,36 +17,43 @@ export function GeneralTab({ control, categories }) {
         <FormField
           control={control}
           name="category"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel
-                tooltip="The parent archival collection this piece belongs to."
-                className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1"
-              >
-                Archive Collection / Category
-              </FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value ? String(field.value) : undefined}
-              >
+          render={({ field }) => {
+            const selectedCat = categories.find(c => String(c._id) === String(field.value));
+            const displayText = selectedCat?.name || "";
+            return (
+              <FormItem className="space-y-3">
+                <FormLabel
+                  tooltip="The parent archival collection this piece belongs to."
+                  className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1"
+                >
+                  Archive Collection / Category
+                </FormLabel>
                 <FormControl>
-                  <SelectTrigger className="h-11 rounded-2xl w-full bg-muted/30 border-none font-medium px-5 transition-all text-xs">
-                    <SelectValue placeholder="Select Category">
-                      {field.value ? (categories.find(c => String(c._id) === String(field.value))?.name || "Select Category") : "Select Category"}
-                    </SelectValue>
-                  </SelectTrigger>
+                  <div className="relative">
+                    <select
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      className="h-11 w-full appearance-none rounded-2xl bg-muted/30 border-none font-medium px-5 text-xs transition-all cursor-pointer focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                      style={{ color: field.value ? 'inherit' : 'var(--muted-foreground)' }}
+                    >
+                      <option value="" disabled>
+                        Select Category
+                      </option>
+                      {categories.map((cat) => (
+                        <option key={cat._id} value={String(cat._id)}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                  </div>
                 </FormControl>
-                <SelectContent className="rounded-2xl border-primary/10">
-                  {categories.map((cat) => (
-                    <SelectItem key={cat._id} value={String(cat._id)}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage className="text-[10px] uppercase font-black tracking-widest" />
-            </FormItem>
-          )}
+                <FormMessage className="text-[10px] uppercase font-black tracking-widest" />
+              </FormItem>
+            );
+          }}
         />
         <FormField
           control={control}

@@ -10,6 +10,7 @@ import { bannerApi } from './bannerApi';
 import { orderApi } from './orderApi';
 import { dashboardApi } from './dashboardApi';
 import { subscriberApi } from './subscriberApi';
+import { settingApi } from './settingApi';
 export const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -21,8 +22,9 @@ export const store = configureStore({
         [orderApi.reducerPath]: orderApi.reducer,
         [dashboardApi.reducerPath]: dashboardApi.reducer,
         [subscriberApi.reducerPath]: subscriberApi.reducer,
+        [settingApi.reducerPath]: settingApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware, productApi.middleware, userApi.middleware, bannerApi.middleware, orderApi.middleware, dashboardApi.middleware, subscriberApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware, productApi.middleware, userApi.middleware, bannerApi.middleware, orderApi.middleware, dashboardApi.middleware, subscriberApi.middleware, settingApi.middleware),
 });
 setupListeners(store.dispatch);
 export const useAppDispatch = useDispatch;

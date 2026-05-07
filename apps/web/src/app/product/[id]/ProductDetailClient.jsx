@@ -14,11 +14,9 @@ import { ProductTabs } from "./components/ProductTabs";
 import { MobileActionBar } from "./components/MobileActionBar";
 
 const LENS_PACKAGES = [
-  { id: 'frame-only', name: 'Frame Only', description: 'Just the frame', price: 0, discount: 0 },
-  { id: 'single-vision', name: 'Single Vision', description: 'Distance or near vision', price: 15, discount: 10 },
-  { id: 'bifocal', name: 'Bifocal', description: 'Two viewing areas', price: 25, discount: 15 },
-  { id: 'progressive', name: 'Progressive', description: 'Seamless multi-focal', price: 45, discount: 20 },
-  { id: 'blue-light', name: 'Blue Light Block', description: 'Screen protection', price: 12, discount: 5 },
+  { id: 'crh', name: 'C.R.H', description: 'Hard Coated Lenses', price: 1000, discount: 0 },
+  { id: 'arc', name: 'A.R.C', description: 'Anti-Reflective Coating', price: 1500, discount: 0 },
+  { id: 'pg-arc', name: 'P.G. A.R.C', description: 'Photo-Grey ARC', price: 2000, discount: 0 },
 ];
 
 export function ProductDetailClient({ product, relatedProducts }) {

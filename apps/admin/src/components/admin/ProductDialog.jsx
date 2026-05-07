@@ -73,7 +73,8 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
     if (product && lastLoadedProductId !== product._id) {
       // Deep clone to avoid Proxy-related issues and ensure clean state
       const baseProduct = JSON.parse(JSON.stringify(product));
-      // Strictly extract the category string ID
+
+      // Strictly extract the category string ID from the populated object
       let categoryId = "";
       const rawCategory = product.category;
 
@@ -81,28 +82,24 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
         if (typeof rawCategory === "string") {
           categoryId = rawCategory;
         } else if (typeof rawCategory === "object" && rawCategory !== null) {
-          const catObj = rawCategory;
-          categoryId =
-            catObj._id ||
-            catObj.id ||
-            (catObj.toString !== Object.prototype.toString
-              ? catObj.toString()
-              : "");
-          // Handle MongoDB style object { _id: "..." } if populated structure is different
-          if (categoryId && typeof categoryId === "object") {
-            const idObj = categoryId;
-            categoryId = idObj._id || idObj.id || String(categoryId);
-          }
+          categoryId = rawCategory._id || rawCategory.id || "";
         }
       }
 
       // Ensure result is a trimmed string
-      if (categoryId) categoryId = String(categoryId).trim();
+      categoryId = categoryId ? String(categoryId).trim() : "";
+
+      // Remove the populated category object from the clone so it can't leak
+      // through the spread — we'll set it explicitly as a string below
+      delete baseProduct.category;
 
       form.reset({
         ...baseProduct,
         category: categoryId,
         brand: product.brand || "Rajul Eye",
+        frameColor: Array.isArray(product.frameColor)
+          ? product.frameColor[0] || ""
+          : product.frameColor || "",
         size: product.size || {
           lensWidth: 0,
           bridge: 0,
@@ -166,11 +163,16 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
 
   const onSubmit = async (values) => {
     try {
+      // Convert frameColor back to array for the server model
+      const payload = {
+        ...values,
+        frameColor: values.frameColor ? [values.frameColor] : [],
+      };
       if (product?._id) {
-        await updateProduct({ id: product._id, body: values }).unwrap();
+        await updateProduct({ id: product._id, body: payload }).unwrap();
         toast.success("Product blueprint refined");
       } else {
-        await createProduct(values).unwrap();
+        await createProduct(payload).unwrap();
         toast.success("Signature piece cataloged");
         localStorage.removeItem(PRODUCT_FORM_DRAFT_KEY);
       }
@@ -187,7 +189,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
 
   if (!isOpen) return null;
 
-  console.log(form.getValues());
+
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Backdrop */}

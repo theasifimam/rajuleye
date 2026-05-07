@@ -12,7 +12,7 @@ export const orderApi = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Order'],
+    tagTypes: ['Order', 'Cart'],
     endpoints: (builder) => ({
         getMyOrders: builder.query({
             query: ({ page = 1, limit = 10 } = {}) => `/orders/my?page=${page}&limit=${limit}`,
@@ -28,7 +28,7 @@ export const orderApi = createApi({
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: ['Order'],
+            invalidatesTags: ['Order', 'Cart'],
         }),
         cancelOrder: builder.mutation({
             query: (id) => ({
@@ -37,6 +37,14 @@ export const orderApi = createApi({
             }),
             invalidatesTags: (result, error, id) => ['Order', { type: 'Order', id }],
         }),
+        verifyPayment: builder.mutation({
+            query: (body) => ({
+                url: '/orders/verify-payment',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['Order'],
+        }),
     }),
 });
-export const { useGetMyOrdersQuery, useGetOrderByIdQuery, useCreateOrderMutation, useCancelOrderMutation, } = orderApi;
+export const { useGetMyOrdersQuery, useGetOrderByIdQuery, useCreateOrderMutation, useCancelOrderMutation, useVerifyPaymentMutation } = orderApi;

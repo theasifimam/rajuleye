@@ -10,23 +10,23 @@ export const getDashboardMetrics = asyncHandler(async (req, res) => {
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
 
-    // 1. Total Revenue (all delivered orders)
+    // 1. Total Revenue (Amount Received)
     const totalRevenueAggregation = await Order.aggregate([
-        { $match: { orderStatus: 'delivered' } },
+        { $match: { paymentStatus: 'paid' } },
         { $group: { _id: null, total: { $sum: '$finalAmount' } } }
     ]);
     const totalRevenue = totalRevenueAggregation[0]?.total || 0;
 
     // Revenue from last 30 days
     const currentMonthRevenueAgg = await Order.aggregate([
-        { $match: { orderStatus: 'delivered', createdAt: { $gte: thirtyDaysAgo } } },
+        { $match: { paymentStatus: 'paid', createdAt: { $gte: thirtyDaysAgo } } },
         { $group: { _id: null, total: { $sum: '$finalAmount' } } }
     ]);
     const currentMonthRevenue = currentMonthRevenueAgg[0]?.total || 0;
 
     // Revenue from 30-60 days ago
     const previousMonthRevenueAgg = await Order.aggregate([
-        { $match: { orderStatus: 'delivered', createdAt: { $gte: sixtyDaysAgo, $lt: thirtyDaysAgo } } },
+        { $match: { paymentStatus: 'paid', createdAt: { $gte: sixtyDaysAgo, $lt: thirtyDaysAgo } } },
         { $group: { _id: null, total: { $sum: '$finalAmount' } } }
     ]);
     const previousMonthRevenue = previousMonthRevenueAgg[0]?.total || 0;
@@ -63,7 +63,7 @@ export const getDashboardMetrics = asyncHandler(async (req, res) => {
     // 4. Monthly Revenue for Trajectory chart (Last 12 months)
     const last12Months = new Date(now.getFullYear(), now.getMonth() - 11, 1);
     const monthlyAgg = await Order.aggregate([
-        { $match: { orderStatus: { $in: ['delivered'] }, createdAt: { $gte: last12Months } } },
+        { $match: { paymentStatus: 'paid', createdAt: { $gte: last12Months } } },
         {
             $group: {
                 _id: { month: { $month: "$createdAt" }, year: { $year: "$createdAt" } },
