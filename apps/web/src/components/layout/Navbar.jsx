@@ -22,6 +22,8 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Home, Package, ChevronRight, LogIn } from "lucide-react";
+const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export function Navbar({ settings }) {
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
   // Get database wishlist count
@@ -102,7 +104,7 @@ export function Navbar({ settings }) {
                   src={
                     settings.logo.startsWith("http")
                       ? settings.logo
-                      : `http://localhost:5000${settings.logo}`
+                      : `${apiBase}${settings.logo}`
                   }
                   alt="Logo"
                   className="h-4 object-contain"
@@ -168,7 +170,7 @@ export function Navbar({ settings }) {
               src={
                 settings.logo.startsWith("http")
                   ? settings.logo
-                  : `http://localhost:5000${settings.logo}`
+                  : `${apiBase}${settings.logo}`
               }
               alt="Logo"
               className={cn(
@@ -247,7 +249,7 @@ export function Navbar({ settings }) {
                         src={
                           settings.logo.startsWith("http")
                             ? settings.logo
-                            : `http://localhost:5000${settings.logo}`
+                            : `${apiBase}${settings.logo}`
                         }
                         alt="Logo"
                         className="h-6 object-contain"

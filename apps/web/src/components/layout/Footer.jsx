@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export function Footer({ settings }) {
   const [categories, setCategories] = useState([]);
   const [email, setEmail] = useState("");
@@ -18,8 +20,7 @@ export function Footer({ settings }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const apiBase =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
         const response = await fetch(`${apiBase}/api/v1/categories`);
         const data = await response.json();
         if (data.success) {
@@ -38,8 +39,7 @@ export function Footer({ settings }) {
     }
     setIsSubscribing(true);
     try {
-      const apiBase =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
       const response = await fetch(`${apiBase}/api/v1/subscribers/subscribe`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,14 +76,26 @@ export function Footer({ settings }) {
           {/* Brand & Manifesto Section */}
           <div className="lg:col-span-4 space-y-8">
             <Link href="/" className="inline-block group">
-              <div className="flex items-baseline gap-1 select-none transition-transform duration-500 group-hover:scale-105">
-                <span className="text-3xl font-black uppercase tracking-tighter">
-                  Rajul
-                </span>
-                <span className="text-3xl font-light uppercase tracking-tighter opacity-40">
-                  Eye
-                </span>
-              </div>
+              {settings?.logo ? (
+                <img
+                  src={
+                    settings.logo.startsWith("http")
+                      ? settings.logo
+                      : `${apiBase}${settings.logo}`
+                  }
+                  alt="Logo"
+                  className="h-8 object-contain transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex items-baseline gap-1 select-none transition-transform duration-500 group-hover:scale-105">
+                  <span className="text-3xl font-black uppercase tracking-tighter">
+                    Rajul
+                  </span>
+                  <span className="text-3xl font-light uppercase tracking-tighter opacity-40">
+                    Eye
+                  </span>
+                </div>
+              )}
             </Link>
             <p className="text-base text-white/50 font-medium leading-[1.6] max-w-sm italic">
               "Our mission is to engineer visual clarity with architectural
