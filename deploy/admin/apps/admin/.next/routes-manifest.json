@@ -74,6 +74,12 @@
       "namedRegex": "^/forgot\\-password(?:/)?$"
     },
     {
+      "page": "/frames",
+      "regex": "^/frames(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/frames(?:/)?$"
+    },
+    {
       "page": "/login",
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
