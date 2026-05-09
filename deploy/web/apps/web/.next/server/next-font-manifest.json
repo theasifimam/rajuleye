@@ -30,6 +30,12 @@
     "[project]/apps/web/src/app/search/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
+    "[project]/apps/web/src/app/select-lens/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/apps/web/src/app/select-power/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
     "[project]/apps/web/src/app/terms/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],

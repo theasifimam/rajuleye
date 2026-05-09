@@ -12,6 +12,9 @@ const OrderItemSchema = new Schema(
     selectedPower: {
       left: { sphere: String, cylinder: String, axis: String },
       right: { sphere: String, cylinder: String, axis: String },
+      name: String,
+      phone: String,
+      prescriptionImage: String,
     },
     // Frame selection
     frameId: { type: Schema.Types.ObjectId, ref: 'Frame' },
@@ -45,7 +48,7 @@ const OrderSchema = new Schema(
     paymentStatus: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending' },
     orderStatus: {
       type: String,
-      enum: ['placed', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'],
+      enum: ['placed', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'failed'],
       default: 'placed',
     },
     totalAmount: { type: Number, required: true },

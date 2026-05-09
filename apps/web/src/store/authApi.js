@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { setCredentials, clearCredentials, updateUser } from './authSlice';
 // ── Base query with automatic re-auth on 401 ───────────────
 const baseQuery = fetchBaseQuery({
-    baseUrl: '/api/v1',
+    baseUrl: process.env.NEXT_PUBLIC_API_URL + "/api/v1",
     credentials: 'include', // send cookies
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.accessToken;

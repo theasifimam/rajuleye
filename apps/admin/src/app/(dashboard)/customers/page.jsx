@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { Pagination } from '@/components/admin/Pagination';
 import { useDebounce } from '@/hooks/useDebounce';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, } from "@/components/ui/dialog";
 export default function UsersPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const debouncedSearch = useDebounce(searchTerm, 500);
@@ -22,6 +23,9 @@ export default function UsersPage() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
     const [page, setPage] = useState(1);
+    // Delete Confirmation State
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
     // Subscribers Modals & state
     const [isBroadcastDialogOpen, setIsBroadcastDialogOpen] = useState(false);
     // RTK Query
@@ -61,15 +65,23 @@ export default function UsersPage() {
         setEditingUser(user);
         setIsDialogOpen(true);
     };
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to terminate this identity?')) {
-            try {
-                await deleteUser(id).unwrap();
-                toast.success('Identity purged from registry');
-            }
-            catch (err) {
-                toast.error(err?.data?.message || 'Purge failed');
-            }
+    const handleDelete = (id) => {
+        setUserToDelete(id);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!userToDelete) return;
+        try {
+            await deleteUser(userToDelete).unwrap();
+            toast.success('Identity purged from registry');
+        }
+        catch (err) {
+            toast.error(err?.data?.message || 'Purge failed');
+        }
+        finally {
+            setIsDeleteDialogOpen(false);
+            setUserToDelete(null);
         }
     };
     if (isLoading || isSubLoading) {
@@ -260,5 +272,46 @@ export default function UsersPage() {
             </div>
 
             <BroadcastDialog isOpen={isBroadcastDialogOpen} onOpenChange={setIsBroadcastDialogOpen} activeCount={activeCount}/>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <DialogContent className="sm:max-w-[440px] p-0 overflow-hidden border-none bg-card/40 backdrop-blur-3xl shadow-2xl">
+                    {/* Background Accent */}
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-destructive/60"/>
+                    
+                    <div className="p-8 md:p-10">
+                        <DialogHeader className="mb-8">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="h-14 w-14 rounded-[1.25rem] bg-destructive/10 flex items-center justify-center shrink-0">
+                                    <ShieldAlert className="h-7 w-7 text-destructive"/>
+                                </div>
+                                <div>
+                                    <DialogTitle className="text-3xl font-black italic tracking-tight uppercase leading-none mb-2">
+                                        Purge <span className="text-destructive not-italic">Identity?</span>
+                                    </DialogTitle>
+                                    <DialogDescription className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">
+                                        Irreversible Action
+                                    </DialogDescription>
+                                </div>
+                            </div>
+                        </DialogHeader>
+
+                        <div className="space-y-4">
+                            <p className="text-sm font-bold text-muted-foreground/80 leading-relaxed mb-10">
+                                Are you sure you want to terminate this identity? This action cannot be undone and all associated data will be purged from the registry.
+                            </p>
+
+                            <DialogFooter className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-white/10">
+                                <Button variant="ghost" onClick={() => setIsDeleteDialogOpen(false)} className="flex-1 h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-muted">
+                                    Cancel
+                                </Button>
+                                <Button onClick={confirmDelete} disabled={isDeleting} className="flex-1 h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-destructive hover:bg-destructive/90 text-white shadow-xl shadow-destructive/20">
+                                    {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Trash2 className="mr-2 h-4 w-4"/>} Purge Now
+                                </Button>
+                            </DialogFooter>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>);
 }

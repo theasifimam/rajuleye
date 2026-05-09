@@ -23,10 +23,10 @@ export default function Home() {
         <div className="flex items-center justify-between mb-8">
           <div className="space-y-1">
             <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter">
-              Iconic Silhouettes
+              Featured Products
             </h2>
             <p className="text-sm text-muted-foreground font-medium">
-              Trending eye-wear essentials.
+              Check out our latest collection of eyewear.
             </p>
           </div>
           <Link

@@ -58,6 +58,7 @@ export const errorHandler = (
   console.error('[Global Error Handler]:', err);
   res.status(500).json({
     success: false,
-    message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
+    message: err.message,
+    stack: err.stack,
   });
 };

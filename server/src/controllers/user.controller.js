@@ -36,15 +36,42 @@ export const updateProfile = asyncHandler(async (req, res) => {
 
 // PATCH /api/v1/users/eye-power
 export const updateEyePower = asyncHandler(async (req, res) => {
-  const { left, right } = req.body;
-  if (!left || !right) throw new ApiError(400, 'Eye power data required');
+  console.log(req.body, "updateEyePower---------------------------")
+  let { left, right, name, phone } = req.body;
 
-  const user = await User.findByIdAndUpdate(
-    req.user.id,
-    { eyePower: { left, right } },
-    { new: true, runValidators: true }
-  );
+  // Handle stringified JSON from FormData
+  if (typeof left === 'string') {
+    try { left = JSON.parse(left); } catch (e) { }
+  }
+  if (typeof right === 'string') {
+    try { right = JSON.parse(right); } catch (e) { }
+  }
+
+  let prescriptionImage;
+  if (req.file) {
+    prescriptionImage = `/uploads/${req.file.filename}`;
+  }
+
+  if (!left && !right && !prescriptionImage) {
+    throw new ApiError(400, 'Eye power data or prescription image required');
+  }
+
+  const user = await User.findById(req.user.id);
   if (!user) throw new ApiError(404, 'User not found');
+
+  const currentEyePower = user.eyePower ? JSON.parse(JSON.stringify(user.eyePower)) : {};
+
+  user.eyePower = {
+    ...currentEyePower,
+    ...(left && { left }),
+    ...(right && { right }),
+    ...(name && { name }),
+    ...(phone && { phone }),
+    ...(prescriptionImage && { prescriptionImage }),
+  };
+
+  await user.save();
+
   res.status(200).json(new ApiResponse('Eye power updated', user.eyePower));
 });
 
@@ -65,7 +92,7 @@ export const addAddress = asyncHandler(async (req, res) => {
     addressData.isDefault = true;
   }
 
-  user.addresses.push(addressData );
+  user.addresses.push(addressData);
   await user.save();
   res.status(201).json(new ApiResponse('Address added', user.addresses));
 });

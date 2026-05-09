@@ -33,6 +33,9 @@ const EyePowerSchema = new Schema(
       addition: String,
       pd: String,
     },
+    name: String,
+    phone: String,
+    prescriptionImage: String,
   },
   { _id: false }
 );

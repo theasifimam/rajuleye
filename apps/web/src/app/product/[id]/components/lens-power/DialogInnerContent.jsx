@@ -6,6 +6,8 @@ import {
   Eye,
   SkipForward,
   Check,
+  FileImage,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,6 +21,8 @@ export function DialogInnerContent({
   user,
   manualPower,
   setManualPower,
+  prescriptionFile,
+  setPrescriptionFile,
   handleConfirm,
   onClose,
   productName,
@@ -123,6 +127,49 @@ export function DialogInnerContent({
           )}
         </OptionCard>
 
+        {/* Upload Prescription */}
+        <OptionCard
+          selected={selectedOption === "upload"}
+          onClick={() => setSelectedOption("upload")}
+          icon={FileImage}
+          iconColor="#8b5cf6"
+          borderColor="border-purple-500"
+          bgColor="bg-purple-50/50 dark:bg-purple-950/20"
+          title="Upload Prescription"
+          subtitle="Upload a picture of your prescription"
+        >
+          {selectedOption === "upload" && (
+            <div
+              className="mt-4 ml-0 sm:ml-18"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setPrescriptionFile(e.target.files[0])}
+                  className="hidden"
+                  id="prescription-upload"
+                />
+                <label
+                  htmlFor="prescription-upload"
+                  className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-purple-300 dark:border-purple-700 rounded-xl cursor-pointer hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
+                >
+                  <Upload className="h-5 w-5 text-purple-500" />
+                  <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
+                    {prescriptionFile ? prescriptionFile.name : "Choose a picture"}
+                  </span>
+                </label>
+                {prescriptionFile && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selected file: {prescriptionFile.name}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </OptionCard>
+
         {/* Contact via WhatsApp */}
         <OptionCard
           selected={selectedOption === "whatsapp"}
@@ -207,6 +254,12 @@ export function DialogInnerContent({
               <>
                 <Check className="h-4 w-4" />
                 Use This Power & Continue
+              </>
+            )}
+            {selectedOption === "upload" && (
+              <>
+                <Upload className="h-4 w-4" />
+                Upload & Continue
               </>
             )}
             {!selectedOption && "Select an option"}

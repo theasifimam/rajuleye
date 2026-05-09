@@ -23,10 +23,7 @@ router.use(protect);
 
 router.get('/profile', getProfile);
 router.patch('/profile', uploadSingle('avatar'), updateProfile);
-router.patch('/eye-power', (req, res, next) => {
-  console.log("HIT /eye-power ROUTE", req.body);
-  next();
-}, updateEyePower);
+router.patch('/eye-power', uploadSingle('prescription'), updateEyePower);
 router.post('/addresses', addAddress);
 router.patch('/addresses/:addressId', updateAddress);
 router.delete('/addresses/:addressId', deleteAddress);

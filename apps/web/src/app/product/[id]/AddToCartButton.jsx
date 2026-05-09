@@ -224,9 +224,13 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
 
         <Button
           onClick={() => {
-            handleAddToCart(() => {
-              router.push("/checkout");
-            });
+            if (product.type === "eyeglasses") {
+              router.push(`/select-power?product=${product.id}&lens=${selectedLens?.name || ""}&lensId=${selectedLens?.id || ""}&lensPrice=${selectedLens?.price || 0}`);
+            } else {
+              handleAddToCart(() => {
+                router.push("/checkout");
+              });
+            }
           }}
           disabled={!product.inStock || isAdding}
           size="lg"
@@ -236,7 +240,9 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
             isAdding && "opacity-80 scale-[0.98]",
           )}
         >
-          <span className="flex items-center gap-3">Buy Now</span>
+          <span className="flex items-center gap-3">
+            {product.type === "eyeglasses" ? "Select Lens" : "Buy Now"}
+          </span>
         </Button>
 
         {isAdding && (

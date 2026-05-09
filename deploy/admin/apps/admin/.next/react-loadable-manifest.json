@@ -14,27 +14,28 @@
   "app\\(dashboard)\\banners\\page.jsx -> @/components/admin/BannerDialog": {
     "id": 28637,
     "files": [
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1557-b53de5fca3ebb4ad.js",
+      "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
       "static/chunks/1889.dce737602e9f0322.js",
       "static/chunks/1132.4ac6ddfaa99b971d.js",
-      "static/chunks/8637.19438dfbc6a0b12a.js"
+      "static/chunks/8637.505e18d48a9743ea.js"
     ]
   },
   "app\\(dashboard)\\customers\\page.jsx -> @/components/admin/BroadcastDialog": {
     "id": 91972,
     "files": [
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
-      "static/chunks/1972.2e6cdb4820189e42.js"
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1204.861d7568de9c5078.js",
+      "static/chunks/1972.9d2d8fa341d9180a.js"
     ]
   },
   "app\\(dashboard)\\customers\\page.jsx -> @/components/admin/UserDialog": {
     "id": 26696,
     "files": [
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
       "static/chunks/1889.dce737602e9f0322.js",
       "static/chunks/1492.0146085a1b915b10.js",
@@ -46,21 +47,23 @@
     "id": 72661,
     "files": [
       "static/chunks/8720-c9ee040177c11cae.js",
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
-      "static/chunks/2749.fcee8b69664906c5.js",
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1557-b53de5fca3ebb4ad.js",
+      "static/chunks/1204.861d7568de9c5078.js",
+      "static/chunks/3945.b44e98c546ffa136.js",
       "static/chunks/2661.1e81d762405e8ba9.js"
     ]
   },
   "app\\(dashboard)\\products\\categories\\page.jsx -> @/components/admin/CategoryDialog": {
     "id": 7223,
     "files": [
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1557-b53de5fca3ebb4ad.js",
+      "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
       "static/chunks/1889.dce737602e9f0322.js",
       "static/chunks/1132.4ac6ddfaa99b971d.js",
-      "static/chunks/7223.0b503bec12d73439.js"
+      "static/chunks/7223.8e81787a2747cabf.js"
     ]
   },
   "app\\(dashboard)\\products\\page.jsx -> @/components/admin/BulkImportDialog": {
@@ -75,11 +78,12 @@
   "app\\(dashboard)\\products\\page.jsx -> @/components/admin/ProductDialog": {
     "id": 17913,
     "files": [
-      "static/chunks/3408-0ce182ef9ab760cf.js",
-      "static/chunks/7858.090af8e18a771b59.js",
+      "static/chunks/3373-f35c1fae10ee7867.js",
+      "static/chunks/1557-b53de5fca3ebb4ad.js",
+      "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
       "static/chunks/1889.dce737602e9f0322.js",
-      "static/chunks/6791.f94e232bcd5c0351.js",
+      "static/chunks/5491.b4be10c9ecb33a10.js",
       "static/chunks/1132.4ac6ddfaa99b971d.js",
       "static/chunks/7913.4680ed4df41e30f1.js"
     ]

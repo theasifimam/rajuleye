@@ -79,10 +79,6 @@ export const createOrder = asyncHandler(async (req, res) => {
       order.razorpayOrderId = razorpayOrder.id;
       await order.save();
 
-      // Clear cart ONLY after successful Razorpay order generation
-      cart.items = [];
-      await cart.save();
-
       res.status(201).json(new ApiResponse('Order placed successfully, proceed to payment', {
         order,
         razorpayOrder: {
@@ -134,22 +130,29 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 
   if (!isAuthentic) {
     order.paymentStatus = 'failed';
-    order.orderStatus = 'cancelled'; // Mark as cancelled since payment failed
-    
+    order.orderStatus = 'failed'; // Mark as failed since payment failed
+
     // Restore stock
     for (const item of order.items) {
       await Product.findByIdAndUpdate(item.product, { $inc: { stock: item.qty } });
     }
-    
+
     await order.save();
-    throw new ApiError(400, 'Invalid Payment Signature. Order failed and cancelled.');
+    throw new ApiError(400, 'Invalid Payment Signature. Order failed.');
   }
 
   order.paymentStatus = 'paid';
   order.orderStatus = 'confirmed';
   order.paidAt = new Date();
-  
+
   await order.save();
+
+  // Clear cart after successful payment verification
+  const cart = await Cart.findOne({ user: order.user });
+  if (cart) {
+    cart.items = [];
+    await cart.save();
+  }
 
   res.status(200).json(new ApiResponse('Payment verified successfully', order));
 });
@@ -206,7 +209,7 @@ export const cancelOrder = asyncHandler(async (req, res) => {
     // Ideally call Razorpay refund API here
     order.paymentStatus = 'refunded';
   }
-  
+
   order.orderStatus = 'cancelled';
   await order.save();
   res.status(200).json(new ApiResponse('Order cancelled', order));

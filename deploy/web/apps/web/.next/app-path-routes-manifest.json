@@ -11,6 +11,8 @@
   "/profile/orders/page": "/profile/orders",
   "/profile/page": "/profile",
   "/search/page": "/search",
+  "/select-lens/page": "/select-lens",
+  "/select-power/page": "/select-power",
   "/terms/page": "/terms",
   "/wishlist/page": "/wishlist"
 }

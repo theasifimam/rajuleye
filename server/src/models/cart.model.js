@@ -10,6 +10,7 @@ const CartItemSchema = new Schema(
     selectedPower: {
       left: { sphere: String, cylinder: String, axis: String },
       right: { sphere: String, cylinder: String, axis: String },
+      prescriptionImage: String,
     },
     // Frame selection
     frameId: { type: Schema.Types.ObjectId, ref: 'Frame' },

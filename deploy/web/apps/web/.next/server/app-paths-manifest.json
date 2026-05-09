@@ -11,6 +11,8 @@
   "/profile/orders/page": "app/profile/orders/page.js",
   "/profile/page": "app/profile/page.js",
   "/search/page": "app/search/page.js",
+  "/select-lens/page": "app/select-lens/page.js",
+  "/select-power/page": "app/select-power/page.js",
   "/terms/page": "app/terms/page.js",
   "/wishlist/page": "app/wishlist/page.js"
 }
