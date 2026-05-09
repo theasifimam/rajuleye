@@ -1,7 +1,7 @@
 "use client";
 import { AddToCartButton } from "../AddToCartButton";
 
-export function MobileActionBar({ product }) {
+export function MobileActionBar({ product, selectedLens }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-110 p-4 bg-background/80 backdrop-blur-xl border-t border-border md:hidden safe-area-bottom shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)]">
       <div className="flex items-center gap-4 max-w-lg mx-auto">
@@ -13,7 +13,7 @@ export function MobileActionBar({ product }) {
             ₹{(product.discountPrice || product.price).toFixed(2)}
           </p>
         </div>
-        <AddToCartButton product={product} compact />
+        <AddToCartButton product={product} compact selectedLens={selectedLens} />
       </div>
     </div>
   );

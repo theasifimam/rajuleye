@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Sparkles,
   LifeBuoy,
+  Glasses,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,6 +25,7 @@ const menuItems = [
   { icon: Package, label: "Products", href: "/products" },
   { icon: ShoppingBag, label: "Orders", href: "/orders" },
   { icon: Users, label: "Customers", href: "/customers" },
+  { icon: Glasses, label: "Frames", href: "/frames" },
   { icon: ImageIcon, label: "Banners", href: "/banners" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
   {

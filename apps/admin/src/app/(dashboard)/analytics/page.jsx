@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React from 'react';
-import { TrendingUp, TrendingDown, DollarSign, ShoppingBag, Activity, Download, Calendar, ArrowUpRight, Target, Zap, ChartBar, PieChart, ArrowRight } from 'lucide-react';
+import { TrendingUp, TrendingDown, IndianRupee, ShoppingBag, Activity, Download, Calendar, ArrowUpRight, Target, Zap, ChartBar, PieChart, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/admin/PageHeader';
 const kpiStats = [
-    { label: 'Annual Revenue', value: '$1.42M', change: '+12.5%', isPositive: true, icon: DollarSign, color: 'primary' },
+    { label: 'Annual Revenue', value: '₹1.42M', change: '+12.5%', isPositive: true, icon: IndianRupee, color: 'primary' },
     { label: 'Brand Conversion', value: '4.8%', change: '+0.5%', isPositive: true, icon: Target, color: 'blue' },
-    { label: 'Basket Average', value: '$642.15', change: '-2.1%', isPositive: false, icon: ShoppingBag, color: 'purple' },
+    { label: 'Basket Average', value: '₹642.15', change: '-2.1%', isPositive: false, icon: ShoppingBag, color: 'purple' },
     { label: 'Guest Frequency', value: '84.2k', change: '+3.4%', isPositive: true, icon: Activity, color: 'orange' },
 ];
 const topProducts = [
-    { name: 'Aether Gold Aviators', category: 'Sunglasses', sales: 1240, revenue: '$558,000', growth: '+15.2%', momentum: 85 },
-    { name: 'Lumina Clear Frames', category: 'Optical', sales: 980, revenue: '$313,600', growth: '+8.4%', momentum: 72 },
-    { name: 'Onyx Midnight Blue', category: 'Blue Light', sales: 856, revenue: '$239,680', growth: '+22.1%', momentum: 94 },
+    { name: 'Aether Gold Aviators', category: 'Sunglasses', sales: 1240, revenue: '₹558,000', growth: '+15.2%', momentum: 85 },
+    { name: 'Lumina Clear Frames', category: 'Optical', sales: 980, revenue: '₹313,600', growth: '+8.4%', momentum: 72 },
+    { name: 'Onyx Midnight Blue', category: 'Blue Light', sales: 856, revenue: '₹239,680', growth: '+22.1%', momentum: 94 },
 ];
 export default function AnalyticsPage() {
     return (<div className="space-y-8 md:space-y-12 pb-10">
@@ -66,7 +66,7 @@ export default function AnalyticsPage() {
                     <div className="flex items-center justify-between mb-8 md:mb-12">
                         <div>
                             <h3 className="text-lg md:text-xl font-black tracking-tight uppercase italic leading-none mb-1">Performance Trajectory</h3>
-                            <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">Global revenue lifecycle (USD)</p>
+                            <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">Global revenue lifecycle (INR)</p>
                         </div>
                         <div className="flex items-center gap-3 md:gap-4">
                             <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
                         <div className="flex items-end justify-between gap-2 md:gap-4 pt-4 min-w-[600px] md:min-w-0 h-full">
                             {[45, 60, 40, 85, 55, 75, 50, 90, 65, 95, 80, 88].map((val, i) => (<div key={i} className="flex-1 flex flex-col items-center gap-3 md:gap-4 group/bar relative">
                                     <div className="absolute bottom-full mb-3 px-3 py-1.5 bg-card border-2 border-primary text-foreground rounded-xl text-[9px] font-black opacity-0 group-hover/bar:opacity-100 transition-all pointer-events-none -translate-y-2 group-hover/bar:translate-y-0 z-20 whitespace-nowrap">
-                                        ${val}k
+                                        ₹{val}k
                                     </div>
                                     <div className="w-full bg-muted/20 rounded-t-xl md:rounded-t-2xl relative overflow-hidden transition-all duration-700 h-[240px] md:h-[300px] flex items-end">
                                         <div className="w-full bg-primary/30 group-hover/bar:bg-primary transition-all duration-700 ease-out rounded-t-xl md:rounded-t-2xl relative shadow-[0_0_20px_rgba(34,197,94,0.2)]" style={{ height: `${val}%` }}>

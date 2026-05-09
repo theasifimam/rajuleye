@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   register,
-  verifyEmail,
+  verifyMobile,
   login,
   forgotPassword,
   resetPassword,
@@ -13,7 +13,7 @@ import { protect } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 router.post('/register', register);
-router.post('/verify-email', verifyEmail);
+router.post('/verify-mobile', verifyMobile);
 router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);

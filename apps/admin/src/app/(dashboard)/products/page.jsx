@@ -344,7 +344,7 @@ export default function ProductsPage() {
                   </td>
                   <td className="p-4 md:p-6">
                     <span className="text-sm font-black italic tracking-tighter">
-                      ${product.price.toFixed(2)}
+                      ₹{product.price.toFixed(2)}
                     </span>
                   </td>
                   <td className="p-4 md:p-6">

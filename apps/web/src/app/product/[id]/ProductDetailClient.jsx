@@ -8,37 +8,40 @@ import { useAppSelector } from "@/store/store";
 import { selectCurrentUser, selectIsAuthenticated } from "@/store/authSlice";
 import { useGetMyOrdersQuery } from "@/store/orderApi";
 import { useGetProductReviewsQuery } from "@/store/reviewApi";
+import { useGetFramesQuery } from "@/store/frameApi";
+import { Check } from "lucide-react";
 import { ProductVisuals } from "./components/ProductVisuals";
 import { ProductInfo } from "./components/ProductInfo";
 import { ProductTabs } from "./components/ProductTabs";
 import { MobileActionBar } from "./components/MobileActionBar";
+import { AddToCartButton } from "./AddToCartButton";
+import { cn } from "@/lib/utils";
 
-const LENS_PACKAGES = [
-  {
-    id: "crh",
-    name: "C.R.H",
-    description: "Hard Coated Lenses",
-    price: 1000,
-    discount: 0,
-  },
-  {
-    id: "arc",
-    name: "A.R.C",
-    description: "Anti-Reflective Coating",
-    price: 1500,
-    discount: 0,
-  },
-  {
-    id: "pg-arc",
-    name: "P.G. A.R.C",
-    description: "Photo-Grey ARC",
-    price: 2000,
-    discount: 0,
-  },
-];
+const PLANE_GLASS = {
+  id: "plane",
+  name: "Plane Glass",
+  description: "Standard clear glass",
+  price: 0,
+  discount: 0,
+};
 
 export function ProductDetailClient({ product, relatedProducts }) {
-  const [selectedLens, setSelectedLens] = useState(LENS_PACKAGES[0]);
+  const { data: framesResponse } = useGetFramesQuery();
+  const dbFrames = framesResponse?.data || [];
+
+  // Combine Plane Glass with DB frames
+  const lensPackages = [
+    PLANE_GLASS,
+    ...dbFrames.map((f) => ({
+      id: f._id,
+      name: f.name,
+      description: f.description,
+      price: f.price,
+      discount: f.discount,
+    })),
+  ];
+
+  const [selectedLens, setSelectedLens] = useState(PLANE_GLASS);
   const [toggleWishlistMutation] = useToggleWishlistMutation();
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -95,18 +98,78 @@ export function ProductDetailClient({ product, relatedProducts }) {
     <div className="flex flex-col min-h-screen lg:pt-32 bg-background pb-32 mt-[-142px] lg:mt-[-128px] md:pb-0">
       <div className="flex flex-col md:container md:mx-auto md:px-8 md:max-w-[1400px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 items-start">
-          <ProductVisuals
-            product={modifiedProduct}
-            discountPercent={discountPercent}
-          />
+          <div className="flex flex-col space-y-6">
+            <ProductVisuals
+              product={modifiedProduct}
+              discountPercent={discountPercent}
+            />
+
+            {/* Lens Section */}
+            <div className="space-y-4 pt-4 px-4 md:px-0">
+              <h3 className="text-sm font-black uppercase tracking-widest text-primary">
+                Select Glasses Type
+              </h3>
+              <div className="grid grid-cols-3 gap-3">
+                {lensPackages.map((lens) => (
+                  <div
+                    key={lens.id}
+                    onClick={() => setSelectedLens(lens)}
+                    className={cn(
+                      "flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all",
+                      selectedLens.id === lens.id
+                        ? "border-primary bg-primary/5 shadow-sm scale-[1.02]"
+                        : "border-border hover:border-primary/30 hover:bg-muted/50",
+                    )}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="font-bold text-sm tracking-tight">
+                        {lens.name}
+                      </span>
+                      {selectedLens.id === lens.id && (
+                        <Check className="w-4 h-4 text-primary" />
+                      )}
+                    </div>
+                    <span className="text-xs text-muted-foreground mb-3">
+                      {lens.description}
+                    </span>
+                    <div className="mt-auto flex flex-col">
+                      {lens.price === 0 ? (
+                        <span className="font-black text-sm text-primary">
+                          Included
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="font-black text-sm text-primary">
+                            +₹
+                            {(
+                              lens.price -
+                              lens.price * (lens.discount / 100)
+                            ).toFixed(2)}
+                          </span>
+                          {lens.discount > 0 && (
+                            <span className="text-[10px] text-muted-foreground line-through">
+                              ₹{lens.price.toFixed(2)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {lens.discount > 0 && (
+                        <span className="text-[10px] font-bold text-emerald-500 mt-1">
+                          {lens.discount}% OFF
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
           <div className="flex flex-col">
-            <ProductInfo
-              product={modifiedProduct}
-              lensPackages={LENS_PACKAGES}
-              selectedLens={selectedLens}
-              onLensSelect={setSelectedLens}
-            />
+            <ProductInfo product={modifiedProduct} />
+            <div className="hidden md:block pt-4">
+              <AddToCartButton product={modifiedProduct} selectedLens={selectedLens} />
+            </div>
             <ProductTabs
               product={modifiedProduct}
               reviews={databaseReviews}
@@ -135,7 +198,7 @@ export function ProductDetailClient({ product, relatedProducts }) {
         )}
       </div>
 
-      <MobileActionBar product={modifiedProduct} />
+      <MobileActionBar product={modifiedProduct} selectedLens={selectedLens} />
 
       <style jsx global>{`
         @media (max-width: 767px) {

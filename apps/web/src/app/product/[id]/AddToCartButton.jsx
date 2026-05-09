@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { ConfirmModal } from "@/components/ui/confirm-modal";
 import { LensPowerDialog } from "./components/LensPowerDialog";
 
-export function AddToCartButton({ product, compact = false }) {
+export function AddToCartButton({ product, compact = false, selectedLens }) {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const { data: wishlistData } = useGetWishlistQuery(undefined, {
     skip: !isAuthenticated,
@@ -32,7 +32,9 @@ export function AddToCartButton({ product, compact = false }) {
   const [pendingCallback, setPendingCallback] = useState(null);
 
   const authUser = useAppSelector(selectCurrentUser);
-  const { data: profileData } = useGetProfileQuery(undefined, { skip: !isAuthenticated });
+  const { data: profileData } = useGetProfileQuery(undefined, {
+    skip: !isAuthenticated,
+  });
   const user = profileData?.data || authUser;
 
   // Fix hydration issues by tracking mounted state
@@ -55,7 +57,9 @@ export function AddToCartButton({ product, compact = false }) {
       return;
     }
 
-    if (["eyeglasses", "contact-lenses", "reading-glasses"].includes(product.type)) {
+    if (
+      ["eyeglasses", "contact-lenses", "reading-glasses"].includes(product.type)
+    ) {
       setPendingCallback(() => callback);
       setIsPowerDialogOpen(true);
       return;
@@ -67,7 +71,18 @@ export function AddToCartButton({ product, compact = false }) {
   const proceedToCart = async (callback, selectedPower = null) => {
     setIsAdding(true);
     try {
-      const payload = { product, qty: quantity };
+      const payload = {
+        product,
+        qty: quantity,
+        lensType: selectedLens?.name || "",
+        frameId:
+          selectedLens?.id && selectedLens.id !== "plane"
+            ? selectedLens.id
+            : null,
+        frameName: selectedLens?.name || "",
+        framePrice: selectedLens?.price || 0,
+        isPlaneGlass: selectedLens?.id === "plane",
+      };
       if (selectedPower) {
         payload.selectedPower = selectedPower;
       }
@@ -114,7 +129,7 @@ export function AddToCartButton({ product, compact = false }) {
       )}
     >
       {!compact && (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {/* Minimalist Quantity Pill */}
           <div className="flex items-center bg-white dark:bg-muted rounded-full border border-border shadow-sm px-2 py-1 h-14">
             <Button
@@ -140,14 +155,14 @@ export function AddToCartButton({ product, compact = false }) {
             </Button>
           </div>
 
-          <div className="flex-1 flex flex-col justify-center">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 leading-none mb-1">
+          {/* Total Price Display */}
+          <div className="flex flex-col">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 leading-none mb-1">
               Total
-            </p>
-            <p className="text-xl font-bold tracking-tight">
-              ₹
-              {((product.discountPrice || product.price) * quantity).toFixed(2)}
-            </p>
+            </span>
+            <span className="text-xl font-bold tracking-tight text-primary">
+              ₹{((product.discountPrice || product.price) * quantity).toFixed(2)}
+            </span>
           </div>
         </div>
       )}

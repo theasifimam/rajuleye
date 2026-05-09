@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import Otp from '../models/otp.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { generateOTP } from '../utils/generateOTP.js';
-import { sendOTPEmail } from '../utils/sendEmail.js';
+import { sendOTPSMS } from '../utils/sendSMS.js';
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -28,18 +27,18 @@ const generateTokens = (userId, role) => {
 
 // POST /api/v1/auth/register
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, mobile, password } = req.body;
 
-  if (!name || !email || !password) throw new ApiError(400, 'Name, email and password are required');
+  if (!name || !mobile || !password) throw new ApiError(400, 'Name, mobile and password are required');
   if (password.length < 6) throw new ApiError(400, 'Password must be at least 6 characters');
 
-  const existing = await User.findOne({ email, isDeleted: false });
-  if (existing && existing.isEmailVerified) throw new ApiError(409, 'Email already registered');
+  const existing = await User.findOne({ mobile, isDeleted: false });
+  if (existing && existing.isMobileVerified) throw new ApiError(409, 'Mobile number already registered');
 
   // Upsert unverified user
   let user = existing;
   if (!user) {
-    user = new User({ name, email, password });
+    user = new User({ name, mobile, password });
   } else {
     user.name = name;
     user.password = password;
@@ -49,20 +48,20 @@ export const register = asyncHandler(async (req, res) => {
   // Generate and store OTP
   const otp = generateOTP();
   const expiresAt = new Date(Date.now() + Number(process.env.OTP_EXPIRY_MINUTES ?? 10) * 60 * 1000);
-  await Otp.findOneAndDelete({ email, purpose: 'email-verify' });
-  await Otp.create({ email, otp, purpose: 'email-verify', expiresAt });
+  await Otp.findOneAndDelete({ mobile, purpose: 'mobile-verify' });
+  await Otp.create({ mobile, otp, purpose: 'mobile-verify', expiresAt });
 
-  await sendOTPEmail(email, otp, 'verify');
+  await sendOTPSMS(mobile, otp, 'verify');
 
-  res.status(201).json(new ApiResponse('Registration successful. OTP sent to your email.', { email }));
+  res.status(201).json(new ApiResponse('Registration successful. OTP sent to your mobile.', { mobile }));
 });
 
 // POST /api/v1/auth/verify-email
-export const verifyEmail = asyncHandler(async (req, res) => {
-  const { email, otp } = req.body;
-  if (!email || !otp) throw new ApiError(400, 'Email and OTP are required');
+export const verifyMobile = asyncHandler(async (req, res) => {
+  const { mobile, otp } = req.body;
+  if (!mobile || !otp) throw new ApiError(400, 'Mobile and OTP are required');
 
-  const otpDoc = await Otp.findOne({ email, purpose: 'email-verify' });
+  const otpDoc = await Otp.findOne({ mobile, purpose: 'mobile-verify' });
   if (!otpDoc) throw new ApiError(400, 'OTP expired or not found. Please register again.');
 
   if (otpDoc.attempts >= 5) {
@@ -79,10 +78,10 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 
   await otpDoc.deleteOne();
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ mobile });
   if (!user) throw new ApiError(404, 'User not found');
 
-  user.isEmailVerified = true;
+  user.isMobileVerified = true;
   const { accessToken, refreshToken } = generateTokens(user._id.toString(), user.role);
   user.refreshToken = refreshToken;
   await user.save();
@@ -92,24 +91,24 @@ export const verifyEmail = asyncHandler(async (req, res) => {
     .cookie('refreshToken', refreshToken, { ...COOKIE_OPTIONS, maxAge: 7 * 24 * 60 * 60 * 1000 })
     .status(200)
     .json(
-      new ApiResponse('Email verified. Welcome!', {
+      new ApiResponse('Mobile verified. Welcome!', {
         accessToken,
-        user: { id: user._id, name: user.name, email: user.email, role: user.role },
+        user: { id: user._id, name: user.name, mobile: user.mobile, role: user.role },
       })
     );
 });
 
 // POST /api/v1/auth/login
 export const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) throw new ApiError(400, 'Email and password are required');
+  const { mobile, password } = req.body;
+  if (!mobile || !password) throw new ApiError(400, 'Mobile and password are required');
 
-  const user = await User.findOne({ email, isDeleted: false }).select('+password');
-  if (!user) throw new ApiError(401, 'Invalid email or password');
-  if (!user.isEmailVerified) throw new ApiError(403, 'Please verify your email before logging in');
+  const user = await User.findOne({ mobile, isDeleted: false }).select('+password');
+  if (!user) throw new ApiError(401, 'Invalid mobile or password');
+  if (!user.isMobileVerified) throw new ApiError(403, 'Please verify your mobile before logging in');
 
   const isMatch = await user.comparePassword(password);
-  if (!isMatch) throw new ApiError(401, 'Invalid email or password');
+  if (!isMatch) throw new ApiError(401, 'Invalid mobile or password');
 
   const { accessToken, refreshToken } = generateTokens(user._id.toString(), user.role);
   user.refreshToken = refreshToken;
@@ -122,36 +121,36 @@ export const login = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse('Login successful', {
         accessToken,
-        user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
+        user: { id: user._id, name: user.name, mobile: user.mobile, role: user.role, avatar: user.avatar },
       })
     );
 });
 
 // POST /api/v1/auth/forgot-password
 export const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body;
-  if (!email) throw new ApiError(400, 'Email is required');
+  const { mobile } = req.body;
+  if (!mobile) throw new ApiError(400, 'Mobile number is required');
 
-  const user = await User.findOne({ email, isEmailVerified: true, isDeleted: false });
-  if (!user) throw new ApiError(404, 'No verified account with this email');
+  const user = await User.findOne({ mobile, isMobileVerified: true, isDeleted: false });
+  if (!user) throw new ApiError(404, 'No verified account with this mobile number');
 
   const otp = generateOTP();
   const expiresAt = new Date(Date.now() + Number(process.env.OTP_EXPIRY_MINUTES ?? 10) * 60 * 1000);
-  await Otp.findOneAndDelete({ email, purpose: 'password-reset' });
-  await Otp.create({ email, otp, purpose: 'password-reset', expiresAt });
+  await Otp.findOneAndDelete({ mobile, purpose: 'password-reset' });
+  await Otp.create({ mobile, otp, purpose: 'password-reset', expiresAt });
 
-  await sendOTPEmail(email, otp, 'reset');
+  await sendOTPSMS(mobile, otp, 'reset');
 
-  res.status(200).json(new ApiResponse('Password reset OTP sent to your email', { email }));
+  res.status(200).json(new ApiResponse('Password reset OTP sent to your mobile', { mobile }));
 });
 
 // POST /api/v1/auth/reset-password
 export const resetPassword = asyncHandler(async (req, res) => {
-  const { email, otp, newPassword } = req.body;
-  if (!email || !otp || !newPassword) throw new ApiError(400, 'Email, OTP and new password are required');
+  const { mobile, otp, newPassword } = req.body;
+  if (!mobile || !otp || !newPassword) throw new ApiError(400, 'Mobile, OTP and new password are required');
   if (newPassword.length < 6) throw new ApiError(400, 'Password must be at least 6 characters');
 
-  const otpDoc = await Otp.findOne({ email, purpose: 'password-reset' });
+  const otpDoc = await Otp.findOne({ mobile, purpose: 'password-reset' });
   if (!otpDoc) throw new ApiError(400, 'OTP expired or not found');
 
   if (otpDoc.attempts >= 5) {
@@ -168,7 +167,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
   await otpDoc.deleteOne();
 
-  const user = await User.findOne({ email, isDeleted: false });
+  const user = await User.findOne({ mobile, isDeleted: false });
   if (!user) throw new ApiError(404, 'User not found');
 
   user.password = newPassword;

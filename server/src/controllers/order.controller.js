@@ -24,7 +24,9 @@ export const createOrder = asyncHandler(async (req, res) => {
     if (!product.isActive) throw new ApiError(400, `Product "${product.name}" is no longer available`);
     if (product.stock < item.qty) throw new ApiError(400, `Insufficient stock for "${product.name}"`);
 
-    const itemPrice = product.price - (product.price * product.discount) / 100;
+    const glassPrice = product.price - (product.price * product.discount) / 100;
+    const framePrice = item.framePrice || 0;
+    const itemPrice = glassPrice + framePrice;
     totalAmount += itemPrice * item.qty;
 
     orderItems.push({
@@ -36,11 +38,18 @@ export const createOrder = asyncHandler(async (req, res) => {
       lensType: item.lensType,
       lensCoating: item.lensCoating,
       selectedPower: item.selectedPower,
+      frameId: item.frameId || null,
+      frameName: item.frameName || '',
+      framePrice: framePrice,
+      isPlaneGlass: item.isPlaneGlass || false,
     });
 
     // Decrement stock
     await Product.findByIdAndUpdate(product._id, { $inc: { stock: -item.qty } });
   }
+
+  const taxAmount = totalAmount * 0.08;
+  const finalAmount = totalAmount + taxAmount;
 
   const order = await Order.create({
     user: req.user.id,
@@ -49,7 +58,7 @@ export const createOrder = asyncHandler(async (req, res) => {
     paymentMethod,
     totalAmount,
     discountAmount: 0,
-    finalAmount: totalAmount,
+    finalAmount: finalAmount,
     notes,
   });
 
@@ -119,14 +128,23 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 
   const isAuthentic = expectedSignature === razorpay_signature;
 
-  if (!isAuthentic) {
-    order.paymentStatus = 'failed';
-    await order.save();
-    throw new ApiError(400, 'Invalid Payment Signature');
-  }
-
+  // Always capture payment details for tracking
   order.razorpayPaymentId = razorpay_payment_id;
   order.razorpaySignature = razorpay_signature;
+
+  if (!isAuthentic) {
+    order.paymentStatus = 'failed';
+    order.orderStatus = 'cancelled'; // Mark as cancelled since payment failed
+    
+    // Restore stock
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.product, { $inc: { stock: item.qty } });
+    }
+    
+    await order.save();
+    throw new ApiError(400, 'Invalid Payment Signature. Order failed and cancelled.');
+  }
+
   order.paymentStatus = 'paid';
   order.orderStatus = 'confirmed';
   order.paidAt = new Date();

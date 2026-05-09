@@ -10,6 +10,7 @@ import { wishlistApi } from './wishlistApi';
 import { cartApi } from './cartApi';
 import { orderApi } from './orderApi';
 import { reviewApi } from './reviewApi';
+import { frameApi } from './frameApi';
 export const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -21,8 +22,9 @@ export const store = configureStore({
         [cartApi.reducerPath]: cartApi.reducer,
         [orderApi.reducerPath]: orderApi.reducer,
         [reviewApi.reducerPath]: reviewApi.reducer,
+        [frameApi.reducerPath]: frameApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, bannerApi.middleware, categoryApi.middleware, productApi.middleware, wishlistApi.middleware, cartApi.middleware, orderApi.middleware, reviewApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, bannerApi.middleware, categoryApi.middleware, productApi.middleware, wishlistApi.middleware, cartApi.middleware, orderApi.middleware, reviewApi.middleware, frameApi.middleware),
 });
 export const useAppDispatch = useDispatch;
 export const useAppSelector = useSelector;

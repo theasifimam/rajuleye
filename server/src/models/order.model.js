@@ -13,6 +13,11 @@ const OrderItemSchema = new Schema(
       left: { sphere: String, cylinder: String, axis: String },
       right: { sphere: String, cylinder: String, axis: String },
     },
+    // Frame selection
+    frameId: { type: Schema.Types.ObjectId, ref: 'Frame' },
+    frameName: { type: String, default: '' },
+    framePrice: { type: Number, default: 0 },
+    isPlaneGlass: { type: Boolean, default: false },
   },
   { _id: false }
 );

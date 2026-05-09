@@ -40,14 +40,14 @@ const EyePowerSchema = new Schema(
 const UserSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    email: { type: String, lowercase: true, trim: true },
     password: { type: String, required: true, select: false },
-    mobile: { type: String, trim: true },
+    mobile: { type: String, required: true, unique: true, trim: true },
     gender: { type: String, enum: ['male', 'female', 'other'] },
     dateOfBirth: { type: Date },
     avatar: { type: String },
     role: { type: String, enum: ['user', 'admin', 'moderator'], default: 'user' },
-    isEmailVerified: { type: Boolean, default: false },
+    isMobileVerified: { type: Boolean, default: false },
     addresses: { type: [AddressSchema], default: [] },
     eyePower: { type: EyePowerSchema },
     wishlist: [{ type: Schema.Types.ObjectId, ref: 'Product' }],

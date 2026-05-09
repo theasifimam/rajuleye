@@ -2,9 +2,9 @@ import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const OtpSchema = new Schema({
-  email: { type: String, required: true, index: true },
+  mobile: { type: String, required: true, index: true },
   otp: { type: String, required: true },
-  purpose: { type: String, enum: ['email-verify', 'password-reset', 'account-deletion'], required: true },
+  purpose: { type: String, enum: ['mobile-verify', 'password-reset', 'account-deletion'], required: true },
   expiresAt: { type: Date, required: true, index: { expireAfterSeconds: 0 } },
   attempts: { type: Number, default: 0 },
 });

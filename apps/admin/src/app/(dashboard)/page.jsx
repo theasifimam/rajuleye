@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React from 'react';
-import { TrendingUp, Users, ShoppingBag, DollarSign, ArrowUpRight, ArrowDownRight, Clock, CheckCircle2, AlertCircle, Activity, ArrowRight, Loader2 } from 'lucide-react';
+import { TrendingUp, Users, ShoppingBag, IndianRupee, ArrowUpRight, ArrowDownRight, Clock, CheckCircle2, AlertCircle, Activity, ArrowRight, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/admin/PageHeader';
@@ -15,7 +15,7 @@ export default function DashboardPage() {
             value: `₹${(dashboardData?.totalRevenue || 0).toLocaleString()}`,
             change: `${(dashboardData?.growth || 0) > 0 ? '+' : ''}${(dashboardData?.growth || 0).toFixed(1)}%`,
             isPositive: (dashboardData?.growth || 0) >= 0,
-            icon: DollarSign,
+            icon: IndianRupee,
             color: 'primary',
             description: 'vs. last month'
         },

@@ -42,8 +42,8 @@ export const authApi = createApi({
         register: builder.mutation({
             query: (body) => ({ url: '/auth/register', method: 'POST', body }),
         }),
-        verifyEmail: builder.mutation({
-            query: (body) => ({ url: '/auth/verify-email', method: 'POST', body }),
+        verifyMobile: builder.mutation({
+            query: (body) => ({ url: '/auth/verify-mobile', method: 'POST', body }),
         }),
         login: builder.mutation({
             query: (body) => ({ url: '/auth/login', method: 'POST', body }),
@@ -150,4 +150,4 @@ export const authApi = createApi({
         }),
     }),
 });
-export const { useRegisterMutation, useVerifyEmailMutation, useLoginMutation, useLogoutMutation, useForgotPasswordMutation, useResetPasswordMutation, useGetProfileQuery, useUpdateProfileMutation, useUpdateEyePowerMutation, useAddAddressMutation, useUpdateAddressMutation, useDeleteAddressMutation, useRequestAccountDeletionMutation, useDeleteAccountMutation, } = authApi;
+export const { useRegisterMutation, useVerifyMobileMutation, useLoginMutation, useLogoutMutation, useForgotPasswordMutation, useResetPasswordMutation, useGetProfileQuery, useUpdateProfileMutation, useUpdateEyePowerMutation, useAddAddressMutation, useUpdateAddressMutation, useDeleteAddressMutation, useRequestAccountDeletionMutation, useDeleteAccountMutation, } = authApi;

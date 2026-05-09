@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, Package } from 'lucide-react';
+import { IndianRupee, Package } from 'lucide-react';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,7 +10,7 @@ export function PricingTab({ control }) {
                             <FormLabel tooltip="The standard retail price before any discounts or promotions." className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">MSRP / Base Price</FormLabel>
                             <FormControl>
                                 <div className="relative group/field">
-                                    <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within/field:text-primary transition-colors"/>
+                                    <IndianRupee className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within/field:text-primary transition-colors"/>
                                     <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} className="h-11 pl-11 rounded-xl bg-muted/30 border-none font-medium focus-visible:ring-2 focus-visible:ring-primary/20 transition-all"/>
                                 </div>
                             </FormControl>

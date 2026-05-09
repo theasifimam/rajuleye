@@ -15,7 +15,7 @@ export const getCart = asyncHandler(async (req, res) => {
 
 // POST /api/v1/cart/add
 export const addToCart = asyncHandler(async (req, res) => {
-  const { productId, qty = 1, lensType, lensCoating, selectedPower } = req.body;
+  const { productId, qty = 1, lensType, lensCoating, selectedPower, frameId, frameName, framePrice = 0, isPlaneGlass = false } = req.body;
 
   if (!productId) throw new ApiError(400, 'Product ID is required');
 
@@ -23,22 +23,30 @@ export const addToCart = asyncHandler(async (req, res) => {
   if (!product || !product.isActive) throw new ApiError(404, 'Product not found or unavailable');
   if (product.stock < qty) throw new ApiError(400, `Only ${product.stock} items in stock`);
 
-  const finalPrice = product.price - (product.price * product.discount) / 100;
+  // Glass price = product price after discount
+  const glassPrice = product.price - (product.price * product.discount) / 100;
+  // Frame price (plane glass = free)
+  const resolvedFramePrice = isPlaneGlass ? 0 : (framePrice || 0);
+  const finalPrice = glassPrice + resolvedFramePrice;
 
   let cart = await Cart.findOne({ user: req.user.id });
   if (!cart) {
     cart = new Cart({ user: req.user.id, items: [] });
   }
 
-  const existingItem = cart.items.find((i) => i.product.toString() === productId);
+  const existingItem = cart.items.find((i) => i.product && i.product.toString() === productId);
   if (existingItem) {
     existingItem.qty = qty;
     existingItem.priceAtAdd = finalPrice;
     if (lensType) existingItem.lensType = lensType;
     if (lensCoating) existingItem.lensCoating = lensCoating;
     if (selectedPower) existingItem.selectedPower = selectedPower;
+    existingItem.frameId = frameId || null;
+    existingItem.frameName = frameName || '';
+    existingItem.framePrice = resolvedFramePrice;
+    existingItem.isPlaneGlass = isPlaneGlass;
   } else {
-    cart.items.push({ product: product._id , qty, priceAtAdd: finalPrice, lensType, lensCoating, selectedPower } );
+    cart.items.push({ product: product._id, qty, priceAtAdd: finalPrice, lensType, lensCoating, selectedPower, frameId: frameId || null, frameName: frameName || '', framePrice: resolvedFramePrice, isPlaneGlass });
   }
 
   await cart.save();
