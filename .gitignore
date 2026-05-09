@@ -40,4 +40,9 @@ ios/
 *.apk
 *.ipa
 
+deploy/web/apps/web/.next
+deploy/admin/.next
+node_modules
+.env
+
 
