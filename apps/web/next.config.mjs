@@ -13,11 +13,8 @@ const nextConfig = {
         ],
     },
     async rewrites() {
-        const isProd = process.env.NODE_ENV === 'production';
-        const apiBase = process.env.NEXT_PUBLIC_API_URL || (isProd ? '' : "http://localhost:5000");
-
-        // If no API base is defined in production, we skip rewrites to avoid contacting localhost
-        if (isProd && !apiBase) return [];
+        // Use internal URL for server-to-server communication to avoid SSL loopback issues
+        const apiBase = process.env.INTERNAL_API_URL || "http://localhost:5000";
 
         return [
             {
