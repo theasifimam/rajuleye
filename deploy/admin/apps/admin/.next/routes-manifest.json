@@ -110,42 +110,6 @@
       "namedRegex": "^/settings(?:/)?$"
     },
     {
-      "page": "/settings/admin-id",
-      "regex": "^/settings/admin\\-id(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/admin\\-id(?:/)?$"
-    },
-    {
-      "page": "/settings/alerts",
-      "regex": "^/settings/alerts(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/alerts(?:/)?$"
-    },
-    {
-      "page": "/settings/localization",
-      "regex": "^/settings/localization(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/localization(?:/)?$"
-    },
-    {
-      "page": "/settings/payments",
-      "regex": "^/settings/payments(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/payments(?:/)?$"
-    },
-    {
-      "page": "/settings/profile",
-      "regex": "^/settings/profile(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/profile(?:/)?$"
-    },
-    {
-      "page": "/settings/security",
-      "regex": "^/settings/security(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/settings/security(?:/)?$"
-    },
-    {
       "page": "/support",
       "regex": "^/support(?:/)?$",
       "routeKeys": {},

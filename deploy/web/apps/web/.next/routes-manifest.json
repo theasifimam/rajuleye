@@ -39,6 +39,14 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/product/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/[...collection]",
+      "regex": "^/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPcollection": "nxtPcollection"
+      },
+      "namedRegex": "^/(?<nxtPcollection>.+?)(?:/)?$"
     }
   ],
   "staticRoutes": [

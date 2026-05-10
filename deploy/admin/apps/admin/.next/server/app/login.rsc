@@ -1,27 +1,28 @@
 1:"$Sreact.fragment"
-2:I[92634,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c680644968b9f8c7.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"StoreProvider"]
-3:I[41245,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c680644968b9f8c7.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"ThemeProvider"]
-4:I[9766,[],""]
-5:I[98924,[],""]
-6:I[28811,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c680644968b9f8c7.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"Toaster"]
-7:I[17989,[],"ClientSegmentRoot"]
-8:I[40612,["2619","static/chunks/2619-04bc32f026a0d946.js","4492","static/chunks/4492-0d0f6b77b1ff751f.js","362","static/chunks/362-53f55c05e8195f99.js","9097","static/chunks/app/(auth)/layout-c2b270f69d80c8ac.js"],"default"]
-a:I[81959,[],"ClientPageRoot"]
-b:I[18877,["8909","static/chunks/8909-69f57f1bae9ada6d.js","1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","2619","static/chunks/2619-04bc32f026a0d946.js","77","static/chunks/77-c680644968b9f8c7.js","72","static/chunks/app/(auth)/login/page-a78ee330e1072506.js"],"default"]
-e:I[24431,[],"OutletBoundary"]
-10:I[15278,[],"AsyncMetadataOutlet"]
-12:I[24431,[],"ViewportBoundary"]
-14:I[24431,[],"MetadataBoundary"]
-15:"$Sreact.suspense"
-17:I[57150,[],""]
+3:I[17989,[],"ClientSegmentRoot"]
+4:I[40612,["2619","static/chunks/2619-04bc32f026a0d946.js","4492","static/chunks/4492-0d0f6b77b1ff751f.js","362","static/chunks/362-53f55c05e8195f99.js","9097","static/chunks/app/(auth)/layout-c2b270f69d80c8ac.js"],"default"]
+5:I[9766,[],""]
+6:I[98924,[],""]
+8:I[81959,[],"ClientPageRoot"]
+9:I[18936,["8909","static/chunks/8909-69f57f1bae9ada6d.js","1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","2619","static/chunks/2619-04bc32f026a0d946.js","77","static/chunks/77-c20c5b689dc8b171.js","72","static/chunks/app/(auth)/login/page-a9405de273acb9dc.js"],"default"]
+c:I[24431,[],"OutletBoundary"]
+e:I[15278,[],"AsyncMetadataOutlet"]
+10:I[24431,[],"ViewportBoundary"]
+12:I[24431,[],"MetadataBoundary"]
+13:"$Sreact.suspense"
+15:I[57150,[],""]
 :HL["/_next/static/css/de70bee13400563f.css","style"]
-:HL["/_next/static/css/f9c167043ad25fe3.css","style"]
-0:{"P":null,"b":"brojy0EsCNkAt1uHKXzQ6","p":"","c":["","login"],"i":false,"f":[[["",{"children":["(auth)",{"children":["login",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/de70bee13400563f.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/f9c167043ad25fe3.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased font-sans","children":["$","$L2",null,{"children":["$","$L3",null,{"attribute":"class","defaultTheme":"system","enableSystem":true,"children":[["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"flex flex-col items-center justify-center min-h-screen","children":[["$","h1",null,{"className":"text-4xl font-bold mb-4","children":"404 - Not Found"}],["$","p",null,{"className":"text-muted-foreground","children":"The resource you requested could not be found."}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L6",null,{"position":"bottom-right","closeButton":true}]]}]}]}]}]]}],{"children":["(auth)",["$","$1","c",{"children":[null,["$","$L7",null,{"Component":"$8","slots":{"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]},"params":{},"promise":"$@9"}]]}],{"children":["login",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$La",null,{"Component":"$b","searchParams":{},"params":"$0:f:0:1:2:children:1:props:children:1:props:params","promises":["$@c","$@d"]}],null,["$","$Le",null,{"children":["$Lf",["$","$L10",null,{"promise":"$@11"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L12",null,{"children":"$L13"}],null],["$","$L14",null,{"children":["$","div",null,{"hidden":true,"children":["$","$15",null,{"fallback":null,"children":"$L16"}]}]}]]}],false]],"m":"$undefined","G":["$17",[]],"s":false,"S":true}
-9:"$0:f:0:1:2:children:1:props:children:1:props:params"
-c:{}
-d:"$0:f:0:1:2:children:1:props:children:1:props:params"
-13:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-f:null
-18:I[80622,[],"IconMark"]
-11:{"metadata":[["$","title","0",{"children":"RajulEye | Admin Panel"}],["$","meta","1",{"name":"description","content":"Premium E-commerce Admin Dashboard"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L18","3",{}]],"error":null,"digest":"$undefined"}
-16:"$11:metadata"
+:HL["/_next/static/css/7e0c3d55d21a3aa7.css","style"]
+0:{"P":null,"b":"ISqfCdU4zzfCzE4rr1cyG","p":"","c":["","login"],"i":false,"f":[[["",{"children":["(auth)",{"children":["login",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/de70bee13400563f.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/_next/static/css/7e0c3d55d21a3aa7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],"$L2"]}],{"children":["(auth)",["$","$1","c",{"children":[null,["$","$L3",null,{"Component":"$4","slots":{"children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]},"params":{},"promise":"$@7"}]]}],{"children":["login",["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L8",null,{"Component":"$9","searchParams":{},"params":"$0:f:0:1:2:children:1:props:children:1:props:params","promises":["$@a","$@b"]}],null,["$","$Lc",null,{"children":["$Ld",["$","$Le",null,{"promise":"$@f"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$L10",null,{"children":"$L11"}],null],["$","$L12",null,{"children":["$","div",null,{"hidden":true,"children":["$","$13",null,{"fallback":null,"children":"$L14"}]}]}]]}],false]],"m":"$undefined","G":["$15",[]],"s":false,"S":true}
+7:"$0:f:0:1:2:children:1:props:children:1:props:params"
+a:{}
+b:"$0:f:0:1:2:children:1:props:children:1:props:params"
+11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+d:null
+16:I[80622,[],"IconMark"]
+f:{"metadata":[["$","title","0",{"children":"RajulEye | Admin Panel"}],["$","meta","1",{"name":"description","content":"Premium E-commerce Admin Dashboard"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L16","3",{}]],"error":null,"digest":"$undefined"}
+14:"$f:metadata"
+17:I[92634,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c20c5b689dc8b171.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"StoreProvider"]
+18:I[41245,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c20c5b689dc8b171.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"ThemeProvider"]
+19:I[28811,["1321","static/chunks/1321-3bbf9c4051d6f2e6.js","8720","static/chunks/8720-c9ee040177c11cae.js","77","static/chunks/77-c20c5b689dc8b171.js","7177","static/chunks/app/layout-02ed3ad171b5287f.js"],"Toaster"]
+2:["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 antialiased font-sans","style":{"--primary":"#ffea00","--sidebar-primary":"#ffea00"},"children":["$","$L17",null,{"children":["$","$L18",null,{"attribute":"class","defaultTheme":"system","enableSystem":true,"children":[["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"flex flex-col items-center justify-center min-h-screen","children":[["$","h1",null,{"className":"text-4xl font-bold mb-4","children":"404 - Not Found"}],["$","p",null,{"className":"text-muted-foreground","children":"The resource you requested could not be found."}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L19",null,{"position":"bottom-right","closeButton":true}]]}]}]}]}]
