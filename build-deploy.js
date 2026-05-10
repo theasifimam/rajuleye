@@ -2,12 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// Load environment variables for the build process
-try {
-  const dotenvPath = path.join(__dirname, 'server', 'node_modules', 'dotenv');
-  require(dotenvPath).config({ path: path.join(__dirname, '.env') });
-} catch (err) {
-  console.warn('dotenv not found in server/node_modules, build may lack environment variables');
+// Load environment variables for the build process manually to avoid dotenv dependency issues
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  const content = fs.readFileSync(envPath, 'utf-8');
+  content.split('\n').forEach(line => {
+    // Only process lines that have an equals sign and aren't commented out
+    if (line.includes('=') && !line.trim().startsWith('#')) {
+      const parts = line.split('=');
+      const key = parts[0].trim();
+      const value = parts.slice(1).join('=').trim().replace(/^["']|["']$/g, '');
+      if (key && value && !process.env[key]) {
+        process.env[key] = value;
+      }
+    }
+  });
+} else {
+  console.warn('.env file not found, build may lack environment variables');
 }
 
 function buildAndPrepare(appName) {
