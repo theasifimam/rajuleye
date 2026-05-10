@@ -46,6 +46,8 @@ export function ProductCard({ product }) {
         (p) => p.id === product.id || p._id === product.id,
       )
     : false;
+  const isEyeglasses = product.type === "eyeglasses";
+
   const discountPercent = product.discountPrice
     ? Math.round(
         ((product.price - product.discountPrice) / product.price) * 100,
@@ -259,15 +261,21 @@ export function ProductCard({ product }) {
         <div className="absolute inset-x-4 bottom-4 z-10 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 hidden sm:flex gap-2">
           <Button
             onClick={(e) => {
-              handleAddToCart(e, () => {
-                toast.success("Proceeding to checkout...");
-                router.push("/checkout");
-              });
+              e.preventDefault();
+              e.stopPropagation();
+              if (isEyeglasses) {
+                router.push(`/product/${product.slug || product.id}`);
+              } else {
+                handleAddToCart(e, () => {
+                  toast.success("Proceeding to checkout...");
+                  router.push("/checkout");
+                });
+              }
             }}
             disabled={!product.inStock}
             className="flex-2 h-12 rounded-3xl font-black text-[10px] uppercase tracking-[0.2em] bg-primary text-primary-foreground hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/20 border-none"
           >
-            Buy Now
+            {isEyeglasses ? "Select Power" : "Buy Now"}
           </Button>
           <Button
             onClick={(e) => handleAddToCart(e)}
@@ -319,11 +327,19 @@ export function ProductCard({ product }) {
       {/* Mobile Action Buttons (Only visible on small screens) */}
       <div className="sm:hidden px-1 mt-2">
         <Button
-          onClick={(e) => handleAddToCart(e)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isEyeglasses) {
+              router.push(`/product/${product.slug || product.id}`);
+            } else {
+              handleAddToCart(e);
+            }
+          }}
           disabled={!product.inStock}
           className="w-full h-9 rounded-2xl font-black text-[9px] uppercase tracking-widest bg-primary text-primary-foreground shadow-lg shadow-primary/10"
         >
-          Add to Cart
+          {isEyeglasses ? "Select Power" : "Add to Cart"}
         </Button>
       </div>
 

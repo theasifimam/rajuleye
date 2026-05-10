@@ -33,13 +33,8 @@ const menuItems = [
     label: "Settings",
     href: "/settings",
     subItems: [
-      { label: "Web App Setup", href: "/settings" },
-      { label: "Boutique Profile", href: "/settings/profile" },
-      { label: "Administrative ID", href: "/settings/admin-id" },
-      { label: "Security Fortress", href: "/settings/security" },
-      { label: "Alert Protocols", href: "/settings/alerts" },
-      { label: "Payment Engines", href: "/settings/payments" },
-      { label: "Global Localization", href: "/settings/localization" },
+      { label: "Website Setup", href: "/settings" },
+      { label: "Business Profile", href: "/settings" },
     ],
   },
 ];

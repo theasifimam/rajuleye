@@ -71,25 +71,37 @@ export function ProductInfo({
 
 
       {/* Optional Varieties */}
-      {(product.frameColor || product.size?.lensWidth || product.lensType) && (
-        <div className="flex flex-wrap gap-2 pt-2">
-          {product.frameColor && (
-            <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
-              {product.frameColor}
-            </span>
-          )}
-          {product.size?.lensWidth && (
-            <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
-              Size: {product.size.lensWidth}mm
-            </span>
-          )}
-          {product.lensType && (
-            <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
-              Power: {product.lensType.replace(/-/g, " ")}
-            </span>
-          )}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2 pt-2">
+        {product.gender && product.gender.length > 0 && (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            {product.gender.join(", ")}
+          </span>
+        )}
+        {product.colors && product.colors.length > 0 ? (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            {product.colors.join(", ")}
+          </span>
+        ) : product.frameColor && (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            {product.frameColor}
+          </span>
+        )}
+        {product.materials && product.materials.length > 0 && (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            {product.materials.join(", ").replace(/-/g, " ")}
+          </span>
+        )}
+        {product.styles && product.styles.length > 0 && (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            {product.styles.join(", ").replace(/-/g, " ")}
+          </span>
+        )}
+        {product.size?.lensWidth && (
+          <span className="text-[11px] font-bold uppercase tracking-widest text-primary/80 bg-primary/10 rounded-full px-3 py-1">
+            Size: {product.size.lensWidth}mm
+          </span>
+        )}
+      </div>
 
     </div>
   );

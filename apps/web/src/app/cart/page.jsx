@@ -160,6 +160,17 @@ export default function CartPage() {
                           ? item.product.category.name
                           : item.product?.category || "Vision"}
                       </p>
+                      {item.lensType && (
+                        <p className="text-[10px] font-bold text-primary/70 mt-0.5">
+                          Lens: {item.lensType}
+                          {item.frameName && item.frameName !== 'Plane Glass' ? ` • Frame: ${item.frameName}` : ''}
+                        </p>
+                      )}
+                      {item.powerSubmissionMethod && (
+                        <p className="text-[10px] font-bold text-indigo-600 mt-0.5">
+                          Power: {item.powerSubmissionMethod === 'saved' ? '✓ Saved' : item.powerSubmissionMethod === 'manual' ? '✏️ Manual' : item.powerSubmissionMethod === 'upload' ? '📄 Uploaded' : item.powerSubmissionMethod === 'whatsapp' ? '💬 WhatsApp' : '⏭ Skipped'}
+                        </p>
+                      )}
                     </div>
                     <div className="text-right">
                       <p className="font-black text-xl md:text-2xl shrink-0 tracking-tighter">

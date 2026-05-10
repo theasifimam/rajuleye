@@ -21,6 +21,11 @@ const OrderItemSchema = new Schema(
     frameName: { type: String, default: '' },
     framePrice: { type: Number, default: 0 },
     isPlaneGlass: { type: Boolean, default: false },
+    powerSubmissionMethod: {
+      type: String,
+      enum: ['saved', 'manual', 'upload', 'whatsapp', 'skip', null],
+      default: null,
+    },
   },
   { _id: false }
 );

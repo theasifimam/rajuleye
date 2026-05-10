@@ -10,7 +10,14 @@ const CartItemSchema = new Schema(
     selectedPower: {
       left: { sphere: String, cylinder: String, axis: String },
       right: { sphere: String, cylinder: String, axis: String },
+      name: String,
+      phone: String,
       prescriptionImage: String,
+    },
+    powerSubmissionMethod: {
+      type: String,
+      enum: ['saved', 'manual', 'upload', 'whatsapp', 'skip', null],
+      default: null,
     },
     // Frame selection
     frameId: { type: Schema.Types.ObjectId, ref: 'Frame' },

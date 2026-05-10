@@ -15,7 +15,7 @@ export const getCart = asyncHandler(async (req, res) => {
 
 // POST /api/v1/cart/add
 export const addToCart = asyncHandler(async (req, res) => {
-  const { productId, qty = 1, lensType, lensCoating, selectedPower, frameId, frameName, framePrice = 0, isPlaneGlass = false } = req.body;
+  const { productId, qty = 1, lensType, lensCoating, selectedPower, powerSubmissionMethod, frameId, frameName, framePrice = 0, isPlaneGlass = false } = req.body;
 
   if (!productId) throw new ApiError(400, 'Product ID is required');
 
@@ -41,12 +41,13 @@ export const addToCart = asyncHandler(async (req, res) => {
     if (lensType) existingItem.lensType = lensType;
     if (lensCoating) existingItem.lensCoating = lensCoating;
     if (selectedPower) existingItem.selectedPower = selectedPower;
+    if (powerSubmissionMethod) existingItem.powerSubmissionMethod = powerSubmissionMethod;
     existingItem.frameId = frameId || null;
     existingItem.frameName = frameName || '';
     existingItem.framePrice = resolvedFramePrice;
     existingItem.isPlaneGlass = isPlaneGlass;
   } else {
-    cart.items.push({ product: product._id, qty, priceAtAdd: finalPrice, lensType, lensCoating, selectedPower, frameId: frameId || null, frameName: frameName || '', framePrice: resolvedFramePrice, isPlaneGlass });
+    cart.items.push({ product: product._id, qty, priceAtAdd: finalPrice, lensType, lensCoating, selectedPower, powerSubmissionMethod: powerSubmissionMethod || null, frameId: frameId || null, frameName: frameName || '', framePrice: resolvedFramePrice, isPlaneGlass });
   }
 
   await cart.save();

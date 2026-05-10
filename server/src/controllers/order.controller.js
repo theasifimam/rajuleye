@@ -42,6 +42,7 @@ export const createOrder = asyncHandler(async (req, res) => {
       frameName: item.frameName || '',
       framePrice: framePrice,
       isPlaneGlass: item.isPlaneGlass || false,
+      powerSubmissionMethod: item.powerSubmissionMethod || null,
     });
 
     // Decrement stock

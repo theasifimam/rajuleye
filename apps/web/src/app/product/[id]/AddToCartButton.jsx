@@ -57,9 +57,7 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
       return;
     }
 
-    if (
-      ["eyeglasses", "contact-lenses", "reading-glasses"].includes(product.type)
-    ) {
+    if (selectedLens && selectedLens.id !== "plane") {
       setPendingCallback(() => callback);
       setIsPowerDialogOpen(true);
       return;
@@ -68,7 +66,7 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
     proceedToCart(callback);
   };
 
-  const proceedToCart = async (callback, selectedPower = null) => {
+  const proceedToCart = async (callback, selectedPower = null, powerSubmissionMethod = null) => {
     setIsAdding(true);
     try {
       const payload = {
@@ -85,6 +83,9 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
       };
       if (selectedPower) {
         payload.selectedPower = selectedPower;
+      }
+      if (powerSubmissionMethod) {
+        payload.powerSubmissionMethod = powerSubmissionMethod;
       }
       await addToCartMutation(payload).unwrap();
       if (callback) {
@@ -224,9 +225,12 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
 
         <Button
           onClick={() => {
-            if (product.type === "eyeglasses") {
+            const isNonPlaneLens = selectedLens && selectedLens.id !== "plane";
+            if (isNonPlaneLens) {
+              // Non-plane lens selected → go to select power page
               router.push(`/select-power?product=${product.id}&lens=${selectedLens?.name || ""}&lensId=${selectedLens?.id || ""}&lensPrice=${selectedLens?.price || 0}`);
             } else {
+              // Plane glass or no lens → direct to checkout
               handleAddToCart(() => {
                 router.push("/checkout");
               });
@@ -241,7 +245,7 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
           )}
         >
           <span className="flex items-center gap-3">
-            {product.type === "eyeglasses" ? "Select Lens" : "Buy Now"}
+            {selectedLens && selectedLens.id !== "plane" ? "Select Power" : "Buy Now"}
           </span>
         </Button>
 
@@ -273,9 +277,9 @@ export function AddToCartButton({ product, compact = false, selectedLens }) {
         onClose={() => setIsPowerDialogOpen(false)}
         user={user}
         productName={product.name}
-        onConfirm={(power) => {
+        onConfirm={(power, method) => {
           setIsPowerDialogOpen(false);
-          proceedToCart(pendingCallback, power);
+          proceedToCart(pendingCallback, power, method);
         }}
       />
     </div>

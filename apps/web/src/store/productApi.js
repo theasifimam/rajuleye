@@ -52,7 +52,11 @@ export const productApi = createApi({
                     }
                 };
             }
-        })
+        }),
+        getFilterOptions: builder.query({
+            query: () => '/products/options/filters',
+            providesTags: ['Product'],
+        }),
     }),
 });
-export const { useGetProductsQuery, useGetProductByIdQuery, } = productApi;
+export const { useGetProductsQuery, useGetFilterOptionsQuery, useGetProductByIdQuery, } = productApi;

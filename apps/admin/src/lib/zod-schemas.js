@@ -6,13 +6,31 @@ export const ProductFormSchema = z.object({
     brand: z.string().min(1, "Brand is required").trim(),
     sku: z.string().min(1, "SKU is required").toUpperCase().trim(),
     category: z.string().min(1, "Category is required"), // ObjectId as string
-    type: z.enum(['eyeglasses', 'sunglasses', 'reading-glasses', 'contact-lenses', 'accessories']),
-    frameShape: z.enum(['round', 'square', 'rectangle', 'oval', 'cat-eye', 'wayfarer', 'aviator', 'clubmaster']).optional(),
-    frameMaterial: z.enum(['metal', 'acetate', 'tr90', 'wood', 'titanium', 'mixed']).optional(),
+    type: z.enum([
+      'eyeglasses', 'sunglasses', 'computer-glasses', 'blue-light-glasses', 
+      'reading-glasses', 'sports-glasses', 'contact-lenses', 'accessories'
+    ]),
+    
+    // New Categorisation Arrays
+    gender: z.array(z.string()).default(['unisex']),
+    styles: z.array(z.string()).default([]),
+    usage: z.array(z.string()).default([]),
+    faceShapes: z.array(z.string()).default([]),
+    materials: z.array(z.string()).default([]),
+    colors: z.array(z.string()).default([]),
+    lensFeatures: z.array(z.string()).default([]),
+    
+    // New Categorisation Single Enums
+    frameType: z.enum(['full-rim', 'half-rim', 'rimless']).optional().nullable(),
+    fit: z.enum(['small', 'medium', 'large', 'narrow', 'wide']).optional().nullable(),
+
+    // Legacy or mappings
+    frameShape: z.string().optional(),
+    frameMaterial: z.string().optional(),
     frameColor: z.string().optional(),
-    lensType: z.enum(['single-vision', 'bifocal', 'progressive', 'non-prescription']).optional(),
+    lensType: z.string().optional(),
     lensCoating: z.array(z.string()).default([]),
-    gender: z.enum(['men', 'women', 'unisex', 'kids']).default('unisex'),
+
     size: z.object({
         lensWidth: z.coerce.number().optional(),
         bridge: z.coerce.number().optional(),

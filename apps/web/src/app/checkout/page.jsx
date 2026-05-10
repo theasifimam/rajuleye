@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useGetCartQuery, useClearCartMutation } from "@/store/cartApi";
-import { useCreateOrderMutation, useVerifyPaymentMutation } from "@/store/orderApi";
+import { useCreateOrderMutation, useVerifyPaymentMutation, useCancelOrderMutation } from "@/store/orderApi";
 import { useAppSelector } from "@/store/store";
 import { useGetProfileQuery } from "@/store/authApi";
 import { selectCurrentUser, selectIsAuthenticated } from "@/store/authSlice";
@@ -31,6 +31,7 @@ export default function CheckoutPage() {
   const [clearCart] = useClearCartMutation();
   const [createOrder] = useCreateOrderMutation();
   const [verifyPayment] = useVerifyPaymentMutation();
+  const [cancelOrder] = useCancelOrderMutation();
   const { data: profileData } = useGetProfileQuery(undefined, {
     skip: !isAuthenticated,
   });
@@ -140,9 +141,16 @@ export default function CheckoutPage() {
               color: "#000000",
             },
             modal: {
-              ondismiss: function() {
+              ondismiss: async function() {
                 setIsProcessing(false);
                 toast.error("Payment cancelled");
+                try {
+                  if (order?._id) {
+                    await cancelOrder(order._id).unwrap();
+                  }
+                } catch (e) {
+                  console.error("Failed to cancel pending order", e);
+                }
               }
             }
           };
@@ -456,6 +464,17 @@ export default function CheckoutPage() {
                         ? item.product.category.name
                         : item.product.category}
                     </p>
+                    {item.lensType && (
+                      <p className="text-[10px] font-bold text-primary/70 mt-0.5">
+                        Lens: {item.lensType}
+                        {item.frameName && item.frameName !== 'Plane Glass' ? ` • Frame: ${item.frameName}` : ''}
+                      </p>
+                    )}
+                    {item.powerSubmissionMethod && (
+                      <p className="text-[10px] font-bold text-indigo-600 mt-0.5">
+                        Power: {item.powerSubmissionMethod === 'saved' ? 'Saved' : item.powerSubmissionMethod === 'manual' ? 'Manual' : item.powerSubmissionMethod === 'upload' ? 'Uploaded' : item.powerSubmissionMethod === 'whatsapp' ? 'WhatsApp' : 'Skipped'}
+                      </p>
+                    )}
                     <p className="font-black text-lg mt-1">
                       ₹
                       {(

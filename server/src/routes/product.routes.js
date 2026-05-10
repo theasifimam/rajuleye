@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProduct,
   addProductImages,
+  getFilterOptions,
 } from '../controllers/product.controller.js';
 import {
   importProductsFromExcel,
@@ -16,6 +17,7 @@ import { uploadMultiple, uploadExcel } from '../middlewares/upload.middleware.js
 
 const router = express.Router();
 
+router.get('/options/filters', getFilterOptions);
 router.get('/', getProducts);
 router.get('/:slug', getProductBySlug);
 router.post('/', protect, adminOnly, createProduct);

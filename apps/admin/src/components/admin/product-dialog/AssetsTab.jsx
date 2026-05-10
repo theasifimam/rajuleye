@@ -1,28 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
-import { Plus, X, UploadCloud, Loader2 } from "lucide-react";
+import React from "react";
+import { Plus, X } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useWatch, useFormContext } from "react-hook-form";
-import { useAddProductImagesMutation } from "@/store/productApi";
-import { toast } from "sonner";
 
 export function AssetsTab({ control, productId }) {
   const { getValues, setValue } = useFormContext();
   const images = useWatch({ control, name: "images" }) || [];
-  const [selectedFiles, setSelectedFiles] = useState([]);
-
-  const [addProductImages, { isLoading: isUploading }] =
-    useAddProductImagesMutation();
+  const newImages = useWatch({ control, name: "newImages" }) || [];
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      setSelectedFiles((prev) => [...prev, ...Array.from(e.target.files)]);
+      const current = getValues("newImages") || [];
+      setValue("newImages", [...current, ...Array.from(e.target.files)], { shouldDirty: true });
     }
   };
 
   const removeSelectedFile = (index) => {
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    const current = getValues("newImages") || [];
+    setValue("newImages", current.filter((_, i) => i !== index), { shouldDirty: true });
   };
 
   const removeExistingImage = (index) => {
@@ -31,31 +28,6 @@ export function AssetsTab({ control, productId }) {
     setValue("images", newImages, { shouldValidate: true, shouldDirty: true });
   };
 
-  const handleUpload = async () => {
-    if (!productId) {
-      toast.error("Save the product first before uploading images");
-      return;
-    }
-    if (selectedFiles.length === 0) return;
-    try {
-      const formData = new FormData();
-      selectedFiles.forEach((file) => {
-        formData.append("images", file);
-      });
-      const result = await addProductImages({ id: productId, body: formData }).unwrap();
-      
-      // Update form state with the new images from server to prevent overwriting on main save
-      if (result && result.data) {
-        setValue("images", result.data, { shouldValidate: true, shouldDirty: true });
-      }
-
-      toast.success("Assets synced to vault");
-      setSelectedFiles([]);
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      toast.error(error?.data?.message || "Asset sync failure");
-    }
-  };
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
@@ -91,7 +63,7 @@ export function AssetsTab({ control, productId }) {
           ))}
 
           {/* Pending Uploads */}
-          {selectedFiles.map((file, i) => (
+          {newImages.map((file, i) => (
             <div
               key={`new-${i}`}
               className="relative group aspect-square rounded-3xl overflow-hidden border-2 border-primary/20 bg-primary/5 transition-all duration-500"
@@ -137,45 +109,13 @@ export function AssetsTab({ control, productId }) {
         </div>
       </div>
 
-      {selectedFiles.length > 0 && (
-        <div className="p-6 rounded-[2rem] bg-primary/3 border border-primary/10 flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">
-              {selectedFiles.length} New Assets Queued
-            </p>
-            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-none">
-              Ready for secure archival sync
-            </p>
-          </div>
-          <Button
-            type="button"
-            onClick={handleUpload}
-            disabled={isUploading || !productId}
-            variant="signature"
-            size="sm"
-            className="h-12 px-6 rounded-3xl"
-          >
-            {isUploading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <div className="flex items-center gap-2">
-                <UploadCloud className="h-4 w-4" />
-                <span className="text-[9px] font-black uppercase tracking-widest">
-                  Sync Assets
-                </span>
-              </div>
-            )}
-          </Button>
-        </div>
-      )}
-
-      {!productId && (
-        <div className="flex items-center gap-3 p-4 rounded-3xl bg-orange-500/5 border border-orange-500/10">
-          <div className="h-8 w-8 rounded-xl bg-orange-500/20 text-orange-600 flex items-center justify-center shrink-0">
+      {newImages.length > 0 && (
+        <div className="flex items-center gap-3 p-4 rounded-3xl bg-primary/5 border border-primary/10">
+          <div className="h-8 w-8 rounded-xl bg-primary/20 text-primary flex items-center justify-center shrink-0">
             <Plus className="h-4 w-4" />
           </div>
-          <p className="text-[9px] font-black uppercase tracking-widest text-orange-600">
-            The product must be cataloged (saved) before asset synchronization.
+          <p className="text-[9px] font-black uppercase tracking-widest text-primary">
+            {newImages.length} asset(s) queued. They will be uploaded when you save the signature.
           </p>
         </div>
       )}

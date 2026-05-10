@@ -31,6 +31,10 @@ export const productApi = createApi({
             query: (idOrSlug) => `/products/${idOrSlug}`,
             providesTags: (_result, _error, idOrSlug) => [{ type: 'Product', id: idOrSlug }],
         }),
+        getFilterOptions: builder.query({
+            query: () => '/products/options/filters',
+            providesTags: ['Product'],
+        }),
         createProduct: builder.mutation({
             query: (body) => ({
                 url: '/products',
@@ -93,4 +97,4 @@ export const productApi = createApi({
         }),
     }),
 });
-export const { useGetProductsQuery, useGetProductByIdQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useAddProductImagesMutation, useBulkImportProductsMutation, useBulkUploadImagesMutation, } = productApi;
+export const { useGetProductsQuery, useGetFilterOptionsQuery, useGetProductByIdQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useAddProductImagesMutation, useBulkImportProductsMutation, useBulkUploadImagesMutation, } = productApi;

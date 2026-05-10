@@ -1,4 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
+import {
+  PRODUCT_TYPES,
+  GENDERS,
+  STYLES,
+  USAGES,
+  FACE_SHAPES,
+  MATERIALS,
+  LENS_FEATURES,
+  FRAME_TYPES,
+  FITS
+} from '../utils/constants.js';
 
 const ProductSchema = new Schema(
   {
@@ -10,18 +21,26 @@ const ProductSchema = new Schema(
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
     type: {
       type: String,
-      enum: ['eyeglasses', 'sunglasses', 'reading-glasses', 'contact-lenses', 'accessories'],
+      enum: PRODUCT_TYPES,
       required: true,
     },
-    frameShape: {
-      type: String,
-      enum: ['round', 'square', 'rectangle', 'oval', 'cat-eye', 'wayfarer', 'aviator', 'clubmaster'],
-    },
-    frameMaterial: { type: String, enum: ['metal', 'acetate', 'tr90', 'wood', 'titanium', 'mixed'] },
+    gender: { type: [{ type: String, enum: GENDERS }], default: ['unisex'] },
+    styles: { type: [{ type: String, enum: STYLES }], default: [] },
+    usage: { type: [{ type: String, enum: USAGES }], default: [] },
+    faceShapes: { type: [{ type: String, enum: FACE_SHAPES }], default: [] },
+    materials: { type: [{ type: String, enum: MATERIALS }], default: [] },
+    colors: { type: [String], default: [] },
+    lensFeatures: { type: [{ type: String, enum: LENS_FEATURES }], default: [] },
+    frameType: { type: String, enum: FRAME_TYPES },
+    fit: { type: String, enum: FITS },
+    
+    // Legacy support fields
+    frameShape: { type: String },
+    frameMaterial: { type: String },
     frameColor: { type: [String] },
-    lensType: { type: String, enum: ['single-vision', 'bifocal', 'progressive', 'non-prescription'] },
-    lensCoating: { type: [String], default: [] },
-    gender: { type: String, enum: ['men', 'women', 'unisex', 'kids'], default: 'unisex' },
+    lensType: { type: String },
+    lensCoating: { type: [String] },
+    
     size: {
       lensWidth: Number,
       bridge: Number,
@@ -43,6 +62,11 @@ const ProductSchema = new Schema(
 
 // Text index for search
 ProductSchema.index({ name: 'text', brand: 'text', description: 'text', tags: 'text' });
-ProductSchema.index({ type: 1, gender: 1, isActive: 1 });
+// Advanced filtering indexes
+ProductSchema.index({ type: 1, isActive: 1 });
+ProductSchema.index({ gender: 1 });
+ProductSchema.index({ styles: 1 });
+ProductSchema.index({ materials: 1 });
+ProductSchema.index({ price: 1 });
 
 export default mongoose.model('Product', ProductSchema);

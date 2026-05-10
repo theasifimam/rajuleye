@@ -59,13 +59,13 @@ export function LensPowerDialog({
         `Hi, I want to share my lens power for my order of "${productName}". Please help me find the correct power for my glasses.`,
       );
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
-      onConfirm(null);
+      onConfirm(null, "whatsapp");
     } else if (selectedOption === "saved") {
-      onConfirm(user.eyePower);
+      onConfirm(user.eyePower, "saved");
     } else if (selectedOption === "manual") {
-      onConfirm(manualPower);
+      onConfirm(manualPower, "manual");
     } else if (selectedOption === "skip") {
-      onConfirm(null);
+      onConfirm(null, "skip");
     }
   };
 

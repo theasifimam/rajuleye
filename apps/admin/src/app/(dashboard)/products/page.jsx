@@ -70,30 +70,6 @@ export default function ProductsPage() {
     [productsData],
   );
 
-  const stats = React.useMemo(
-    () => [
-      {
-        label: "Stock Yield",
-        value: "Verified",
-        icon: Boxes,
-        color: "primary",
-      },
-      {
-        label: "Out of Stock SKUs",
-        value: "Monitoring",
-        icon: XCircle,
-        color: "destructive",
-      },
-      {
-        label: "Low Stock Alerts",
-        value: "Active",
-        icon: AlertCircle,
-        color: "orange",
-      },
-    ],
-    [],
-  );
-
   // Dialog States
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [isBulkImportDialogOpen, setIsBulkImportDialogOpen] = useState(false);
@@ -188,59 +164,26 @@ export default function ProductsPage() {
           <div className="flex flex-col items-center gap-0.5 md:gap-1">
             <Plus className="h-4 w-4 md:h-5 md:w-5 group-hover/btn:rotate-90 transition-transform duration-500" />
             <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.25em]">
-              Add Signature Piece
+              Add Products
             </span>
           </div>
         </Button>
       </PageHeader>
 
-      {/* Inventory Health Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 px-4 md:px-0">
-        {stats.map((stat, i) => (
-          <div
-            key={i}
-            className="p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] bg-card border shadow-sm flex items-center gap-4 md:gap-5 group hover:border-primary/20 transition-all"
-          >
-            <div
-              className={cn(
-                "h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110",
-                stat.color === "primary"
-                  ? "bg-primary text-primary-foreground"
-                  : stat.color === "destructive"
-                    ? "bg-destructive/10 text-destructive"
-                    : "bg-orange-500/10 text-orange-600",
-              )}
-            >
-              <stat.icon className="h-4 w-4 md:h-5 md:w-5" />
-            </div>
-            <div>
-              <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-0.5">
-                {stat.label}
-              </p>
-              <h4 className="text-lg md:text-xl font-black italic">
-                {stat.value}
-              </h4>
-            </div>
-            <ArrowRight className="h-4 w-4 ml-auto text-muted-foreground/30 group-hover:translate-x-1 group-hover:text-primary transition-all shrink-0" />
-          </div>
-        ))}
-      </div>
-
-      {/* Filters Bar */}
-      <div className="flex flex-col md:flex-row items-center gap-4 p-4 rounded-[2rem] bg-card/50 border border-primary/5 backdrop-blur-md mx-4 md:mx-0">
-        <div className="relative flex-1 w-full group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-          <Input
-            placeholder="Search by product name, ID or category..."
-            className="h-11 md:h-12 w-full pl-12 pr-4 bg-muted/20 border-none rounded-2xl font-bold text-sm focus-visible:ring-2 focus-visible:ring-primary/20"
-            value={productSearchTerm}
-            onChange={(e) => setProductSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-
       {/* Products Table */}
       <div className="rounded-[3rem] bg-card border shadow-md border-primary/5 overflow-hidden relative mx-4 md:mx-0">
+        {/* Filters Bar */}
+        <div className="flex flex-col md:flex-row items-center gap-4 p-4 backdrop-blur-md mx-4 md:mx-0">
+          <div className="relative flex-1 w-full group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <Input
+              placeholder="Search by product name, ID or category..."
+              className="h-11 md:h-12 w-full pl-12 pr-4 bg-muted/20 border-none rounded-2xl font-bold text-sm focus-visible:ring-2 focus-visible:ring-primary/20"
+              value={productSearchTerm}
+              onChange={(e) => setProductSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>

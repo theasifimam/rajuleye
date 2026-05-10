@@ -24,6 +24,14 @@ import { cn } from "@/lib/utils";
 import { Home, Package, ChevronRight, LogIn } from "lucide-react";
 const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+const getLogoUrl = (logo) => {
+  if (!logo) return null;
+  if (logo.startsWith("http")) return logo;
+  const baseUrl = apiBase.endsWith("/") ? apiBase.slice(0, -1) : apiBase;
+  const path = logo.startsWith("/") ? logo : `/${logo}`;
+  return `${baseUrl}${path}`;
+};
+
 export function Navbar({ settings }) {
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
   // Get database wishlist count
@@ -98,16 +106,12 @@ export function Navbar({ settings }) {
         <div className="flex items-center gap-8 pointer-events-auto">
           {/* Mobile Brand Island */}
           <Link href="/" className="lg:hidden">
-            <div className="flex items-baseline gap-1 px-4 py-2 bg-background/50 backdrop-blur-md border border-white/10 rounded-full shadow-lg">
+            <div className="flex items-baseline gap-1 px-4 py-1 bg-background/50 backdrop-blur-md border border-white/10 rounded-full shadow-lg">
               {settings?.logo ? (
                 <img
-                  src={
-                    settings.logo.startsWith("http")
-                      ? settings.logo
-                      : `${apiBase}${settings.logo}`
-                  }
+                  src={getLogoUrl(settings.logo)}
                   alt="Logo"
-                  className="h-4 object-contain"
+                  className="h-8 object-contain"
                 />
               ) : (
                 <>
@@ -167,14 +171,10 @@ export function Navbar({ settings }) {
         >
           {settings?.logo ? (
             <img
-              src={
-                settings.logo.startsWith("http")
-                  ? settings.logo
-                  : `${apiBase}${settings.logo}`
-              }
+              src={getLogoUrl(settings.logo)}
               alt="Logo"
               className={cn(
-                "h-8 object-contain transition-all duration-500",
+                "h-12 object-contain transition-all duration-500",
                 scrolled ? "opacity-100" : "opacity-90 hover:opacity-100",
               )}
             />
@@ -246,11 +246,7 @@ export function Navbar({ settings }) {
                   <div className="p-8 flex items-center justify-between relative z-10">
                     {settings?.logo ? (
                       <img
-                        src={
-                          settings.logo.startsWith("http")
-                            ? settings.logo
-                            : `${apiBase}${settings.logo}`
-                        }
+                        src={getLogoUrl(settings.logo)}
                         alt="Logo"
                         className="h-6 object-contain"
                       />

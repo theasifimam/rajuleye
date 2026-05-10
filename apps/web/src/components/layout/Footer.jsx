@@ -8,10 +8,19 @@ import {
   ArrowUpRight,
   Globe,
   Loader2,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+const getLogoUrl = (logo) => {
+  if (!logo) return null;
+  if (logo.startsWith("http")) return logo;
+  const baseUrl = apiBase.endsWith("/") ? apiBase.slice(0, -1) : apiBase;
+  const path = logo.startsWith("/") ? logo : `/${logo}`;
+  return `${baseUrl}${path}`;
+};
 
 export function Footer({ settings }) {
   const [categories, setCategories] = useState([]);
@@ -78,11 +87,7 @@ export function Footer({ settings }) {
             <Link href="/" className="inline-block group">
               {settings?.logo ? (
                 <img
-                  src={
-                    settings.logo.startsWith("http")
-                      ? settings.logo
-                      : `${apiBase}${settings.logo}`
-                  }
+                  src={getLogoUrl(settings.logo)}
                   alt="Logo"
                   className="h-8 object-contain transition-transform duration-500 group-hover:scale-105"
                 />
@@ -107,6 +112,13 @@ export function Footer({ settings }) {
               {[
                 { icon: Instagram, label: "Instagram", href: settings?.instagramUrl || "#" },
                 { icon: Facebook, label: "Facebook", href: settings?.facebookUrl || "#" },
+                {
+                  icon: MessageCircle,
+                  label: "WhatsApp",
+                  href: settings?.whatsappNumber
+                    ? `https://wa.me/${settings.whatsappNumber.replace(/\D/g, "")}`
+                    : "#",
+                },
               ].map((social, i) => (
                 <a
                   key={i}

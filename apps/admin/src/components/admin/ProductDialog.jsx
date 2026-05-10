@@ -17,6 +17,8 @@ import { PricingTab } from "./product-dialog/PricingTab";
 import {
   useCreateProductMutation,
   useUpdateProductMutation,
+  useGetFilterOptionsQuery,
+  useAddProductImagesMutation,
 } from "@/store/productApi";
 import { toast } from "sonner";
 import { useGetCategoriesQuery } from "@/store/categoryApi";
@@ -26,10 +28,17 @@ const PRODUCT_FORM_DRAFT_KEY = "product_form_draft_v1";
 export function ProductDialog({ isOpen, onOpenChange, product }) {
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [addProductImages, { isLoading: isUploadingImages }] = useAddProductImagesMutation();
 
   const { data: categoriesData } = useGetCategoriesQuery({ all: true });
+  const { data: filterOptionsRes } = useGetFilterOptionsQuery();
+  
   const categories = categoriesData?.data || [];
-  const loading = isCreating || isUpdating;
+  const filterOptions = filterOptionsRes?.data || {
+    types: [], genders: [], styles: [], usages: [], faceShapes: [], materials: [], colors: [], lensFeatures: [], frameTypes: [], fits: []
+  };
+
+  const loading = isCreating || isUpdating || isUploadingImages;
   const [lastLoadedProductId, setLastLoadedProductId] = useState(null);
 
   const form = useForm({
@@ -42,12 +51,20 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       sku: "",
       category: "",
       type: "eyeglasses",
+      gender: ["unisex"],
+      styles: [],
+      usage: [],
+      faceShapes: [],
+      materials: [],
+      colors: [],
+      lensFeatures: [],
+      frameType: undefined,
+      fit: undefined,
       frameShape: undefined,
       frameMaterial: undefined,
       frameColor: "",
       lensType: undefined,
       lensCoating: [],
-      gender: "unisex",
       size: {
         lensWidth: 0,
         bridge: 0,
@@ -56,6 +73,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       },
       weight: 0,
       images: [],
+      newImages: [],
       price: 0,
       discount: 0,
       stock: 0,
@@ -71,10 +89,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
     }
 
     if (product && lastLoadedProductId !== product._id) {
-      // Deep clone to avoid Proxy-related issues and ensure clean state
       const baseProduct = JSON.parse(JSON.stringify(product));
-
-      // Strictly extract the category string ID from the populated object
       let categoryId = "";
       const rawCategory = product.category;
 
@@ -86,11 +101,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
         }
       }
 
-      // Ensure result is a trimmed string
       categoryId = categoryId ? String(categoryId).trim() : "";
-
-      // Remove the populated category object from the clone so it can't leak
-      // through the spread — we'll set it explicitly as a string below
       delete baseProduct.category;
 
       form.reset({
@@ -100,6 +111,13 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
         frameColor: Array.isArray(product.frameColor)
           ? product.frameColor[0] || ""
           : product.frameColor || "",
+        colors: product.colors || [],
+        gender: product.gender || ["unisex"],
+        styles: product.styles || [],
+        usage: product.usage || [],
+        faceShapes: product.faceShapes || [],
+        materials: product.materials || [],
+        lensFeatures: product.lensFeatures || [],
         size: product.size || {
           lensWidth: 0,
           bridge: 0,
@@ -108,6 +126,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
         },
         lensCoating: product.lensCoating || [],
         images: product.images || [],
+        newImages: [],
         tags: product.tags || [],
       });
       setLastLoadedProductId(product._id);
@@ -129,17 +148,23 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
           sku: "",
           category: "",
           type: "eyeglasses",
-          gender: "unisex",
+          gender: ["unisex"],
+          styles: [],
+          usage: [],
+          faceShapes: [],
+          materials: [],
+          colors: [],
+          lensFeatures: [],
           price: 0,
           stock: 0,
           isActive: true,
           images: [],
+          newImages: [],
           tags: [],
         });
       }
       setLastLoadedProductId("new");
     } else if (product && lastLoadedProductId === product._id) {
-      // Update ONLY images if the server payload changes (due to AddProductImages update)
       const currentFormImages = form.getValues("images") || [];
       const serverImages = product.images || [];
       if (JSON.stringify(currentFormImages) !== JSON.stringify(serverImages)) {
@@ -151,7 +176,6 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
     }
   }, [product, form, isOpen, lastLoadedProductId]);
 
-  // Persist draft changes for new products
   useEffect(() => {
     if (!product && isOpen) {
       const subscription = form.watch((value) => {
@@ -163,19 +187,32 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
 
   const onSubmit = async (values) => {
     try {
-      // Convert frameColor back to array for the server model
       const payload = {
         ...values,
         frameColor: values.frameColor ? [values.frameColor] : [],
       };
+      delete payload.newImages;
+
+      let targetProductId = null;
       if (product?._id) {
         await updateProduct({ id: product._id, body: payload }).unwrap();
+        targetProductId = product._id;
         toast.success("Product blueprint refined");
       } else {
-        await createProduct(payload).unwrap();
+        const res = await createProduct(payload).unwrap();
+        targetProductId = res.data._id;
         toast.success("Signature piece cataloged");
         localStorage.removeItem(PRODUCT_FORM_DRAFT_KEY);
       }
+
+      const newImages = form.getValues("newImages") || [];
+      if (newImages.length > 0 && targetProductId) {
+        const formData = new FormData();
+        newImages.forEach((file) => formData.append("images", file));
+        await addProductImages({ id: targetProductId, body: formData }).unwrap();
+        toast.success("Assets synced to vault");
+      }
+
       onOpenChange(false);
     } catch (error) {
       toast.error(error?.data?.message || "Archive sync failure");
@@ -189,16 +226,12 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
 
   if (!isOpen) return null;
 
-
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
         onClick={handleClose}
       />
-
-      {/* ModalContent */}
       <TooltipProvider delayDuration={200}>
         <div className="relative w-full max-w-3xl bg-card border shadow-2xl border-primary/10 rounded-3xl md:rounded-[2.5rem] overflow-hidden animate-in zoom-in-95 fade-in duration-500 max-h-[95vh] flex flex-col">
           <div className="absolute top-5 right-6 z-50">
@@ -236,53 +269,22 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
               <ScrollArea className="flex-1 h-full w-full overflow-y-auto px-8 md:px-12 py-6">
                 <Tabs defaultValue="general" className="w-full p-1">
                   <TabsList className="bg-muted/30 p-1 rounded-2xl mb-8 w-fit border border-primary/5">
-                    <TabsTrigger
-                      value="general"
-                      className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
-                    >
-                      General
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="assets"
-                      className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
-                    >
-                      Assets
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="specs"
-                      className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
-                    >
-                      Specs
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="dimensions"
-                      className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
-                    >
-                      Dimensions
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="inventory"
-                      className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all"
-                    >
-                      Inventory
-                    </TabsTrigger>
+                    <TabsTrigger value="general" className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">General</TabsTrigger>
+                    <TabsTrigger value="assets" className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">Assets</TabsTrigger>
+                    <TabsTrigger value="specs" className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">Specs</TabsTrigger>
+                    <TabsTrigger value="dimensions" className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">Dimensions</TabsTrigger>
+                    <TabsTrigger value="inventory" className="rounded-xl px-6 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">Inventory</TabsTrigger>
                   </TabsList>
 
                   <div className="mt-2">
                     <TabsContent value="general">
-                      <GeneralTab
-                        categories={categories}
-                        control={form.control}
-                      />
+                      <GeneralTab categories={categories} control={form.control} />
                     </TabsContent>
                     <TabsContent value="assets">
-                      <AssetsTab
-                        control={form.control}
-                        productId={product?._id}
-                      />
+                      <AssetsTab control={form.control} productId={product?._id} />
                     </TabsContent>
                     <TabsContent value="specs">
-                      <SpecsTab control={form.control} />
+                      <SpecsTab control={form.control} filterOptions={filterOptions} />
                     </TabsContent>
                     <TabsContent value="dimensions">
                       <DimensionsTab control={form.control} />

@@ -6,11 +6,14 @@ import { ApiResponse } from '../utils/apiResponse.js';
 import fs from 'fs';
 import path from 'path';
 
+import * as constants from '../utils/constants.js';
+
 // GET /api/v1/products
 export const getProducts = asyncHandler(async (req, res) => {
   const {
     page = '1', limit = '12', search, type, gender, brand,
     minPrice, maxPrice, frameShape, frameMaterial, category, sort = '-createdAt',
+    styles, usage, faceShapes, materials, colors, lensFeatures, frameType, fit
   } = req.query;
 
   const pageNum = Math.max(1, parseInt(page));
@@ -19,16 +22,29 @@ export const getProducts = asyncHandler(async (req, res) => {
 
   const filter = { isActive: true };
   if (search) filter['$text'] = { $search: search };
+  
+  // Single string matches
   if (type) filter['type'] = type;
-  if (gender) filter['gender'] = gender;
   if (category) filter['category'] = category;
   if (brand) filter['brand'] = { $regex: brand, $options: 'i' };
   if (frameShape) filter['frameShape'] = frameShape;
   if (frameMaterial) filter['frameMaterial'] = frameMaterial;
+  if (frameType) filter['frameType'] = frameType;
+  if (fit) filter['fit'] = fit;
+
+  // Array matches (comma separated)
+  if (gender) filter['gender'] = { $in: gender.split(',') };
+  if (styles) filter['styles'] = { $in: styles.split(',') };
+  if (usage) filter['usage'] = { $in: usage.split(',') };
+  if (faceShapes) filter['faceShapes'] = { $in: faceShapes.split(',') };
+  if (materials) filter['materials'] = { $in: materials.split(',') };
+  if (colors) filter['colors'] = { $in: colors.split(',') };
+  if (lensFeatures) filter['lensFeatures'] = { $in: lensFeatures.split(',') };
+
   if (minPrice || maxPrice) {
     filter['price'] = {};
-    if (minPrice) (filter['price'])['$gte'] = Number(minPrice);
-    if (maxPrice) (filter['price'])['$lte'] = Number(maxPrice);
+    if (minPrice) filter['price']['$gte'] = Number(minPrice);
+    if (maxPrice) filter['price']['$lte'] = Number(maxPrice);
   }
 
   const [products, total] = await Promise.all([
@@ -45,6 +61,23 @@ export const getProducts = asyncHandler(async (req, res) => {
     new ApiResponse('Products fetched', {
       products,
       pagination: { total, page: pageNum, limit: limitNum, pages: Math.ceil(total / limitNum) },
+    })
+  );
+});
+
+// GET /api/v1/products/options/filters
+export const getFilterOptions = asyncHandler(async (req, res) => {
+  res.status(200).json(
+    new ApiResponse('Filter options fetched', {
+      types: constants.PRODUCT_TYPES,
+      genders: constants.GENDERS,
+      styles: constants.STYLES,
+      usages: constants.USAGES,
+      faceShapes: constants.FACE_SHAPES,
+      materials: constants.MATERIALS,
+      lensFeatures: constants.LENS_FEATURES,
+      frameTypes: constants.FRAME_TYPES,
+      fits: constants.FITS,
     })
   );
 });

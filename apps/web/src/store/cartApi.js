@@ -23,7 +23,7 @@ export const cartApi = createApi({
                 method: 'POST',
                 body: { productId: product.id || product._id, ...rest },
             }),
-            async onQueryStarted({ product, qty = 1, lensType, lensCoating, selectedPower }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ product, qty = 1, lensType, lensCoating, selectedPower, powerSubmissionMethod }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(cartApi.util.updateQueryData('getCart', undefined, (draft) => {
                     if (!draft.data)
                         draft.data = { _id: '', user: '', items: [] };
@@ -39,6 +39,8 @@ export const cartApi = createApi({
                             existingItem.lensCoating = lensCoating;
                         if (selectedPower)
                             existingItem.selectedPower = selectedPower;
+                        if (powerSubmissionMethod)
+                            existingItem.powerSubmissionMethod = powerSubmissionMethod;
                     }
                     else {
                         const finalPrice = product.discountPrice || product.price;
@@ -48,7 +50,8 @@ export const cartApi = createApi({
                             priceAtAdd: finalPrice,
                             lensType,
                             lensCoating,
-                            selectedPower
+                            selectedPower,
+                            powerSubmissionMethod
                         });
                     }
                 }));

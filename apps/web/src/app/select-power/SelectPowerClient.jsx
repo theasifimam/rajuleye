@@ -38,6 +38,8 @@ export function SelectPowerClient({ product }) {
 
   const handleConfirm = async () => {
     let selectedPower = null;
+    let submissionMethod = selectedOption; // 'saved', 'manual', 'upload', 'whatsapp', 'skip'
+
     if (selectedOption === "whatsapp") {
       const msg = encodeURIComponent(
         `Hi, I want to share my lens power for my order of "${product.name}". Please help me find the correct power for my glasses.`,
@@ -98,6 +100,7 @@ export function SelectPowerClient({ product }) {
       payload.frameName = lensName;
       payload.framePrice = lensPrice;
       payload.isPlaneGlass = lensId === "plane" || !lensId;
+      payload.powerSubmissionMethod = submissionMethod;
 
       if (selectedPower) {
         payload.selectedPower = selectedPower;
