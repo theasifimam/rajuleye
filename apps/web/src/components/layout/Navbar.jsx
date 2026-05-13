@@ -91,7 +91,7 @@ export function Navbar({ settings }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-100 pointer-events-none lg:px-6">
       {!scrolled && (
-        <div className="absolute inset-0 h-40 bg-gradient-to-b from-black/80 via-black/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 h-40 bg-linear-to-b from-black/80 via-black/20 to-transparent pointer-events-none" />
       )}
       <div
         className={cn(

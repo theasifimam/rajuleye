@@ -1,16 +1,16 @@
 {
-  "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
-  "/(auth)/forgot-password/page": "/forgot-password",
-  "/(auth)/login/page": "/login",
-  "/(dashboard)/analytics/page": "/analytics",
+  "/_not-found/page": "/_not-found",
   "/(dashboard)/banners/page": "/banners",
   "/(dashboard)/orders/page": "/orders",
   "/(dashboard)/customers/page": "/customers",
+  "/(auth)/forgot-password/page": "/forgot-password",
+  "/(auth)/login/page": "/login",
   "/(dashboard)/settings/page": "/settings",
   "/(dashboard)/page": "/",
-  "/(dashboard)/support/page": "/support",
   "/(dashboard)/frames/page": "/frames",
-  "/(dashboard)/products/page": "/products",
-  "/(dashboard)/products/categories/page": "/products/categories"
+  "/(dashboard)/analytics/page": "/analytics",
+  "/(dashboard)/support/page": "/support",
+  "/(dashboard)/products/categories/page": "/products/categories",
+  "/(dashboard)/products/page": "/products"
 }
