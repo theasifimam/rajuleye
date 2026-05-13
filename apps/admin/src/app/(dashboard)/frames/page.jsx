@@ -103,10 +103,10 @@ export default function FramesPage() {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
         badgeIcon={Glasses}
-        badgeText="Frame Catalog"
-        titleMain="Frame"
-        titleAccent="Options"
-        description="Manage frame options available to customers. Each frame has its own price and discount. A free 'Plane Glass' option is always included automatically."
+        badgeText="Lens Options"
+        titleMain="Lens"
+        titleAccent="Pricing"
+        description="Manage lens pricing and options. Customers can choose these when buying glasses."
       >
         <Button
           onClick={openAdd}
@@ -130,10 +130,10 @@ export default function FramesPage() {
         </div>
         <div>
           <p className="font-black text-sm uppercase tracking-widest text-emerald-700 dark:text-emerald-400">
-            Plane Glass — Always Free
+            Basic Lens — Always Free
           </p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            A "Plane Glass (Free)" option is automatically offered to every customer alongside the frames you define below.
+            A basic free lens is always available to customers.
           </p>
         </div>
         <div className="ml-auto">
@@ -157,7 +157,7 @@ export default function FramesPage() {
             <Plus className="h-7 w-7 text-muted-foreground" />
           </div>
           <p className="font-black uppercase tracking-widest text-sm">
-            Add Your First Frame
+            Add Lens Option
           </p>
         </div>
       ) : (
@@ -266,7 +266,7 @@ export default function FramesPage() {
               </div>
               <div>
                 <h3 className="text-xl font-black tracking-tighter uppercase italic">
-                  {editingFrame ? "Edit Frame" : "New Frame"}
+                  {editingFrame ? "Edit Lens" : "Add Lens"}
                 </h3>
                 <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-70">
                   {editingFrame ? `Editing: ${editingFrame._id}` : "Define a new frame option"}

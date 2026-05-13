@@ -199,9 +199,27 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 // PATCH /api/v1/users/:id (admin)
 export const updateUser = asyncHandler(async (req, res) => {
+  const updateData = { ...req.body };
+
+  if (typeof updateData.addresses === 'string') {
+    try { updateData.addresses = JSON.parse(updateData.addresses); } catch (e) {}
+  }
+  if (typeof updateData.eyePower === 'string') {
+    try { updateData.eyePower = JSON.parse(updateData.eyePower); } catch (e) {}
+  }
+  
+  if (req.file) {
+    updateData.avatar = `/uploads/${req.file.filename}`;
+  }
+
+  // Handle empty password from FormData
+  if (!updateData.password) {
+    delete updateData.password;
+  }
+
   const user = await User.findByIdAndUpdate(
     req.params['id'],
-    { $set: req.body },
+    { $set: updateData },
     { new: true, runValidators: true }
   ).select('-refreshToken');
 
@@ -211,7 +229,10 @@ export const updateUser = asyncHandler(async (req, res) => {
 
 // POST /api/v1/users (admin)
 export const createUser = asyncHandler(async (req, res) => {
-  const { name, email, password, role, isEmailVerified } = req.body;
+  let { name, email, password, role, isEmailVerified, addresses, eyePower, gender, mobile, dateOfBirth } = req.body;
+
+  if (typeof addresses === 'string') try { addresses = JSON.parse(addresses); } catch(e){}
+  if (typeof eyePower === 'string') try { eyePower = JSON.parse(eyePower); } catch(e){}
 
   if (!name || !email) throw new ApiError(400, 'Name and email are required');
 
@@ -221,12 +242,23 @@ export const createUser = asyncHandler(async (req, res) => {
   const existing = await User.findOne({ email });
   if (existing) throw new ApiError(409, 'Email already registered');
 
+  let avatar;
+  if (req.file) {
+    avatar = `/uploads/${req.file.filename}`;
+  }
+
   const user = await User.create({
     name,
     email,
-    password,
+    password: finalPassword,
     role: role || 'user',
-    isEmailVerified: isEmailVerified ?? true,
+    isEmailVerified: isEmailVerified === 'true' || isEmailVerified === true,
+    avatar,
+    gender,
+    mobile,
+    dateOfBirth,
+    addresses: addresses || [],
+    eyePower,
   });
 
   const userResponse = await User.findById(user._id).select('-refreshToken');

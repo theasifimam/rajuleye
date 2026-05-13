@@ -29,6 +29,7 @@ export async function generateMetadata() {
     description:
       settings?.description ||
       "Bespoke high-end eyewear and precision lens technology.",
+
     openGraph: {
       images: settings?.previewImage
         ? [`${apiBase}${settings.previewImage}`]

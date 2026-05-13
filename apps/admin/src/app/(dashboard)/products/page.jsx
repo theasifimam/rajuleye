@@ -124,14 +124,14 @@ export default function ProductsPage() {
     <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 outline-none">
       <PageHeader
         badgeIcon={Package}
-        badgeText="Inventory Command"
-        titleMain="The Product"
-        titleAccent="Archive"
-        description="Managing the blueprint of precision. Every lens, frame, and accessory meticulously cataloged for global distribution."
+        badgeText="Inventory"
+        titleMain="Products"
+        titleAccent="Management"
+        description="Manage your products, add new items, and update inventory."
       >
         <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-[180px] md:min-w-[200px] hover:border-primary/30 transition-all duration-500">
           <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
-            Active SKU Count
+            Total Products
           </p>
           <div className="flex items-end justify-between">
             <h4 className="text-xl md:text-2xl font-black italic leading-none">
@@ -151,7 +151,7 @@ export default function ProductsPage() {
           <div className="flex flex-col items-center gap-0.5 md:gap-1">
             <FileUp className="h-4 w-4 md:h-5 md:w-5 group-hover/bulk:translate-y-[-2px] transition-transform duration-500" />
             <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.25em]">
-              Bulk Archive Import
+              Bulk Import
             </span>
           </div>
         </Button>
@@ -192,7 +192,7 @@ export default function ProductsPage() {
                   Preview
                 </th>
                 <th className="p-4 md:p-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">
-                  Product DNA
+                  Product Details
                 </th>
                 <th className="p-4 md:p-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">
                   Category
@@ -201,7 +201,7 @@ export default function ProductsPage() {
                   Stock Status
                 </th>
                 <th className="p-4 md:p-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">
-                  MSRP
+                  Price
                 </th>
                 <th className="p-4 md:p-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60">
                   Visibility
@@ -340,7 +340,7 @@ export default function ProductsPage() {
         {/* Pagination */}
         <div className="p-4 md:p-6 border-t border-primary/5 bg-primary/1 flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground text-center sm:text-left">
-            Catalog sync: {products.length} verified units from{" "}
+            Showing {products.length} products of{" "}
             {pagination?.total || 0} total
           </p>
           <Pagination

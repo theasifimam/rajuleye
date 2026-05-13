@@ -20,8 +20,8 @@
       "static/chunks/3171-53b6010cbacd2d08.js",
       "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
-      "static/chunks/1889.dce737602e9f0322.js",
-      "static/chunks/1132.918998bb6ef4bdd8.js",
+      "static/chunks/1889.8dd5a226a5d058c1.js",
+      "static/chunks/1132.11f6a721ecea5035.js",
       "static/chunks/8637.505e18d48a9743ea.js"
     ]
   },
@@ -35,17 +35,17 @@
     ]
   },
   "app\\(dashboard)\\customers\\page.jsx -> @/components/admin/UserDialog": {
-    "id": 23009,
+    "id": 62964,
     "files": [
       "static/chunks/4193-a6ee8a8bd3560102.js",
       "static/chunks/6093-8bc3891ad017824f.js",
       "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
-      "static/chunks/1889.dce737602e9f0322.js",
+      "static/chunks/1889.8dd5a226a5d058c1.js",
       "static/chunks/5678.79909ca752f3e075.js",
-      "static/chunks/2385.4792fbbfa2725ebb.js",
-      "static/chunks/1132.918998bb6ef4bdd8.js",
-      "static/chunks/3009.30f5175c93fedbf8.js"
+      "static/chunks/2338.b0d3cc0e735c4905.js",
+      "static/chunks/1132.11f6a721ecea5035.js",
+      "static/chunks/2964.9bcc62fbfcb77bc5.js"
     ]
   },
   "app\\(dashboard)\\orders\\page.jsx -> @/components/orders/OrderDetailsDialog": {
@@ -70,8 +70,8 @@
       "static/chunks/3171-53b6010cbacd2d08.js",
       "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
-      "static/chunks/1889.dce737602e9f0322.js",
-      "static/chunks/1132.918998bb6ef4bdd8.js",
+      "static/chunks/1889.8dd5a226a5d058c1.js",
+      "static/chunks/1132.11f6a721ecea5035.js",
       "static/chunks/7223.ee7b5396cffa7fe2.js"
     ]
   },
@@ -93,10 +93,10 @@
       "static/chunks/3171-53b6010cbacd2d08.js",
       "static/chunks/1204.861d7568de9c5078.js",
       "static/chunks/9034.8e25483803b61e07.js",
-      "static/chunks/1889.dce737602e9f0322.js",
+      "static/chunks/1889.8dd5a226a5d058c1.js",
       "static/chunks/5678.79909ca752f3e075.js",
-      "static/chunks/1132.918998bb6ef4bdd8.js",
-      "static/chunks/6232.14208778e3a7d2dc.js"
+      "static/chunks/1132.11f6a721ecea5035.js",
+      "static/chunks/6232.0388c9f0cf435106.js"
     ]
   },
   "components\\layout\\Topbar.jsx -> @/components/admin/LogoutConfirmDialog": {

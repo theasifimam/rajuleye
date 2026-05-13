@@ -109,52 +109,52 @@ export function ProductDetailClient({ product, relatedProducts }) {
               <h3 className="text-sm font-black uppercase tracking-widest text-primary">
                 Select Glasses Type
               </h3>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-4 md:grid-cols-3 gap-2 sm:gap-3">
                 {lensPackages.map((lens) => (
                   <div
                     key={lens.id}
                     onClick={() => setSelectedLens(lens)}
                     className={cn(
-                      "flex flex-col p-4 rounded-2xl border-2 cursor-pointer transition-all",
+                      "flex flex-col p-2 sm:p-4 rounded-xl sm:rounded-2xl border-2 cursor-pointer transition-all",
                       selectedLens.id === lens.id
                         ? "border-primary bg-primary/5 shadow-sm scale-[1.02]"
                         : "border-border hover:border-primary/30 hover:bg-muted/50",
                     )}
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="font-bold text-sm tracking-tight">
+                    <div className="flex justify-between items-start mb-1 sm:mb-2">
+                      <span className="font-bold text-[10px] sm:text-sm tracking-tight leading-tight line-clamp-1">
                         {lens.name}
                       </span>
                       {selectedLens.id === lens.id && (
-                        <Check className="w-4 h-4 text-primary" />
+                        <Check className="w-3 h-3 sm:w-4 sm:h-4 text-primary shrink-0" />
                       )}
                     </div>
-                    <span className="text-xs text-muted-foreground mb-3">
+                    <span className="text-[8px] sm:text-xs text-muted-foreground mb-1 sm:mb-3 line-clamp-2">
                       {lens.description}
                     </span>
                     <div className="mt-auto flex flex-col">
                       {lens.price === 0 ? (
-                        <span className="font-black text-sm text-primary">
-                          Included
+                        <span className="font-black text-[10px] sm:text-sm text-primary">
+                          Incl.
                         </span>
                       ) : (
-                        <div className="flex items-center gap-2">
-                          <span className="font-black text-sm text-primary">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
+                          <span className="font-black text-[10px] sm:text-sm text-primary whitespace-nowrap">
                             +₹
                             {(
                               lens.price -
                               lens.price * (lens.discount / 100)
-                            ).toFixed(2)}
+                            ).toFixed(0)}
                           </span>
                           {lens.discount > 0 && (
-                            <span className="text-[10px] text-muted-foreground line-through">
-                              ₹{lens.price.toFixed(2)}
+                            <span className="text-[8px] sm:text-[10px] text-muted-foreground line-through">
+                              ₹{lens.price.toFixed(0)}
                             </span>
                           )}
                         </div>
                       )}
                       {lens.discount > 0 && (
-                        <span className="text-[10px] font-bold text-emerald-500 mt-1">
+                        <span className="text-[8px] sm:text-[10px] font-bold text-emerald-500 mt-0.5">
                           {lens.discount}% OFF
                         </span>
                       )}

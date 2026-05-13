@@ -127,14 +127,14 @@ export default function SettingsPage() {
         <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-8">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-4">
-              <Store className="h-3 w-3" /> Website Configuration
+              <Store className="h-3 w-3" /> Store Settings
             </div>
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-4 italic leading-none">
               Store <br />
-              <span className="text-primary not-italic">Management</span>
+              <span className="text-primary not-italic">Settings</span>
             </h2>
             <p className="text-muted-foreground font-bold uppercase tracking-[0.2em] text-[10px] max-w-md leading-relaxed">
-              Configure your digital presence and business profile information.
+              Change your store's appearance and contact details.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -152,7 +152,7 @@ export default function SettingsPage() {
                   <Save className="h-4 w-4 md:h-5 md:w-5 group-hover/btn:scale-125 transition-transform duration-500" />
                 )}
                 <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.25em]">
-                  {isUpdating ? "Saving..." : "Commit Changes"}
+                  {isUpdating ? "Saving..." : "Save Settings"}
                 </span>
               </div>
             </Button>
@@ -190,7 +190,7 @@ export default function SettingsPage() {
                   Brand Identity
                 </h3>
                 <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
-                  Global colors & aesthetics
+                  Choose your brand colors
                 </p>
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function SettingsPage() {
 
               <div className="md:col-span-2 space-y-2 md:space-y-3">
                 <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">
-                  Website Description (SEO & Hero)
+                  About Your Store
                 </label>
                 <div className="relative group/input">
                   <div className="absolute inset-x-0 bottom-0 h-[2px] bg-primary scale-x-0 group-focus-within/input:scale-x-100 transition-transform origin-left z-10" />
@@ -253,7 +253,7 @@ export default function SettingsPage() {
 
               <div className="md:col-span-2 space-y-2 md:space-y-3">
                 <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">
-                  Website Preview / Hero Image
+                  Main Website Image
                 </label>
                 <div className="relative group/input">
                   <label className="flex flex-col items-center justify-center w-full h-64 md:h-80 border-2 border-dashed border-primary/20 rounded-[2rem] cursor-pointer bg-muted/10 hover:bg-muted/30 hover:border-primary/50 transition-all overflow-hidden relative">
@@ -355,7 +355,7 @@ export default function SettingsPage() {
                   Contact Information
                 </h3>
                 <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
-                  Direct communication channels
+                  How customers can reach you
                 </p>
               </div>
             </div>

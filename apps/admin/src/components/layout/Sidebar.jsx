@@ -25,7 +25,7 @@ const menuItems = [
   { icon: Package, label: "Products", href: "/products" },
   { icon: ShoppingBag, label: "Orders", href: "/orders" },
   { icon: Users, label: "Customers", href: "/customers" },
-  { icon: Glasses, label: "Frames", href: "/frames" },
+  { icon: Glasses, label: "Lens Pricing", href: "/frames" },
   { icon: ImageIcon, label: "Banners", href: "/banners" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
   {
@@ -54,13 +54,13 @@ export function Sidebar() {
         initial={false}
         animate={{ width: isSidebarCollapsed ? 80 : 240 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="hidden md:flex h-screen bg-card/80 backdrop-blur-xl border-r flex flex-col sticky top-0 z-50 group/sidebar"
+        className="hidden md:flex h-screen bg-card/80 backdrop-blur-xl border-r flex-col sticky top-0 z-50 group/sidebar"
       >
         {/* Sidebar Toggle Button */}
         <button
           onClick={toggleSidebar}
           className={cn(
-            "absolute -right-4 top-20 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] border-4 border-background z-[100] hover:scale-110 active:scale-90 transition-all duration-300 group/toggle",
+            "absolute -right-4 top-20 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] border-4 border-background z-100 hover:scale-110 active:scale-90 transition-all duration-300 group/toggle",
             isSidebarCollapsed
               ? "opacity-100"
               : "opacity-0 group-hover/sidebar:opacity-100",
@@ -87,7 +87,7 @@ export function Sidebar() {
           <div className="flex items-center gap-4">
             <div className="relative shrink-0">
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 animate-pulse" />
-              <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 relative z-10">
+              <div className="h-12 w-12 rounded-2xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20 relative z-10">
                 <div className="h-6 w-6 rounded-full border-[3px] border-primary-foreground/30 flex items-center justify-center">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary-foreground shadow-[0_0_8px_white]" />
                 </div>
@@ -143,7 +143,7 @@ export function Sidebar() {
                 >
                   {/* Highlight Background for Inactive */}
                   {!isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                   )}
 
                   <div
@@ -201,7 +201,7 @@ export function Sidebar() {
                   )}
 
                   {isSidebarCollapsed && (
-                    <div className="fixed left-[100px] px-4 py-2.5 bg-card/90 backdrop-blur-md text-foreground rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 translate-x-[-15px] group-hover:translate-x-0 transition-all pointer-events-none shadow-md border border-primary/20 z-[200] whitespace-nowrap">
+                    <div className="fixed left-[100px] px-4 py-2.5 bg-card/90 backdrop-blur-md text-foreground rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 translate-x-[-15px] group-hover:translate-x-0 transition-all pointer-events-none shadow-md border border-primary/20 z-200 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <div className="h-1.5 w-1.5 rounded-full bg-primary" />
                         {item.label}
@@ -218,7 +218,7 @@ export function Sidebar() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden bg-primary/[0.02] rounded-[1.25rem] border border-primary/5 ml-4"
+                      className="overflow-hidden bg-primary/2 rounded-[1.25rem] border border-primary/5 ml-4"
                     >
                       <div className="py-1 px-2 space-y-1">
                         {item.subItems.map((subItem) => {
@@ -257,7 +257,7 @@ export function Sidebar() {
 
         {/* Help / Support Replacement for Logout */}
         <div className="p-6 mt-auto relative z-10">
-          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-border to-transparent" />
           <Link
             href="/support"
             className={cn(
@@ -269,7 +269,7 @@ export function Sidebar() {
             )}
           >
             {pathname !== "/support" && (
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
             )}
 
             <div
@@ -306,10 +306,10 @@ export function Sidebar() {
                     className="flex flex-col"
                   >
                     <span className="text-[13px] font-black uppercase tracking-[0.15em] whitespace-nowrap">
-                      Help Center
+                      Support
                     </span>
                     <span className="text-[9px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-0.5 whitespace-nowrap">
-                      System Support
+                      Get Help
                     </span>
                   </motion.div>
                 )}
@@ -317,7 +317,7 @@ export function Sidebar() {
             </div>
 
             {isSidebarCollapsed && (
-              <div className="fixed left-[100px] px-4 py-2.5 bg-card/90 backdrop-blur-md text-foreground rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 translate-x-[-15px] group-hover:translate-x-0 transition-all pointer-events-none shadow-md border border-primary/20 z-[200] whitespace-nowrap">
+              <div className="fixed left-[100px] px-4 py-2.5 bg-card/90 backdrop-blur-md text-foreground rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 translate-x-[-15px] group-hover:translate-x-0 transition-all pointer-events-none shadow-md border border-primary/20 z-200 whitespace-nowrap">
                 Support Center
               </div>
             )}
@@ -326,7 +326,7 @@ export function Sidebar() {
       </motion.div>
 
       {/* Mobile Bottom Navigation - Enhanced Spacing and Horizontal Scroll */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-card/80 backdrop-blur-xl border-t z-[100] flex items-center overflow-x-auto scrollbar-hide px-4 gap-2">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-card/80 backdrop-blur-xl border-t z-100 flex items-center overflow-x-auto scrollbar-hide px-4 gap-2">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           return (

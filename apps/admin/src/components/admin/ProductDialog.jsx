@@ -135,6 +135,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       if (draft) {
         try {
           const parsedDraft = JSON.parse(draft);
+          parsedDraft.newImages = []; // Prevent loading invalid File objects serialized as {}
           form.reset(parsedDraft);
         } catch (error) {
           console.error("Failed to load product draft:", error);
@@ -179,7 +180,8 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
   useEffect(() => {
     if (!product && isOpen) {
       const subscription = form.watch((value) => {
-        localStorage.setItem(PRODUCT_FORM_DRAFT_KEY, JSON.stringify(value));
+        const draftValue = { ...value, newImages: [] };
+        localStorage.setItem(PRODUCT_FORM_DRAFT_KEY, JSON.stringify(draftValue));
       });
       return () => subscription.unsubscribe();
     }

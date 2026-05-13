@@ -32,9 +32,9 @@ router.delete('/account', deleteAccount);
 
 // Admin
 router.get('/', adminOnly, getAllUsers);
-router.post('/', adminOnly, createUser);
+router.post('/', adminOnly, uploadSingle('avatar'), createUser);
 router.get('/:id', adminOnly, getUserById);
-router.patch('/:id', adminOnly, updateUser);
+router.patch('/:id', adminOnly, uploadSingle('avatar'), updateUser);
 router.delete('/:id', adminOnly, deleteUser);
 
 export default router;

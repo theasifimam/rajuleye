@@ -195,7 +195,7 @@ export function ProductCard({ product }) {
   return (
     <Card className="group relative flex flex-col h-full bg-transparent border-none shadow-none hover:shadow-none transition-all duration-500 overflow-visible">
       {/* Image Container */}
-      <div className="relative aspect-4/5 w-full overflow-hidden bg-[#F8F8F8] dark:bg-[#151515] rounded-[1.5rem] sm:rounded-[2.5rem] transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
+      <div className="relative aspect-square sm:aspect-4/5 w-full overflow-hidden bg-[#F8F8F8] dark:bg-[#151515] rounded-[2rem] sm:rounded-[2.5rem] transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/5">
         <Link
           href={`/product/${product.slug || product.id}`}
           className="absolute inset-0 z-0"
@@ -322,6 +322,7 @@ export function ProductCard({ product }) {
             </span>
           )}
         </div>
+
       </Link>
 
       {/* Mobile Action Buttons (Only visible on small screens) */}

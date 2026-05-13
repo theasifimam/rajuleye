@@ -5,12 +5,12 @@
   "/(auth)/login/page": "/login",
   "/(dashboard)/analytics/page": "/analytics",
   "/(dashboard)/banners/page": "/banners",
-  "/(dashboard)/customers/page": "/customers",
-  "/(dashboard)/frames/page": "/frames",
   "/(dashboard)/orders/page": "/orders",
-  "/(dashboard)/page": "/",
+  "/(dashboard)/customers/page": "/customers",
   "/(dashboard)/settings/page": "/settings",
+  "/(dashboard)/page": "/",
   "/(dashboard)/support/page": "/support",
-  "/(dashboard)/products/categories/page": "/products/categories",
-  "/(dashboard)/products/page": "/products"
+  "/(dashboard)/frames/page": "/frames",
+  "/(dashboard)/products/page": "/products",
+  "/(dashboard)/products/categories/page": "/products/categories"
 }

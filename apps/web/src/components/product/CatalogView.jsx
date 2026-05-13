@@ -99,6 +99,9 @@ export function CatalogView({ initialFilters = {}, basePath = "/search" }) {
   const { data: result, isLoading, isFetching } = useGetProductsQuery(apiQuery);
   const products = result?.data.products || [];
 
+  const { data: bottomProductsData } = useGetProductsQuery({ type: "eyeglasses", limit: 3 });
+  const bottomProducts = bottomProductsData?.data.products || [];
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-[1400px]">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -192,7 +195,7 @@ export function CatalogView({ initialFilters = {}, basePath = "/search" }) {
               <Loader2 className="w-10 h-10 text-primary animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 pb-20 md:pb-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 pb-20 md:pb-0">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -206,6 +209,17 @@ export function CatalogView({ initialFilters = {}, basePath = "/search" }) {
                   </Button>
                 </div>
               )}
+            </div>
+          )}
+
+          {bottomProducts.length > 0 && (
+            <div className="mt-20 border-t pt-16">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tighter mb-8">You Might Also Like</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {bottomProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </div>
           )}
         </div>

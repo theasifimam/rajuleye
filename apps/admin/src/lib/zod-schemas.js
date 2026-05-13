@@ -76,15 +76,15 @@ export const EyePowerSchema = z.object({
 export const UserFormSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
     email: z.string().email("Invalid email").min(1, "Email is required").lowercase().trim(),
-    password: z.string().min(6, "Password must be at least 6 characters").optional(),
+    password: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal('')),
     mobile: z.string().optional(),
     gender: z.enum(['male', 'female', 'other']).optional(),
     dateOfBirth: z.union([z.date(), z.string()]).optional(),
     role: z.enum(['user', 'admin', 'moderator']).default('user'),
-    isEmailVerified: z.boolean().default(false),
+    isEmailVerified: z.boolean().default(true),
     addresses: z.array(AddressSchema).default([]),
     eyePower: EyePowerSchema.optional(),
-    avatar: z.string().optional(),
+    avatar: z.any().optional(),
 });
 export const CategoryFormSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
