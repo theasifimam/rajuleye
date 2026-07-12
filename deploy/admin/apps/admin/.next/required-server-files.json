@@ -296,11 +296,11 @@
       "afterFiles": [
         {
           "source": "/api/v1/:path*",
-          "destination": "https://rajuleye.com/api/v1/:path*"
+          "destination": "http://127.0.0.1:5000/api/v1/:path*"
         },
         {
           "source": "/uploads/:path*",
-          "destination": "https://rajuleye.com/uploads/:path*"
+          "destination": "http://127.0.0.1:5000/uploads/:path*"
         }
       ],
       "fallback": []

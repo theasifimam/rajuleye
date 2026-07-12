@@ -1,6 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Load environment variables for the build process manually to avoid dotenv dependency issues
 const envPath = path.join(__dirname, '.env');
