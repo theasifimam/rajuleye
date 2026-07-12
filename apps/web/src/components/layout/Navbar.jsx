@@ -90,23 +90,26 @@ export function Navbar({ settings }) {
   };
   return (
     <header className="fixed top-0 left-0 right-0 z-100 pointer-events-none lg:px-6">
-      {!scrolled && (
-        <div className="absolute inset-0 h-40 bg-linear-to-b from-black/80 via-black/20 to-transparent pointer-events-none" />
-      )}
+      <div
+        className={cn(
+          "absolute inset-x-0 top-0 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-500 -z-10 pointer-events-none",
+          scrolled ? "h-16" : "h-20",
+          scrolled && "lg:opacity-0 lg:pointer-events-none",
+        )}
+      />
       <div
         className={cn(
           "container mx-auto max-w-[1600px] flex items-center justify-between h-20 transition-all duration-500 relative px-4 lg:px-0",
           scrolled &&
-            "lg:h-16 lg:mt-2 lg:bg-background/80 lg:backdrop-blur-2xl lg:border lg:border-white/20 lg:dark:border-white/10 lg:rounded-full lg:shadow-[0_8px_32px_rgba(0,0,0,0.1)] lg:px-6",
-          scrolled &&
-            "bg-background/95 backdrop-blur-md border-b border-border/10 lg:border-b-0 h-16",
+            "lg:h-16 lg:mt-2 lg:bg-background/80 lg:backdrop-blur-2xl lg:border lg:border-border/40 lg:rounded-full lg:shadow-[0_8px_32px_rgba(0,0,0,0.1)] lg:px-6",
+          scrolled && "h-16 lg:h-16",
         )}
       >
         {/* Left Area: Mobile Brand Island / Desktop Nav */}
         <div className="flex items-center gap-8 pointer-events-auto">
           {/* Mobile Brand Island */}
           <Link href="/" className="lg:hidden">
-            <div className="flex items-baseline gap-1 px-4 py-1 bg-background/50 backdrop-blur-md border border-white/10 rounded-full shadow-lg">
+            <div className="flex items-baseline gap-1 px-4 py-1">
               {settings?.logo ? (
                 <img
                   src={getLogoUrl(settings.logo)}
@@ -133,30 +136,17 @@ export function Navbar({ settings }) {
                   <Link
                     key={category.id}
                     href={`/search?category=${category.slug}`}
-                    className={cn(
-                      "text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group",
-                      scrolled
-                        ? "text-foreground/70 hover:text-foreground"
-                        : "text-white/70 hover:text-white",
-                    )}
+                    className="text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group text-foreground/70 hover:text-foreground"
                   >
                     {category.name}
-                    <span
-                      className={cn(
-                        "absolute -bottom-1 left-0 w-0 h-[1.5px] transition-all duration-300 group-hover:w-full",
-                        scrolled ? "bg-foreground" : "bg-white",
-                      )}
-                    />
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] transition-all duration-300 group-hover:w-full bg-foreground" />
                   </Link>
                 ))
               : // Fallback Skeleton
                 ["Loading...", "Please", "Wait"].map((item, i) => (
                   <span
                     key={i}
-                    className={cn(
-                      "text-[10px] font-black uppercase tracking-[0.2em] animate-pulse",
-                      scrolled ? "text-foreground/40" : "text-white/40",
-                    )}
+                    className="text-[10px] font-black uppercase tracking-[0.2em] animate-pulse text-foreground/40"
                   >
                     {item}
                   </span>
@@ -173,29 +163,14 @@ export function Navbar({ settings }) {
             <img
               src={getLogoUrl(settings.logo)}
               alt="Logo"
-              className={cn(
-                "h-12 object-contain transition-all duration-500",
-                scrolled ? "opacity-100" : "opacity-90 hover:opacity-100",
-              )}
+              className="h-12 object-contain transition-all duration-500 opacity-90 hover:opacity-100"
             />
           ) : (
             <div className="flex items-baseline gap-1.5 select-none transition-all duration-500 group-hover:tracking-normal">
-              <span
-                className={cn(
-                  "text-xl md:text-3xl font-black uppercase tracking-tighter transition-all duration-500 group-hover:tracking-normal",
-                  scrolled ? "text-foreground" : "text-white",
-                )}
-              >
+              <span className="text-xl md:text-3xl font-black uppercase tracking-tighter transition-all duration-500 group-hover:tracking-normal text-foreground">
                 Rajul
               </span>
-              <span
-                className={cn(
-                  "text-xl md:text-3xl font-light uppercase tracking-tighter transition-all duration-500 group-hover:tracking-normal",
-                  scrolled
-                    ? "text-foreground/50 group-hover:text-foreground/80"
-                    : "text-white/50 group-hover:text-white/80",
-                )}
-              >
+              <span className="text-xl md:text-3xl font-light uppercase tracking-tighter transition-all duration-500 group-hover:tracking-normal text-foreground/50 group-hover:text-foreground/80">
                 Eye
               </span>
             </div>
@@ -211,26 +186,11 @@ export function Navbar({ settings }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={cn(
-                    "h-12 w-12 rounded-full backdrop-blur-md border shadow-lg relative group transition-all",
-                    scrolled
-                      ? "bg-primary/10 border-primary/20 hover:bg-primary/20"
-                      : "bg-background/50 border-white/10 hover:bg-white/10",
-                  )}
+                  className="h-12 w-12 rounded-full relative group transition-all"
                 >
                   <div className="flex flex-col gap-1.5 items-center justify-center">
-                    <span
-                      className={cn(
-                        "w-5 h-[2px] rounded-full transition-all group-hover:w-6",
-                        scrolled ? "bg-foreground" : "bg-white",
-                      )}
-                    />
-                    <span
-                      className={cn(
-                        "w-3 h-[2px] rounded-full transition-all group-hover:w-6",
-                        scrolled ? "bg-foreground" : "bg-white",
-                      )}
-                    />
+                    <span className="w-5 h-[2px] rounded-full transition-all group-hover:w-6 bg-foreground" />
+                    <span className="w-3 h-[2px] rounded-full transition-all group-hover:w-6 bg-foreground" />
                   </div>
                 </Button>
               </SheetTrigger>
@@ -446,12 +406,7 @@ export function Navbar({ settings }) {
           <div className="hidden lg:flex items-center gap-4">
             <div className="flex items-center relative group">
               <Search
-                className={cn(
-                  "absolute left-4 h-3.5 w-3.5 transition-colors cursor-pointer",
-                  scrolled
-                    ? "text-foreground/60 group-focus-within:text-foreground"
-                    : "text-white/60 group-focus-within:text-white",
-                )}
+                className="absolute left-4 h-3.5 w-3.5 transition-colors cursor-pointer text-foreground/60 group-focus-within:text-foreground"
                 onClick={() => handleSearchSubmit()}
               />
               <input
@@ -462,12 +417,7 @@ export function Navbar({ settings }) {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSearchSubmit(e);
                 }}
-                className={cn(
-                  "h-10 w-48 pl-10 pr-4 rounded-full border text-[11px] font-medium tracking-wide focus:outline-none focus:w-64 transition-all duration-500",
-                  scrolled
-                    ? "border-border bg-muted/50 text-foreground placeholder:text-foreground/40 focus:border-primary/40 focus:bg-background"
-                    : "border-white/20 bg-black/20 text-white placeholder:text-white/50 focus:border-white/40 focus:bg-black/40",
-                )}
+                className="h-10 w-48 pl-10 pr-4 rounded-full border text-[11px] font-medium tracking-wide focus:outline-none focus:w-64 transition-all duration-500 border-border bg-muted/50 text-foreground placeholder:text-foreground/40 focus:border-primary/40 focus:bg-background"
               />
             </div>
 
@@ -478,12 +428,7 @@ export function Navbar({ settings }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={cn(
-                    "rounded-full transition-all hover:scale-105 active:scale-95",
-                    scrolled
-                      ? "text-foreground/80 hover:text-foreground"
-                      : "text-white/80 hover:text-white",
-                  )}
+                  className="rounded-full transition-all hover:scale-105 active:scale-95 text-foreground/80 hover:text-foreground"
                   asChild
                 >
                   <span>
@@ -491,7 +436,7 @@ export function Navbar({ settings }) {
                   </span>
                 </Button>
                 {mounted && wishlistItemsCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-[7px] font-black text-primary-foreground flex items-center justify-center ring-2 ring-black dark:ring-white">
+                  <span className="absolute top-1.5 right-1.5 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-[7px] font-black text-primary-foreground flex items-center justify-center ring-2 ring-background">
                     {wishlistItemsCount}
                   </span>
                 )}
@@ -502,16 +447,11 @@ export function Navbar({ settings }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className={cn(
-                  "relative rounded-full transition-all hover:scale-105 active:scale-95",
-                  scrolled
-                    ? "text-foreground/80 hover:text-foreground"
-                    : "text-white/80 hover:text-white",
-                )}
+                className="relative rounded-full transition-all hover:scale-105 active:scale-95 text-foreground/80 hover:text-foreground"
               >
                 <ShoppingCart className="h-5 w-5" />
                 {mounted && cartItemsCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-[7px] font-black text-primary-foreground flex items-center justify-center ring-2 ring-black dark:ring-white">
+                  <span className="absolute top-1.5 right-1.5 min-w-[14px] h-3.5 px-0.5 rounded-full bg-primary text-[7px] font-black text-primary-foreground flex items-center justify-center ring-2 ring-background">
                     {cartItemsCount}
                   </span>
                 )}
@@ -521,12 +461,7 @@ export function Navbar({ settings }) {
             <Button
               variant="ghost"
               size="icon"
-              className={cn(
-                "rounded-full transition-all hover:scale-105 active:scale-95 overflow-hidden",
-                scrolled
-                  ? "text-foreground/80 hover:text-foreground"
-                  : "text-white/80 hover:text-white",
-              )}
+              className="rounded-full transition-all hover:scale-105 active:scale-95 overflow-hidden text-foreground/80 hover:text-foreground"
               onClick={handleProfileClick}
             >
               {isLoggedIn && user?.avatar ? (

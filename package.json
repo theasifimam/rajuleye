@@ -1,0 +1,19 @@
+{
+  "name": "rajuleye-monorepo",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "server"
+  ],
+  "scripts": {
+    "dev": "node dev.js",
+    "dev:web": "npm run dev -w web",
+    "dev:admin": "npm run dev -w admin",
+    "dev:server": "npm run dev -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

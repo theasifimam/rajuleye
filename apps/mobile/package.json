@@ -11,7 +11,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.3",
-    "@hookform/resolvers": "^5.2.2",
+    "@hookform/resolvers": "^3.9.1",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native/virtualized-lists": "^0.84.1",
     "@reduxjs/toolkit": "^2.11.2",

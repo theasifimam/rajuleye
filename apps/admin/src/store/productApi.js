@@ -95,6 +95,27 @@ export const productApi = createApi({
                 { type: 'Product', id: 'LIST' },
             ],
         }),
+        uploadArModel: builder.mutation({
+            query: ({ id, body }) => ({
+                url: `/products/${id}/ar-model`,
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: 'Product', id },
+                { type: 'Product', id: 'LIST' },
+            ],
+        }),
+        deleteArModel: builder.mutation({
+            query: (id) => ({
+                url: `/products/${id}/ar-model`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: (_result, _error, id) => [
+                { type: 'Product', id },
+                { type: 'Product', id: 'LIST' },
+            ],
+        }),
     }),
 });
-export const { useGetProductsQuery, useGetFilterOptionsQuery, useGetProductByIdQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useAddProductImagesMutation, useBulkImportProductsMutation, useBulkUploadImagesMutation, } = productApi;
+export const { useGetProductsQuery, useGetFilterOptionsQuery, useGetProductByIdQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useAddProductImagesMutation, useBulkImportProductsMutation, useBulkUploadImagesMutation, useUploadArModelMutation, useDeleteArModelMutation, } = productApi;

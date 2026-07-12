@@ -23,9 +23,10 @@ export function SelectLensClient({ product }) {
   const { data: framesResponse, isLoading: framesLoading } = useGetFramesQuery();
   const dbFrames = framesResponse?.data || [];
 
+  const activeFrames = dbFrames.filter((f) => f.isActive !== false);
   const lensPackages = [
     PLANE_GLASS,
-    ...dbFrames.map((f) => ({
+    ...activeFrames.map((f) => ({
       id: f._id,
       name: f.name,
       description: f.description,

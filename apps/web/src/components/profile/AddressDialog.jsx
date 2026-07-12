@@ -24,6 +24,7 @@ export function AddressDialog({ isOpen, onOpenChange }) {
         pincode: '',
         country: 'India',
         mobile: '',
+        alternateMobile: '',
     });
     const handleDelete = async (id) => {
         try {
@@ -56,6 +57,7 @@ export function AddressDialog({ isOpen, onOpenChange }) {
                 pincode: '',
                 country: 'India',
                 mobile: '',
+                alternateMobile: '',
             });
             setIsAddingMode(false);
             toast.success("Address added successfully!");
@@ -109,6 +111,8 @@ export function AddressDialog({ isOpen, onOpenChange }) {
                         </Button>
                     </div>
 
+
+
                     <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2 scroll-mt-24">
@@ -151,6 +155,11 @@ export function AddressDialog({ isOpen, onOpenChange }) {
                                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Mobile</label>
                                 <Input placeholder="Mobile Number" value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} className="h-14 rounded-2xl bg-muted/30 border-none px-5 shadow-inner text-base font-bold focus:ring-2 focus:ring-primary/20"/>
                             </div>
+                        </div>
+
+                        <div className="space-y-2 scroll-mt-24">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Alternate Mobile (Optional)</label>
+                            <Input placeholder="Alternate Mobile Number" value={formData.alternateMobile} onChange={(e) => setFormData({ ...formData, alternateMobile: e.target.value })} className="h-14 rounded-2xl bg-muted/30 border-none px-5 shadow-inner text-base font-bold focus:ring-2 focus:ring-primary/20"/>
                         </div>
 
                         <Button onClick={handleAdd} disabled={isAddingAddr} className="w-full h-16 rounded-full bg-primary text-primary-foreground font-black shadow-xl hover:scale-[1.02] transition-transform text-sm uppercase tracking-widest mt-6">

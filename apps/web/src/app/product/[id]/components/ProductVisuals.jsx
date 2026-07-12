@@ -1,6 +1,8 @@
 "use client";
+import { useState } from "react";
 import { ProductImageCarousel } from "@/components/product/ProductImageCarousel";
-import { Globe, Lock, RotateCcw } from "lucide-react";
+import { Globe, Lock, RotateCcw, ScanFace } from "lucide-react";
+import { VirtualTryOn } from "./VirtualTryOn";
 
 export function ProductVisuals({ product, discountPercent }) {
   return (
@@ -14,37 +16,38 @@ export function ProductVisuals({ product, discountPercent }) {
               </div>
             </div>
           )}
-          <ProductImageCarousel images={product.images} name={product.name} />
-        </div>
 
-        {/* Trust Strip - Desktop Only */}
-        <div className="hidden lg:grid grid-cols-3 gap-8 py-8 border-t border-muted-foreground/10">
-          {[
-            {
-              icon: Globe,
-              label: "Sustainability",
-              desc: "Eco-conscious sourcing",
-            },
-            { icon: Lock, label: "Secure", desc: "Encrypted transactions" },
-            { icon: RotateCcw, label: "30-Day", desc: "Hassle-free returns" },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center text-center gap-3"
-            >
-              <div className="p-3 bg-white dark:bg-muted rounded-2xl shadow-sm border border-border/50">
-                <item.icon className="h-4 w-4 text-muted-foreground" />
+          <ProductImageCarousel images={product.images} name={product.name} />
+
+          {/* Trust Strip - Desktop Only */}
+          <div className="hidden lg:grid grid-cols-3 gap-8 py-8 border-t border-muted-foreground/10">
+            {[
+              {
+                icon: Globe,
+                label: "Sustainability",
+                desc: "Eco-conscious sourcing",
+              },
+              { icon: Lock, label: "Secure", desc: "Encrypted transactions" },
+              { icon: RotateCcw, label: "30-Day", desc: "Hassle-free returns" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center text-center gap-3"
+              >
+                <div className="p-3 bg-white dark:bg-muted rounded-2xl shadow-sm border border-border/50">
+                  <item.icon className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] font-black uppercase tracking-widest">
+                    {item.label}
+                  </p>
+                  <p className="text-[9px] text-muted-foreground/60 font-medium leading-tight">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-black uppercase tracking-widest">
-                  {item.label}
-                </p>
-                <p className="text-[9px] text-muted-foreground/60 font-medium leading-tight">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

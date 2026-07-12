@@ -40,6 +40,7 @@ const ShippingAddressSchema = new Schema(
     pincode: { type: String, required: true },
     country: { type: String, default: 'India' },
     mobile: { type: String, required: true },
+    alternateMobile: { type: String },
   },
   { _id: false }
 );

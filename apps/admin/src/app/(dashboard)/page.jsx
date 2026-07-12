@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import {
   TrendingUp,
   Users,
@@ -19,7 +20,19 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { useGetDashboardMetricsQuery } from "@/store/dashboardApi";
+import Link from "next/link";
+
+const OrderDetailsDialog = dynamic(
+  () =>
+    import("@/components/orders/OrderDetailsDialog").then(
+      (mod) => mod.OrderDetailsDialog,
+    ),
+  { ssr: false },
+);
+
 export default function DashboardPage() {
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { data, isLoading, error } = useGetDashboardMetricsQuery();
   const dashboardData = data?.data;
   const stats = React.useMemo(
@@ -213,13 +226,9 @@ export default function DashboardPage() {
             <h3 className="text-lg md:text-xl font-black tracking-tight uppercase">
               Quick Feed
             </h3>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 rounded-xl"
-            >
+            <Link href="/orders" className="text-primary text-sm font-bold">
               <ArrowRight className="h-4 w-4" />
-            </Button>
+            </Link>
           </div>
 
           <div className="space-y-6 flex-1">
@@ -228,6 +237,10 @@ export default function DashboardPage() {
                 <div
                   key={i}
                   className="flex items-center gap-4 md:gap-5 group cursor-pointer"
+                  onClick={() => {
+                    setSelectedOrder(order);
+                    setIsDialogOpen(true);
+                  }}
                 >
                   <div
                     className={cn(
@@ -282,6 +295,11 @@ export default function DashboardPage() {
           </Button>
         </div>
       </div>
+      <OrderDetailsDialog
+        order={selectedOrder}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 }

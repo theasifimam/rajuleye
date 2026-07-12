@@ -5,6 +5,7 @@ export default async function ProductPage({ params }) {
   const { id } = await params;
   try {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    console.log("=== DEBUG API BASE ===", { apiBase, envVar: process.env.NEXT_PUBLIC_API_URL });
 
     const res = await fetch(`${apiBase}/api/v1/products/${id}`, {
       next: { revalidate: 0 },

@@ -16,6 +16,8 @@ import {
   ArrowRight,
   Loader2,
   FileUp,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +37,7 @@ import { cn } from "@/lib/utils";
 import {
   useGetProductsQuery,
   useDeleteProductMutation,
+  useUpdateProductMutation,
 } from "@/store/productApi";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -59,6 +62,16 @@ export default function ProductsPage() {
   });
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
+
+  const toggleActive = async (product) => {
+    try {
+      await updateProduct({ id: product._id, body: { isActive: !product.isActive } }).unwrap();
+      toast.success(product.isActive ? "Product hidden" : "Product activated");
+    } catch {
+      toast.error("Failed to update product visibility");
+    }
+  };
 
   const products = React.useMemo(
     () => productsData?.data?.products || [],
@@ -312,6 +325,18 @@ export default function ProductsPage() {
                   </td>
                   <td className="p-4 md:p-6 text-right">
                     <div className="flex items-center justify-end gap-2 translate-x-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleActive(product)}
+                        className="h-12 w-12 rounded-xl hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all"
+                      >
+                        {product.isActive ? (
+                          <ToggleRight className="h-5 w-5 text-primary" />
+                        ) : (
+                          <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                        )}
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

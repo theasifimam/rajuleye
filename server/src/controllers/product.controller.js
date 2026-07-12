@@ -20,7 +20,11 @@ export const getProducts = asyncHandler(async (req, res) => {
   const limitNum = Math.min(50, parseInt(limit));
   const skip = (pageNum - 1) * limitNum;
 
-  const filter = { isActive: true };
+  const filter = {};
+  if (req.user?.role !== 'admin' && req.user?.role !== 'moderator') {
+    filter.isActive = true;
+  }
+  
   if (search) filter['$text'] = { $search: search };
   
   // Single string matches
@@ -194,4 +198,51 @@ export const addProductImages = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json(new ApiResponse('Images added', product.images));
+});
+
+// POST /api/v1/products/:id/ar-model  (admin – upload GLB/GLTF)
+export const uploadArModel = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    throw new ApiError(400, 'No AR model file provided');
+  }
+
+  const modelPath = `/uploads/ar-models/${req.file.filename}`;
+
+  // If there was a previous AR model, delete it from disk
+  const existing = await Product.findById(req.params['id']);
+  if (existing?.arModelUrl) {
+    try {
+      const oldPath = path.join(process.cwd(), existing.arModelUrl.replace(/^\//, ''));
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    } catch (err) {
+      console.error('Failed to remove old AR model:', err);
+    }
+  }
+
+  const product = await Product.findByIdAndUpdate(
+    req.params['id'],
+    { arModelUrl: modelPath },
+    { new: true, runValidators: false }
+  );
+
+  if (!product) throw new ApiError(404, 'Product not found');
+  res.status(200).json(new ApiResponse('AR model uploaded', { arModelUrl: product.arModelUrl }));
+});
+
+// DELETE /api/v1/products/:id/ar-model  (admin)
+export const deleteArModel = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params['id']);
+  if (!product) throw new ApiError(404, 'Product not found');
+
+  if (product.arModelUrl) {
+    try {
+      const fullPath = path.join(process.cwd(), product.arModelUrl.replace(/^\//, ''));
+      if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+    } catch (err) {
+      console.error('Failed to delete AR model file:', err);
+    }
+  }
+
+  await Product.findByIdAndUpdate(req.params['id'], { arModelUrl: null });
+  res.status(200).json(new ApiResponse('AR model removed', null));
 });

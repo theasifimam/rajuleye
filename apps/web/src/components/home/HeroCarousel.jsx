@@ -33,25 +33,26 @@ export function HeroCarousel() {
                         </CarouselItem>) : banners.length > 0 ? (banners.map((slide, index) => (<CarouselItem key={slide.id || index}>
                                 <section className="relative w-full h-[300px] md:h-[500px] bg-muted overflow-hidden">
                                     <Image src={slide.image.startsWith('http') ? slide.image : slide.image.startsWith('/') ? slide.image : `/${slide.image}`} alt={slide.title} fill priority={index === 0} className="object-cover"/>
-                                    <div className={cn("absolute inset-0 bg-gradient-to-r flex items-center pt-24 md:pt-32 from-black/70 via-black/30 to-transparent")}>
+                                    <div className={cn("absolute inset-0 bg-gradient-to-r flex items-center pt-40 md:pt-52 from-black/70 via-black/30 to-transparent")}>
                                         <div className="container px-6 md:px-12 mx-auto max-w-[1600px]">
                                             <div className="max-w-xl space-y-3 md:space-y-6 text-white animate-in fade-in slide-in-from-left-8 duration-1000">
                                                 {slide.label && (<div className="inline-block py-1 px-3 md:py-1.5 md:px-4 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] mb-1 md:mb-4">
                                                         {slide.label}
                                                     </div>)}
-                                                <h1 className="text-3xl md:text-7xl font-black tracking-tighter leading-[0.9] uppercase">
-                                                    {slide.title}
-                                                </h1>
+                                                {slide.buttonLink ? (
+                                                    <Link href={slide.buttonLink} className="block group hover:opacity-80 transition-opacity cursor-pointer">
+                                                        <h1 className="text-3xl md:text-7xl font-black tracking-tighter leading-[0.9] uppercase">
+                                                            {slide.title}
+                                                        </h1>
+                                                    </Link>
+                                                ) : (
+                                                    <h1 className="text-3xl md:text-7xl font-black tracking-tighter leading-[0.9] uppercase">
+                                                        {slide.title}
+                                                    </h1>
+                                                )}
                                                 <p className="text-xs md:text-xl text-white/70 max-w-md font-medium tracking-tight leading-relaxed line-clamp-2 md:line-clamp-none">
                                                     {slide.description}
                                                 </p>
-                                                {slide.buttonLink && (<div className="pt-2 md:pt-6 flex gap-4">
-                                                        <Button size="lg" className="rounded-full px-6 h-10 md:px-10 md:h-16 font-black text-[10px] md:text-xs uppercase tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xl hover:scale-105 transition-all border-none" asChild>
-                                                            <Link href={slide.buttonLink}>
-                                                                Explore <ArrowRight className="ml-2 md:ml-3 h-4 w-4 md:h-5 md:w-5"/>
-                                                            </Link>
-                                                        </Button>
-                                                    </div>)}
                                             </div>
                                         </div>
                                     </div>

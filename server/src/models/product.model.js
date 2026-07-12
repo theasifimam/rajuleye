@@ -49,6 +49,7 @@ const ProductSchema = new Schema(
     },
     weight: { type: String },
     images: { type: [String], default: [] },
+    arModelUrl: { type: String, default: null }, // Path to uploaded GLB/GLTF AR glasses model
     price: { type: Number, required: true, min: 0 },
     discount: { type: Number, default: 0, min: 0, max: 100 },
     stock: { type: Number, required: true, default: 0, min: 0 },

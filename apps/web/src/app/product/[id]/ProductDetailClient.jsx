@@ -30,9 +30,10 @@ export function ProductDetailClient({ product, relatedProducts }) {
   const dbFrames = framesResponse?.data || [];
 
   // Combine Plane Glass with DB frames
+  const activeFrames = dbFrames.filter((f) => f.isActive !== false);
   const lensPackages = [
     PLANE_GLASS,
-    ...dbFrames.map((f) => ({
+    ...activeFrames.map((f) => ({
       id: f._id,
       name: f.name,
       description: f.description,

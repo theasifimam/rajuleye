@@ -74,6 +74,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
       weight: 0,
       images: [],
       newImages: [],
+      arModelUrl: null,
       price: 0,
       discount: 0,
       stock: 0,
@@ -127,6 +128,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
         lensCoating: product.lensCoating || [],
         images: product.images || [],
         newImages: [],
+        arModelUrl: product.arModelUrl || null,
         tags: product.tags || [],
       });
       setLastLoadedProductId(product._id);
@@ -161,6 +163,7 @@ export function ProductDialog({ isOpen, onOpenChange, product }) {
           isActive: true,
           images: [],
           newImages: [],
+          arModelUrl: null,
           tags: [],
         });
       }

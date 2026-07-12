@@ -109,7 +109,7 @@ export const getDashboardMetrics = asyncHandler(async (req, res) => {
     const recentOrders = await Order.find()
         .sort({ createdAt: -1 })
         .limit(5)
-        .populate('user', 'name');
+        .populate('user', 'name email mobile');
 
     const formattedRecentOrders = recentOrders.map((order) => {
         // Calculate time ago
@@ -125,6 +125,7 @@ export const getDashboardMetrics = asyncHandler(async (req, res) => {
         else timeAgo = `${diffDays} days ago`;
 
         return {
+            ...order.toObject(),
             id: `#${order._id.toString().substring(order._id.toString().length - 8)}`.toUpperCase(),
             customer: order.user?.name || 'Unknown User',
             amount: order.finalAmount,

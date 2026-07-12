@@ -20,7 +20,7 @@ export function CategoryGrid() {
 
   const sections = [
     {
-      title: "Eyeglasses",
+      title: "Shop By Category",
       items: [
         {
           name: "Men",
@@ -37,37 +37,11 @@ export function CategoryGrid() {
             : "/search?q=women+eyeglasses",
         },
         {
-          name: "Kids",
-          image: "/kid-with-eyeglass.jpg",
-          link: eyeglassesCat
-            ? `/search?category=${eyeglassesCat.id}&q=kids`
-            : "/search?q=kids+eyeglasses",
-        },
-      ],
-    },
-    {
-      title: "Sunglasses",
-      items: [
-        {
-          name: "Men",
-          image: "/man-with-sunglass.jpg",
-          link: sunglassesCat
-            ? `/search?category=${sunglassesCat.id}&q=men`
-            : "/search?q=men+sunglasses",
-        },
-        {
-          name: "Women",
+          name: "Sunglasses",
           image: "/woman-with-sunglass.jpg",
           link: sunglassesCat
-            ? `/search?category=${sunglassesCat.id}&q=women`
-            : "/search?q=women+sunglasses",
-        },
-        {
-          name: "Kids",
-          image: "/kid-with-sunglass.jpg",
-          link: sunglassesCat
-            ? `/search?category=${sunglassesCat.id}&q=kids`
-            : "/search?q=kids+sunglasses",
+            ? `/search?category=${sunglassesCat.id}`
+            : "/search?category=sunglasses",
         },
       ],
     },
