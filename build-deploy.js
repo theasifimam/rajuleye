@@ -28,9 +28,18 @@ function buildAndPrepare(appName) {
   console.log(`\n--- Building ${appName} ---`);
   const appDir = path.join(__dirname, 'apps', appName);
   
+  // Clone environment variables to customize for production build
+  const buildEnv = { ...process.env };
+  
+  // Since build-deploy.js builds for server deployment, override NEXT_PUBLIC_API_URL
+  // to use PROD_API_URL (defaulting to https://rajuleye.com if not set)
+  const prodApiUrl = buildEnv.PROD_API_URL || 'https://rajuleye.com';
+  console.log(`Setting NEXT_PUBLIC_API_URL to production API: ${prodApiUrl}`);
+  buildEnv.NEXT_PUBLIC_API_URL = prodApiUrl;
+  
   // Run next build
   try {
-    execSync('npm run build', { cwd: appDir, stdio: 'inherit', env: process.env });
+    execSync('npm run build', { cwd: appDir, stdio: 'inherit', env: buildEnv });
   } catch (error) {
     console.error(`Build failed for ${appName}`);
     process.exit(1);
