@@ -554,14 +554,15 @@ export default function UsersPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setIsDeleteDialogOpen(false)}
-                  className="flex-1 h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-muted"
+                  className="w-full sm:flex-1 h-14 shrink-0 rounded-2xl font-black text-[10px] uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
                 >
                   Cancel
                 </Button>
                 <Button
+                  variant="destructive"
                   onClick={confirmDelete}
                   disabled={isDeleting}
-                  className="flex-1 h-14 rounded-2xl font-black text-[10px] uppercase tracking-widest bg-destructive hover:bg-destructive/90 text-white shadow-xl shadow-destructive/20"
+                  className="w-full sm:flex-1 h-14 shrink-0 rounded-2xl font-black text-[10px] uppercase tracking-widest text-white shadow-xl shadow-destructive/20"
                 >
                   {isDeleting ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

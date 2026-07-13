@@ -104,28 +104,28 @@ export function DialogInnerContent({
         )}
 
         {/* Enter Manually */}
-        <OptionCard
-          selected={selectedOption === "manual"}
-          onClick={() => setSelectedOption("manual")}
-          icon={Edit3}
-          iconColor="#3b82f6"
-          borderColor="border-blue-500"
-          bgColor="bg-blue-50/50 dark:bg-blue-950/20"
-          title="Enter Lens Power"
-          subtitle="Type your prescription values now"
-        >
-          {selectedOption === "manual" && (
-            <div
-              className="mt-4 ml-0 sm:ml-18"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <PowerForm
-                manualPower={manualPower}
-                setManualPower={setManualPower}
-              />
-            </div>
-          )}
-        </OptionCard>
+        {selectedOption === "manual" ? (
+          <div
+            className="p-5 border-2 border-blue-500 bg-blue-50/30 dark:bg-blue-950/10 rounded-[2rem] shadow-lg animate-in fade-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PowerForm
+              manualPower={manualPower}
+              setManualPower={setManualPower}
+            />
+          </div>
+        ) : (
+          <OptionCard
+            selected={false}
+            onClick={() => setSelectedOption("manual")}
+            icon={Edit3}
+            iconColor="#3b82f6"
+            borderColor="border-blue-500"
+            bgColor="bg-blue-50/50 dark:bg-blue-950/20"
+            title="Enter Lens Power"
+            subtitle="Type your prescription values now"
+          />
+        )}
 
         {/* Upload Prescription */}
         <OptionCard

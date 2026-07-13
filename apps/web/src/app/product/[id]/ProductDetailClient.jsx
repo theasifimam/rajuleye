@@ -96,7 +96,7 @@ export function ProductDetailClient({ product, relatedProducts }) {
     : 0;
 
   return (
-    <div className="flex flex-col min-h-screen lg:pt-32 bg-background pb-32 mt-[-142px] lg:mt-[-128px] md:pb-0">
+    <div className="flex flex-col min-h-screen lg:pt-10 bg-background md:pb-0">
       <div className="flex flex-col md:container md:mx-auto md:px-8 md:max-w-[1400px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 items-start">
           <div className="flex flex-col space-y-6">
@@ -169,7 +169,10 @@ export function ProductDetailClient({ product, relatedProducts }) {
           <div className="flex flex-col">
             <ProductInfo product={modifiedProduct} />
             <div className="hidden md:block pt-4">
-              <AddToCartButton product={modifiedProduct} selectedLens={selectedLens} />
+              <AddToCartButton
+                product={modifiedProduct}
+                selectedLens={selectedLens}
+              />
             </div>
             <ProductTabs
               product={modifiedProduct}

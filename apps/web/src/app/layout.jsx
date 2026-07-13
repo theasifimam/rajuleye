@@ -73,7 +73,7 @@ export default async function RootLayout({ children }) {
             <Suspense fallback={null}>
               <Navbar settings={settings} />
             </Suspense>
-            <main className="flex-1 pb-28 lg:pb-0 pt-28 lg:pt-32 overflow-x-hidden">
+            <main className="flex-1 pb-28 lg:pb-0 pt-20 lg:pt-16 overflow-x-hidden">
               {children}
               <Footer settings={settings} />
             </main>
