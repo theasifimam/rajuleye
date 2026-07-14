@@ -11,7 +11,7 @@ const generateValues = (min, max, step) => {
   return values;
 };
 
-const sphereOptions = generateValues(-6, 5, 0.25);
+const sphereOptions = generateValues(-8, 6, 0.25);
 const cylinderOptions = generateValues(-2, 2, 0.25); // Usually negative for glasses
 const axisOptions = Array.from({ length: 181 }, (_, i) => i.toString());
 
@@ -29,11 +29,16 @@ export function PowerForm({ manualPower, setManualPower }) {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <span className={cn("h-2 w-2 rounded-full shrink-0", dotColor)} />
-          <h4 className={cn("font-black text-xs uppercase tracking-wider", textColor)}>
+          <h4
+            className={cn(
+              "font-black text-xs uppercase tracking-wider",
+              textColor,
+            )}
+          >
             {eyeLabel}
           </h4>
         </div>
-        
+
         <div className="grid grid-cols-3 gap-3">
           {/* SPH */}
           <div className="space-y-1 text-center">
@@ -98,8 +103,13 @@ export function PowerForm({ manualPower, setManualPower }) {
 
   return (
     <div className="space-y-5 animate-in fade-in duration-300">
+      {renderEyeFields(
+        "Right Eye (OD)",
+        "right",
+        "bg-violet-600",
+        "text-violet-600",
+      )}
       {renderEyeFields("Left Eye (OS)", "left", "bg-blue-600", "text-blue-600")}
-      {renderEyeFields("Right Eye (OD)", "right", "bg-violet-600", "text-violet-600")}
 
       {/* Patient Name / Phone fields */}
       <div className="space-y-3 pt-3 border-t border-dashed border-blue-200 dark:border-blue-900/40">

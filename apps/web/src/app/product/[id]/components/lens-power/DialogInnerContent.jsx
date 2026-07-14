@@ -45,7 +45,7 @@ export function DialogInnerContent({
           >
             {selectedOption === "saved" && (
               <div
-                className="grid grid-cols-2 gap-3 mt-4 ml-18 animate-in fade-in slide-in-from-top-2 duration-300"
+                className="grid grid-cols-2 gap-3 mt-4 ml-0 sm:ml-18 animate-in fade-in slide-in-from-top-2 duration-300"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="bg-white/80 dark:bg-muted/40 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/30">
@@ -106,7 +106,7 @@ export function DialogInnerContent({
         {/* Enter Manually */}
         {selectedOption === "manual" ? (
           <div
-            className="p-5 border-2 border-blue-500 bg-blue-50/30 dark:bg-blue-950/10 rounded-[2rem] shadow-lg animate-in fade-in duration-300"
+            className="p-1 sm:p-5 border-0 sm:border-2 border-blue-500 bg-transparent sm:bg-blue-50/30 dark:bg-transparent dark:sm:bg-blue-950/10 rounded-none sm:rounded-[2rem] shadow-none sm:shadow-lg animate-in fade-in duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <PowerForm
@@ -182,7 +182,7 @@ export function DialogInnerContent({
           subtitle="Our optician will help find the right power"
         >
           {selectedOption === "whatsapp" && (
-            <p className="text-xs text-green-700 dark:text-green-400 mt-3 ml-18 animate-in fade-in duration-200 bg-green-50 dark:bg-green-950/30 px-3 py-2 rounded-lg border border-green-200 dark:border-green-800/40">
+            <p className="text-xs text-green-700 dark:text-green-400 mt-3 ml-0 sm:ml-18 animate-in fade-in duration-200 bg-green-50 dark:bg-green-950/30 px-3 py-2 rounded-lg border border-green-200 dark:border-green-800/40">
               💬 You&apos;ll be redirected to WhatsApp to chat with our team.
               Share your prescription photo or details and we&apos;ll take care
               of the rest!
@@ -202,7 +202,7 @@ export function DialogInnerContent({
           subtitle="You can share your power later before delivery"
         >
           {selectedOption === "skip" && (
-            <p className="text-xs text-amber-700 dark:text-amber-400 mt-3 ml-18 animate-in fade-in duration-200 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 rounded-lg border border-amber-200 dark:border-amber-800/40">
+            <p className="text-xs text-amber-700 dark:text-amber-400 mt-3 ml-0 sm:ml-18 animate-in fade-in duration-200 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 rounded-lg border border-amber-200 dark:border-amber-800/40">
               ⚡ No worries! You can share your lens power anytime before we
               ship your order. We&apos;ll reach out to you.
             </p>
@@ -211,11 +211,11 @@ export function DialogInnerContent({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border/50">
+      <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mt-5 pt-4 border-t border-border/50">
         <Button
           variant="ghost"
           onClick={onClose}
-          className="rounded-full px-6 text-xs font-semibold"
+          className="rounded-full h-11 sm:h-12 px-6 text-xs font-semibold shrink-0"
         >
           Cancel
         </Button>
@@ -223,7 +223,7 @@ export function DialogInnerContent({
           onClick={handleConfirm}
           disabled={!selectedOption}
           className={cn(
-            "flex-1 rounded-full h-12 text-xs font-bold uppercase tracking-wider shadow-lg transition-all duration-300",
+            "sm:flex-1 rounded-full h-12 text-xs font-bold uppercase tracking-wider shadow-lg transition-all duration-300",
             selectedOption === "whatsapp" &&
               "bg-green-600 hover:bg-green-700 shadow-green-500/20",
             selectedOption === "skip" &&
