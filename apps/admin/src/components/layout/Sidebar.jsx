@@ -15,11 +15,13 @@ import {
   Sparkles,
   LifeBuoy,
   Glasses,
+  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useConfigStore } from "@/store/useConfigStore";
 import { useState } from "react";
+import { useGetUnreadCountQuery } from "@/store/notificationApi";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/" },
   { icon: Package, label: "Products", href: "/products" },
@@ -28,6 +30,7 @@ const menuItems = [
   { icon: Glasses, label: "Lens Pricing", href: "/frames" },
   { icon: ImageIcon, label: "Banners", href: "/banners" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
+  { icon: Bell, label: "Notifications", href: "/notifications", badge: true },
   {
     icon: Settings,
     label: "Settings",
@@ -42,6 +45,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const { isSidebarCollapsed, toggleSidebar } = useConfigStore();
   const [expandedMenus, setExpandedMenus] = useState([]);
+  const { data: unreadData } = useGetUnreadCountQuery(undefined, { pollingInterval: 30000 });
+  const unreadCount = unreadData?.data?.count ?? 0;
   const toggleMenu = (label) => {
     setExpandedMenus((prev) =>
       prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label],
@@ -180,6 +185,12 @@ export function Sidebar() {
                           <span className="text-[13px] font-black uppercase tracking-[0.15em] whitespace-nowrap">
                             {item.label}
                           </span>
+                          {/* Badge for notification count */}
+                          {item.badge && unreadCount > 0 && (
+                            <span className="ml-auto h-5 min-w-5 px-1 flex items-center justify-center bg-destructive text-white rounded-full text-[9px] font-black leading-none">
+                              {unreadCount > 99 ? '99+' : unreadCount}
+                            </span>
+                          )}
                           {hasSubItems && (
                             <ChevronRight
                               className={cn(

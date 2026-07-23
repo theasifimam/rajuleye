@@ -1,11 +1,74 @@
 import Order from '../models/order.model.js';
 import Cart from '../models/cart.model.js';
 import Product from '../models/product.model.js';
+import Notification from '../models/notification.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
+import { sendEmail } from '../utils/sendEmail.js';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+
+const ADMIN_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'therajuleye@gmail.com';
+
+// Helper: fire admin notification + email for a new order (non-blocking)
+async function notifyNewOrder(order) {
+  const shortId = order._id.toString().slice(-8).toUpperCase();
+  const body = `Order #${shortId} placed • ₹${order.finalAmount.toFixed(2)} • ${order.paymentMethod.toUpperCase()} • ${order.items.length} item(s)`;
+
+  await Notification.create({
+    type: 'order',
+    title: `New Order #${shortId}`,
+    body,
+    refId: order._id.toString(),
+    refModel: 'Order',
+  });
+
+  const itemRows = order.items
+    .map(
+      (it) =>
+        `<tr><td style="padding:8px 12px;border-bottom:1px solid #eee;">${it.name}</td>` +
+        `<td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center;">${it.qty}</td>` +
+        `<td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:right;">₹${it.price.toFixed(2)}</td></tr>`
+    )
+    .join('');
+
+  const html = `<!DOCTYPE html><html><head><style>
+    body{font-family:'Segoe UI',sans-serif;background:#f4f4f4;margin:0;padding:0;}
+    .c{max-width:560px;margin:40px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1);}
+    .h{background:#1a1a2e;padding:32px;text-align:center;}
+    .h h1{color:#e2b96f;margin:0;font-size:22px;letter-spacing:1px;}
+    .badge{display:inline-block;background:#22c55e22;border:1px solid #22c55e44;color:#22c55e;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:100px;padding:4px 16px;margin-top:12px;}
+    .b{padding:36px 32px;}
+    .meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+    .mi{flex:1;min-width:110px;background:#f9f9f9;border-radius:10px;padding:12px 16px;}
+    .mi label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-bottom:4px;}
+    .mi p{margin:0;font-size:15px;font-weight:700;color:#1a1a2e;}
+    table{width:100%;border-collapse:collapse;}
+    th{background:#f0f0f0;padding:8px 12px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#666;text-align:left;}
+    .tr td{padding:12px;font-weight:700;border-top:2px solid #eee;}
+    .f{background:#f9f9f9;padding:16px 32px;text-align:center;color:#aaa;font-size:12px;border-top:1px solid #eee;}
+  </style></head><body>
+  <div class="c">
+    <div class="h"><h1>👓 Rajul Eye</h1><span class="badge">New Order Received</span></div>
+    <div class="b">
+      <div class="meta">
+        <div class="mi"><label>Order ID</label><p>#${shortId}</p></div>
+        <div class="mi"><label>Payment</label><p>${order.paymentMethod.toUpperCase()}</p></div>
+        <div class="mi"><label>Total</label><p>₹${order.finalAmount.toFixed(2)}</p></div>
+      </div>
+      <table>
+        <thead><tr><th>Item</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Price</th></tr></thead>
+        <tbody>${itemRows}</tbody>
+        <tfoot><tr class="tr"><td colspan="2">Final Amount</td><td style="text-align:right;">₹${order.finalAmount.toFixed(2)}</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="f">© ${new Date().getFullYear()} Rajul Eye. All rights reserved.</div>
+  </div>
+  </body></html>`;
+
+  sendEmail({ to: ADMIN_EMAIL, subject: `[New Order] #${shortId} — ₹${order.finalAmount.toFixed(2)}`, html }).catch(() => {});
+}
 
 // POST /api/v1/orders
 export const createOrder = asyncHandler(async (req, res) => {
@@ -80,6 +143,9 @@ export const createOrder = asyncHandler(async (req, res) => {
       order.razorpayOrderId = razorpayOrder.id;
       await order.save();
 
+      // Fire admin notification + email (non-blocking)
+      notifyNewOrder(order).catch(() => {});
+
       res.status(201).json(new ApiResponse('Order placed successfully, proceed to payment', {
         order,
         razorpayOrder: {
@@ -103,6 +169,9 @@ export const createOrder = asyncHandler(async (req, res) => {
   // For COD, clear cart and return success
   cart.items = [];
   await cart.save();
+
+  // Fire admin notification + email (non-blocking)
+  notifyNewOrder(order).catch(() => {});
 
   res.status(201).json(new ApiResponse('Order placed successfully', { order }));
 });

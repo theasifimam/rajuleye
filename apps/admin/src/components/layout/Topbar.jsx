@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import dynamic from 'next/dynamic';
 const LogoutConfirmDialog = dynamic(() => import('@/components/admin/LogoutConfirmDialog').then(mod => mod.LogoutConfirmDialog), { ssr: false });
+const NotificationBell = dynamic(() => import('@/components/admin/NotificationBell').then(mod => mod.NotificationBell), { ssr: false });
 import { Settings, Shield } from 'lucide-react';
 export function Topbar() {
     const { theme, setTheme } = useTheme();
@@ -47,10 +48,8 @@ export function Topbar() {
                     {mounted && (theme === 'dark' ? (<Sun className="h-4 w-4 md:h-5 md:w-5 text-primary group-hover:rotate-45 transition-transform"/>) : (<Moon className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground group-hover:-rotate-12 transition-transform"/>))}
                 </Button>
 
-                <Button variant="ghost" size="icon" className="h-11 w-11 md:h-12 md:w-12 rounded-2xl hover:bg-primary/5 transition-colors relative shrink-0">
-                    <Bell className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground"/>
-                    <span className="absolute top-2.5 right-2.5 md:top-3 md:right-3 h-2 w-2 bg-destructive rounded-full border-2 border-background"/>
-                </Button>
+                {/* Notification Bell */}
+                <NotificationBell />
 
                 <div className="h-6 w-[1px] bg-border/50 mx-1 md:mx-2 hidden xs:block"/>
 

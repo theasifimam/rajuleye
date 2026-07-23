@@ -13,14 +13,14 @@ import { LogOut, AlertCircle } from "lucide-react";
 export function LogoutConfirmDialog({ isOpen, onOpenChange, onConfirm }) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[440px] p-0 overflow-hidden border-none bg-card/40 backdrop-blur-3xl shadow-2xl">
+      <DialogContent className="sm:max-w-110 p-0 overflow-hidden border-none bg-card/40 backdrop-blur-3xl shadow-2xl">
         {/* Background Accent */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-destructive/60" />
 
         <div className="p-8 md:p-10">
           <DialogHeader className="mb-8">
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-14 w-14 rounded-[1.25rem] bg-destructive/10 flex items-center justify-center shrink-0">
+              <div className="h-14 w-14 rounded-4xl bg-destructive/10 flex items-center justify-center shrink-0">
                 <AlertCircle className="h-7 w-7 text-destructive" />
               </div>
               <div>

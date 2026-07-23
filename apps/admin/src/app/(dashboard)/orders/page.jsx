@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import {
   Search,
@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { useGetAllOrdersQuery } from "@/store/orderApi";
+import { useSearchParams } from "next/navigation";
 const OrderDetailsDialog = dynamic(
   () =>
     import("@/components/orders/OrderDetailsDialog").then(
@@ -49,12 +50,26 @@ const statusIcons = {
 };
 
 export default function OrdersPage() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams.get("highlight");
+  const highlightRef = useRef(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
   const [filterStatus, setFilterStatus] = useState("All Status");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [page, setPage] = useState(1);
+
+  // Scroll to and flash-highlight the row when highlightId is present
+  useEffect(() => {
+    if (highlightId && highlightRef.current) {
+      highlightRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [highlightId, highlightRef.current]);
   const { data: response, isLoading } = useGetAllOrdersQuery({
     page: page,
     limit: 20,
@@ -127,7 +142,7 @@ export default function OrdersPage() {
         description="View and manage all customer orders."
         showAction={false}
       >
-        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-[180px] md:min-w-[200px] hover:border-primary/30 transition-all duration-500">
+        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-45 md:min-w-50 hover:border-primary/30 transition-all duration-500">
           <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
             Monthly Orders
           </p>
@@ -214,7 +229,7 @@ export default function OrdersPage() {
               {filter}
             </button>
           ))}
-          <div className="h-12 w-[2px] bg-border/50 mx-1 shrink-0" />
+          <div className="h-12 w-0.5 bg-border/50 mx-1 shrink-0" />
           <Button
             variant="ghost"
             size="icon"
@@ -259,10 +274,17 @@ export default function OrdersPage() {
             <tbody className="divide-y divide-primary/5">
               {orders.map((order) => {
                 const StatusIcon = statusIcons[order.orderStatus] || Clock;
+                const isHighlighted = highlightId && order._id === highlightId;
                 return (
                   <tr
                     key={order._id}
-                    className="group hover:bg-primary/3 transition-all duration-500"
+                    ref={isHighlighted ? highlightRef : null}
+                    id={`order-row-${order._id}`}
+                    className={cn(
+                      "group hover:bg-primary/3 transition-all duration-500",
+                      isHighlighted &&
+                        "bg-primary/8 ring-2 ring-inset ring-primary/40 animate-pulse",
+                    )}
                   >
                     <td className="p-8">
                       <span className="font-black text-xs uppercase tracking-widest text-primary italic leading-none">
@@ -282,7 +304,7 @@ export default function OrdersPage() {
                           ) : (
                             <User className="h-4 w-4 text-primary" />
                           )}
-                          <div className="absolute inset-x-0 bottom-0 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                          <div className="absolute inset-x-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                         </div>
                         <div>
                           <p className="font-black text-[12px] uppercase tracking-tight leading-none mb-1">

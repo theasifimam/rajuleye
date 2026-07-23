@@ -142,7 +142,7 @@ export default function UsersPage() {
 
   if (isLoading || isSubLoading) {
     return (
-      <div className="flex h-[400px] items-center justify-center">
+      <div className="flex h-100 items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -150,7 +150,7 @@ export default function UsersPage() {
 
   if (isError) {
     return (
-      <div className="flex h-[400px] flex-col items-center justify-center gap-4 text-destructive text-center">
+      <div className="flex h-100 flex-col items-center justify-center gap-4 text-destructive text-center">
         <XCircle className="h-12 w-12" />
         <p className="font-black uppercase tracking-widest text-[10px]">
           Access Denied
@@ -169,7 +169,7 @@ export default function UsersPage() {
         titleAccent="Management"
         description="Manage your store's users, admins, and subscribers."
       >
-        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-[180px] md:min-w-[200px] hover:border-primary/30 transition-all duration-500">
+        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-45 md:min-w-50 hover:border-primary/30 transition-all duration-500">
           <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
             Total Users
           </p>
@@ -182,7 +182,7 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-[180px] md:min-w-[200px]">
+        <div className="h-16 md:h-20 px-6 md:px-8 rounded-2xl md:rounded-[2rem] bg-card/80 backdrop-blur-md border-2 border-primary/10 shadow-sm flex flex-col justify-center gap-0.5 md:gap-1 min-w-45 md:min-w-50">
           <p className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
             Active Subscribers
           </p>
@@ -400,7 +400,7 @@ export default function UsersPage() {
                       </div>
                     </td>
                     <td className="p-8">
-                      <div className="max-w-[250px]">
+                      <div className="max-w-62.5">
                         <p className="font-black text-sm uppercase tracking-tight mb-1 leading-none">
                           {user.name}
                         </p>
@@ -526,12 +526,12 @@ export default function UsersPage() {
       />
 
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[440px] p-0 overflow-hidden border-none bg-card/40 backdrop-blur-3xl shadow-2xl">
+        <DialogContent className="sm:max-w-110 p-0 overflow-hidden border-none bg-card/40 backdrop-blur-3xl shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-1.5 bg-destructive/60" />
           <div className="p-8 md:p-10">
             <DialogHeader className="mb-8">
               <div className="flex items-center gap-4 mb-6">
-                <div className="h-14 w-14 rounded-[1.25rem] bg-destructive/10 flex items-center justify-center shrink-0">
+                <div className="h-14 w-14 rounded-4xl bg-destructive/10 flex items-center justify-center shrink-0">
                   <ShieldAlert className="h-7 w-7 text-destructive" />
                 </div>
                 <div>

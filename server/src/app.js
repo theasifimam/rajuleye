@@ -17,6 +17,8 @@ import dashboardRoutes from './routes/dashboard.routes.js';
 import subscriberRoutes from './routes/subscriber.routes.js';
 import settingRoutes from './routes/setting.routes.js';
 import frameRoutes from './routes/frame.routes.js';
+import notificationRoutes from './routes/notification.routes.js';
+import contactRoutes from './routes/contact.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 
 // Environment variables are loaded in the main entry point (index.js)
@@ -68,6 +70,8 @@ app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/subscribers', subscriberRoutes);
 app.use('/api/v1/settings', settingRoutes);
 app.use('/api/v1/frames', frameRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
+app.use('/api/v1/contact', contactRoutes);
 
 // 404 handler
 app.use((_req, res) => {
