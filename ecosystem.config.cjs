@@ -43,7 +43,9 @@ module.exports = {
     },
     {
       name: 'rajuleye-web',
-      script: './deploy/web/apps/web/server.js',
+      script: 'npm',
+      args: 'start',
+      cwd: './apps/web',
       env: {
         NODE_ENV: isProd ? 'production' : 'development',
         PORT: env.WEB_PORT || 3000,
@@ -52,7 +54,9 @@ module.exports = {
     },
     {
       name: 'rajuleye-admin',
-      script: './deploy/admin/apps/admin/server.js',
+      script: 'npm',
+      args: 'start',
+      cwd: './apps/admin',
       env: {
         NODE_ENV: isProd ? 'production' : 'development',
         PORT: env.ADMIN_PORT || 3001,

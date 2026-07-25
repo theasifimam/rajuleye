@@ -4,14 +4,11 @@ build/
 .next/
 out/
 .expo/
-!deploy/**/.next/
-!deploy/**/.next/**
+deploy/
 *.tsbuildinfo
 
 # Dependencies
 node_modules/
-!deploy/**/node_modules/
-!deploy/**/node_modules/**
 
 # Environment variables
 .env

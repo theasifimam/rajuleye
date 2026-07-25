@@ -47,11 +47,54 @@ npx turbo run dev --filter=web
 
 ### Building
 
-Build all applications:
+Build a specific application independently:
 
 ```bash
-npm run build
+# Build web app
+cd apps/web && npm run build
+
+# Build admin app
+cd apps/admin && npm run build
 ```
+
+## Server Deployment with PM2
+
+Each app in this monorepo runs as an independent PM2 service.
+
+### PM2 Service Names
+- `rajuleye-api`: Backend API (`./server`)
+- `rajuleye-web`: Consumer Web App (`./apps/web`)
+- `rajuleye-admin`: Admin Dashboard (`./apps/admin`)
+
+### Initial PM2 Start
+```bash
+pm2 start ecosystem.config.cjs
+```
+
+### Updating an Independent App on Server
+
+1. **Pull latest code**:
+   ```bash
+   git pull
+   ```
+
+2. **Build the specific app**:
+   ```bash
+   # For Web
+   cd apps/web && npm run build
+
+   # For Admin
+   cd apps/admin && npm run build
+   ```
+
+3. **Restart PM2 service**:
+   ```bash
+   pm2 restart rajuleye-web
+   # or
+   pm2 restart rajuleye-admin
+   # or
+   pm2 restart rajuleye-api
+   ```
 
 ## Tools
 

@@ -11,7 +11,9 @@
     "dev": "node dev.js",
     "dev:web": "npm run dev -w web",
     "dev:admin": "npm run dev -w admin",
-    "dev:server": "npm run dev -w server"
+    "dev:server": "npm run dev -w server",
+    "build:web": "npm run build -w web",
+    "build:admin": "npm run build -w admin"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
