@@ -178,7 +178,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
 // POST /api/v1/auth/refresh-token
 export const refreshToken = asyncHandler(async (req, res) => {
-  const token = req.cookies?.refreshToken ?? (req.body).refreshToken;
+  const token = req.cookies?.refreshToken ?? req.body?.refreshToken;
   if (!token) throw new ApiError(401, 'Refresh token missing');
 
   const secret = process.env.JWT_REFRESH_SECRET;
