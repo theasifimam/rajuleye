@@ -1,7 +1,7 @@
 import { z } from "zod";
 export const ProductFormSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
-    slug: z.string().min(1, "Slug is required").lowercase().trim(),
+    slug: z.string().min(1, "Slug is required").toLowerCase().trim(),
     description: z.string().min(1, "Description is required"),
     brand: z.string().min(1, "Brand is required").trim(),
     sku: z.string().min(1, "SKU is required").toUpperCase().trim(),
@@ -75,7 +75,7 @@ export const EyePowerSchema = z.object({
 });
 export const UserFormSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
-    email: z.string().email("Invalid email").min(1, "Email is required").lowercase().trim(),
+    email: z.string().email("Invalid email").min(1, "Email is required").toLowerCase().trim(),
     password: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal('')),
     mobile: z.string().optional(),
     gender: z.enum(['male', 'female', 'other']).optional(),
@@ -88,7 +88,7 @@ export const UserFormSchema = z.object({
 });
 export const CategoryFormSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
-    slug: z.string().min(1, "Slug is required").lowercase().trim(),
+    slug: z.string().min(1, "Slug is required").toLowerCase().trim(),
     image: z.any().optional(),
     parent: z.string().nullable().default(null),
     isActive: z.boolean().default(true),
