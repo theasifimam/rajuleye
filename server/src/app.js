@@ -29,13 +29,23 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'https://rajuleye.com',
+  'https://admin.rajuleye.com',
+  'http://localhost:3000',
+  'http://localhost:3001'
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL || 'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:3000'
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, true);
+      }
+    },
     credentials: true,
   })
 );
