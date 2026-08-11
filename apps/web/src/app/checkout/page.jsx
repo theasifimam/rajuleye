@@ -2,7 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useGetCartQuery, useClearCartMutation } from "@/store/cartApi";
-import { useCreateOrderMutation, useVerifyPaymentMutation, useCancelOrderMutation } from "@/store/orderApi";
+import {
+  useCreateOrderMutation,
+  useVerifyPaymentMutation,
+  useCancelOrderMutation,
+} from "@/store/orderApi";
 import { useAppSelector } from "@/store/store";
 import { useGetProfileQuery } from "@/store/authApi";
 import { selectCurrentUser, selectIsAuthenticated } from "@/store/authSlice";
@@ -105,7 +109,7 @@ export default function CheckoutPage() {
 
       if (response.data?.razorpayOrder) {
         const { razorpayOrder, key, order } = response.data;
-        
+
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.onload = () => {
@@ -117,20 +121,20 @@ export default function CheckoutPage() {
             description: "Purchase Order",
             order_id: razorpayOrder.id,
             handler: async function (response) {
-               try {
-                 setIsProcessing(true);
-                 await verifyPayment({
-                   razorpay_order_id: response.razorpay_order_id,
-                   razorpay_payment_id: response.razorpay_payment_id,
-                   razorpay_signature: response.razorpay_signature
-                 }).unwrap();
-                 await clearCart().unwrap();
-                 setIsProcessing(false);
-                 setIsSuccess(true);
-               } catch (e) {
-                 toast.error("Payment verification failed");
-                 setIsProcessing(false);
-               }
+              try {
+                setIsProcessing(true);
+                await verifyPayment({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                }).unwrap();
+                await clearCart().unwrap();
+                setIsProcessing(false);
+                setIsSuccess(true);
+              } catch (e) {
+                toast.error("Payment verification failed");
+                setIsProcessing(false);
+              }
             },
             prefill: {
               name: user?.name || "Customer",
@@ -141,7 +145,7 @@ export default function CheckoutPage() {
               color: "#000000",
             },
             modal: {
-              ondismiss: async function() {
+              ondismiss: async function () {
                 setIsProcessing(false);
                 toast.error("Payment cancelled");
                 try {
@@ -151,8 +155,8 @@ export default function CheckoutPage() {
                 } catch (e) {
                   console.error("Failed to cancel pending order", e);
                 }
-              }
-            }
+              },
+            },
           };
           const rzp1 = new window.Razorpay(options);
           rzp1.open();
@@ -372,7 +376,7 @@ export default function CheckoutPage() {
                 Payment Method
               </h3>
 
-              <div className="flex gap-4">
+              {/* <div className="flex gap-4">
                 <Button
                   type="button"
                   variant={paymentMethod === "online" ? "default" : "outline"}
@@ -389,7 +393,7 @@ export default function CheckoutPage() {
                 >
                   Cash on Delivery
                 </Button>
-              </div>
+              </div> */}
 
               {paymentMethod === "online" && (
                 <div className="p-4 rounded-2xl border-2 border-primary/20 bg-primary/5 flex items-center gap-4 mt-6">
@@ -397,8 +401,12 @@ export default function CheckoutPage() {
                     <Check className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Secure Payment via Razorpay</p>
-                    <p className="text-xs text-muted-foreground mt-1">Cards, UPI, NetBanking, Wallets supported.</p>
+                    <p className="font-bold text-sm">
+                      Secure Payment via Razorpay
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Cards, UPI, NetBanking, Wallets supported.
+                    </p>
                   </div>
                 </div>
               )}
@@ -409,7 +417,9 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Pay on Delivery</p>
-                    <p className="text-xs text-muted-foreground mt-1">You can pay using cash or UPI upon delivery.</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      You can pay using cash or UPI upon delivery.
+                    </p>
                   </div>
                 </div>
               )}
@@ -467,12 +477,23 @@ export default function CheckoutPage() {
                     {item.lensType && (
                       <p className="text-[10px] font-bold text-primary/70 mt-0.5">
                         Lens: {item.lensType}
-                        {item.frameName && item.frameName !== 'Plane Glass' ? ` • Frame: ${item.frameName}` : ''}
+                        {item.frameName && item.frameName !== "Plane Glass"
+                          ? ` • Frame: ${item.frameName}`
+                          : ""}
                       </p>
                     )}
                     {item.powerSubmissionMethod && (
                       <p className="text-[10px] font-bold text-indigo-600 mt-0.5">
-                        Power: {item.powerSubmissionMethod === 'saved' ? 'Saved' : item.powerSubmissionMethod === 'manual' ? 'Manual' : item.powerSubmissionMethod === 'upload' ? 'Uploaded' : item.powerSubmissionMethod === 'whatsapp' ? 'WhatsApp' : 'Skipped'}
+                        Power:{" "}
+                        {item.powerSubmissionMethod === "saved"
+                          ? "Saved"
+                          : item.powerSubmissionMethod === "manual"
+                            ? "Manual"
+                            : item.powerSubmissionMethod === "upload"
+                              ? "Uploaded"
+                              : item.powerSubmissionMethod === "whatsapp"
+                                ? "WhatsApp"
+                                : "Skipped"}
                       </p>
                     )}
                     <p className="font-black text-lg mt-1">
